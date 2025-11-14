@@ -1,0 +1,11 @@
+{
+  "name": "Mathys Tournayre – Portfolio",
+  "short_name": "MT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0B0D",
+  "theme_color": "#FF004F",
+  "icons": [
+    {"src":"/favicon.ico","sizes":"48x48 64x64"}
+  ]
+}

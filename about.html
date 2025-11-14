@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>À propos — Mathys Tournayre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="/assets/css/theme.css?v=liquid1" rel="stylesheet">
+
+  <!-- Favicon pack déjà en place -->
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Mathys Portfolio">
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0A0B0D">
+  
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-graphite border-bottom border-graphite sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">MT</a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/projects.html">Projets</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/about.html">À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header bubble -->
+  <header class="container py-5">
+    <div class="liquid-bubble p-4 p-md-5" data-aos="zoom-in">
+      <div class="row align-items-center g-4">
+        <div class="col-md-8">
+          <h1 class="mb-2 fw-extrabold">À propos</h1>
+          <p class="text-light-600 m-0">
+            DevOps & Full-Stack. J’aime créer des outils élégants, automatiser et sécuriser l’infra.
+          </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+          <a class="btn btn-neon" href="/assets/cv.pdf"><i class="bi bi-file-earmark-arrow-down"></i> Mon CV</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container pb-5">
+    <!-- Timeline “liquid” -->
+    <section class="mb-5">
+      <h2 class="h4 mb-3">Parcours</h2>
+      <div class="timeline">
+        <div class="tl-item liquid-bubble" data-aos="fade-up">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h3 class="h6 m-0">Itinsell Cloud — Alternance</h3>
+            <p class="text-light-600 small m-0">Bastion web (Flask), fabrique Nutanix/GLPI, étude Nextcloud HDS.</p>
+          </div>
+        </div>
+        <div class="tl-item liquid-bubble" data-aos="fade-up" data-aos-delay="80">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <h3 class="h6 m-0">Projets perso</h3>
+            <p class="text-light-600 small m-0">Bots Discord (RCON Squad), supervision, sécurité, GLPI tooling.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Instagram + LinkedIn -->
+    <section class="row g-4 align-items-start">
+      <div class="col-lg-7">
+        <div class="liquid-bubble p-3 p-md-4" data-aos="fade-up">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h2 class="h5 m-0">Instagram</h2>
+            <a class="pill" href="https://www.instagram.com/mathys.trye/" target="_blank" rel="noopener">@mathys.trye</a>
+          </div>
+          <div id="ig-grid" class="ig-grid">
+            <div class="text-light-600">Chargement…</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="liquid-bubble p-3 p-md-4" data-aos="fade-up" data-aos-delay="120">
+          <h2 class="h5 mb-3">LinkedIn</h2>
+          <div class="LI-profile-badge"
+               data-version="v1"
+               data-size="large"
+               data-locale="fr_FR"
+               data-type="horizontal"
+               data-theme="dark"
+               data-vanity="mathys-tournayre-63772a1bb">
+            <a class="link-cyan" href="https://fr.linkedin.com/in/mathys-tournayre-63772a1bb" target="_blank" rel="noopener">
+              Voir mon profil LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-5 text-center text-light-600 border-top border-graphite bg-graphite">
+    © <span id="y"></span> Mathys Tournayre
+  </footer>
+
+  <div id="chat-root"></div>
+
+  <script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init({duration:550,once:true});</script>
+  <script async src="https://platform.linkedin.com/badges/js/profile.js"></script>
+  <script src="/assets/js/about-widgets.js?v=liquid2"></script>
+  <script src="/assets/js/chat.js?v=20251111"></script>
+</body>
+</html>

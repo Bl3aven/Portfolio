@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Projets — Mathys Tournayre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet"/>
+  <link href="/assets/css/theme.css?v=liquid1" rel="stylesheet">
+
+  <!-- Favicon pack déjà en place -->
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Mathys Portfolio">
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#0A0B0D">
+  
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-graphite border-bottom border-graphite sticky-top">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">MT</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div id="nav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="/projects.html">Projets</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about.html">À propos</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<header class="container py-5">
+  <div class="liquid-bubble p-4 p-md-5">
+    <h1 class="fw-extrabold mb-2">Projets</h1>
+    <p class="text-light-600 m-0">Sélection de travaux récents. Filtre, recherche et aperçu rapide.</p>
+  </div>
+</header>
+
+<main class="container pb-5">
+  <!-- barre outils -->
+  <section class="liquid-bubble p-3 p-md-4 mb-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-6">
+        <div class="d-flex flex-wrap gap-2" id="filters">
+          <button class="pill filter active" data-tag="all">Tous</button>
+          <button class="pill filter" data-tag="flask">Flask</button>
+          <button class="pill filter" data-tag="devops">DevOps</button>
+          <button class="pill filter" data-tag="discord">Discord</button>
+          <button class="pill filter" data-tag="nutanix">Nutanix</button>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select id="sort" class="form-select bg-graphite text-led border-graphite">
+          <option value="recent">Plus récents</option>
+          <option value="alpha">A → Z</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input id="search" class="form-control bg-graphite text-led border-graphite" placeholder="Rechercher…">
+      </div>
+    </div>
+  </section>
+
+  <!-- grid + carrousel -->
+  <section class="row g-4" id="grid">
+    <!-- items injectés depuis projects.js -->
+  </section>
+
+  <!-- Modale aperçu -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content bg-graphite text-led border-graphite liquid-bubble">
+        <div class="modal-header border-graphite">
+          <h5 class="modal-title" id="previewTitle"></h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p id="previewDesc" class="text-light-600"></p>
+          <div id="previewCarousel" class="splide" aria-label="Aperçu"></div>
+        </div>
+        <div class="modal-footer border-graphite">
+          <a id="previewLink" class="btn btn-neon" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ouvrir</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="py-5 text-center text-light-600 border-top border-graphite bg-graphite">
+  © <span id="y"></span> Mathys Tournayre
+</footer>
+
+<div id="chat-root"></div>
+
+<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+<script src="/assets/js/projects.js?v=liquid1"></script>
+<script src="/assets/js/chat.js?v=20251111"></script>
+</body>
+</html>
