@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://tournayre.ovh/sitemap.xml
 
-
+Sitemap: https://portfolio.tournayre.ovh/sitemap.xml

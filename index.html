@@ -1,155 +1,216 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Mathys Tournayre – DevOps & Full-Stack</title>
-  <meta name="description" content="Portfolio de Mathys Tournayre – DevOps & Full-Stack. Projets Flask, Nutanix, GLPI, DevOps, sécurité, et automatisation."/>
-  <link rel="canonical" href="https://tournayre.ovh/"/>
+  <meta charset="UTF-8" />
+  <title>Mathys Tournayre - DevOps & Full-Stack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Portfolio de Mathys Tournayre, DevOps & Full-Stack : automatisation, sécurité, cloud privé." />
+  <meta property="og:title" content="Portfolio - Mathys Tournayre" />
+  <meta property="og:description" content="DevOps & Full-Stack — Automatisation, sécurité, cloud privé." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://portfolio.tournayre.ovh/" />
+  <meta property="og:image" content="https://portfolio.tournayre.ovh/assets/og-image.jpg" />
 
-  <!-- Open Graph / Twitter -->
-  <meta property="og:title" content="Mathys Tournayre – DevOps & Full-Stack"/>
-  <meta property="og:description" content="Projets Flask, Nutanix, GLPI, DevOps, sécurité, et automatisation."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://tournayre.ovh/"/>
-  <meta property="og:image" content="https://tournayre.ovh/assets/img/og-cover.png"/>
-  <meta name="twitter:card" content="summary_large_image"/>
-
-  <!-- Favicon pack déjà en place -->
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta name="apple-mobile-web-app-title" content="Mathys Portfolio">
-  <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#0A0B0D">
-
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" crossorigin="anonymous">
-
-  <!-- Modules d’animation -->
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- AOS -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet"/>
+  <!-- Splide -->
+  <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet" />
 
-  <link href="/assets/css/theme.css?v=20251111-2" rel="stylesheet">
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Mathys Tournayre",
-    "url": "https://portfolio.tournayre.ovh",
-    "sameAs": [
-      "https://www.linkedin.com/in/mathys-tournayre",
-      "https://github.com/Bl3aven"
-    ],
-    "jobTitle": "Technicien réseaux et systèmes",
-    "description": "Portfolio de Mathys Tournayre — projets en développement web, infrastructure et automatisation.",
-    "image": "https://portfolio.tournayre.ovh/favicon.svg"
-  }
-  </script>
+  <link rel="stylesheet" href="assets/css/theme.css" />
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-graphite border-bottom border-neon fixed-top">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="/">MT</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Menu">
+<body class="theme-dark">
+
+  <!-- Overlay d’arrivée type Palmer -->
+  <div id="intro-overlay" class="intro-overlay">
+    <div class="intro-bubble">
+      <span class="intro-pill">Portfolio</span>
+      <h1 class="intro-title">Mathys Tournayre</h1>
+      <p class="intro-subtitle">DevOps &amp; Full-Stack — Automatisation, sécurité, cloud privé.</p>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-glass fixed-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-semibold" href="index.html">
+        <span class="brand-dot"></span>
+        Mathys Tournayre
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="nav">
-        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-          <li class="nav-item"><a class="nav-link" href="/about.html">À propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="/projects.html">Projets</a></li>
-          <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
+      <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+        <ul class="navbar-nav align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">À propos</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projets</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hero avec parallaxe subtil + typing -->
-  <header class="hero d-flex align-items-center text-center position-relative overflow-hidden">
-    <div class="container py-5">
-      <h1 class="display-4 fw-extrabold text-led" data-aos="fade-up">Mathys Tournayre</h1>
-      <p id="typed" class="lead text-light-600" data-aos="fade-up" data-aos-delay="120">
-        DevOps & Full-Stack • Automatisation • Sécurité • Cloud privé • IA
-      </p>
-      <div class="d-flex flex-wrap justify-content-center gap-3 mt-3" data-aos="zoom-in" data-aos-delay="220">
-        <a class="btn btn-neon" href="/projects.html"><i class="bi bi-rocket"></i> Voir mes projets</a>
-        <a class="btn btn-outline-cyan" href="/contact.html"><i class="bi bi-chat-dots"></i> Me contacter</a>
-      </div>
-
-      <!-- halo animé -->
-      <div class="hero-glow"></div>
-    </div>
-  </header>
-
-  <main class="container py-5 mt-3">
-    <section class="row g-4 align-items-stretch" data-aos="fade-up">
-      <div class="col-md-6">
-        <div class="card card-panel h-100">
-          <div class="card-body">
-            <h2 class="h4 text-led mb-3">Ce que je fais</h2>
-            <ul class="list-unstyled m-0">
-              <li class="mb-3"><i class="bi bi-cpu me-2 text-plasma"></i> Déploiement automatisé de VMs (Nutanix, Ansible, GLPI, phpIPAM)</li>
-              <li class="mb-3"><i class="bi bi-hdd-network me-2 text-cyan"></i> Bastions & reverse proxies (Nginx, certifs Let’s Encrypt)</li>
-              <li class="mb-3"><i class="bi bi-shield-lock me-2 text-violet"></i> Sécurisation d’apps Flask et confinement serveur</li>
-              <li class="mb-0"><i class="bi bi-discord me-2 text-neon"></i> Bots Discord (RCON Squad, supervision & logs temps réel)</li>
-            </ul>
+  <!-- HERO -->
+  <main class="main-content">
+    <section class="hero container py-5">
+      <div class="row align-items-center">
+        <div class="col-lg-7" data-aos="fade-up">
+          <div class="hero-badge mb-3">
+            <span class="badge-pill">Disponible pour missions & alternance</span>
+          </div>
+          <h1 class="display-4 fw-bold mb-3">
+            <span class="text-led">Mathys Tournayre</span>
+          </h1>
+          <p class="hero-typing h5 mb-4">
+            <span id="typing-text"
+              >DevOps &amp; Full-Stack • Automatisation • Sécurité • Cloud privé</span>
+          </p>
+          <p class="text-muted mb-4">
+            J’aide les équipes à automatiser, sécuriser et industrialiser leurs infrastructures
+            avec des outils modernes : Docker, Ansible, Nutanix, GLPI, Nginx, bots Discord, etc.
+          </p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="projects.html" class="btn btn-primary btn-neon">
+              <i class="bi bi-grid-3x3-gap-fill me-2"></i> Voir mes projets
+            </a>
+            <a href="contact.html" class="btn btn-outline-light btn-ghost">
+              <i class="bi bi-send me-2"></i> Me contacter
+            </a>
           </div>
         </div>
-      </div>
-      <div class="col-md-6" data-aos="fade-left" data-aos-delay="80">
-        <div class="card card-panel h-100">
-          <div class="card-body">
-            <h2 class="h4 text-led mb-3">Points forts</h2>
-            <div id="skills" class="row g-3">
-              <div class="col-6"><div class="pill">Flask</div></div>
-              <div class="col-6"><div class="pill">Nginx</div></div>
-              <div class="col-6"><div class="pill">Ansible</div></div>
-              <div class="col-6"><div class="pill">Docker</div></div>
-              <div class="col-6"><div class="pill">Nutanix</div></div>
-              <div class="col-6"><div class="pill">GLPI API</div></div>
+        <div class="col-lg-5 mt-5 mt-lg-0 position-relative" data-aos="fade-left">
+          <div class="hero-glow"></div>
+          <div class="hero-orbit hero-bubble text-center">
+            <div class="hero-avatar mb-3">
+              <span class="avatar-initial">M</span>
+            </div>
+            <p class="text-muted small mb-2">Stack principale</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+              <span class="pill">Flask</span>
+              <span class="pill">Nginx</span>
+              <span class="pill">Docker</span>
+              <span class="pill">Ansible</span>
+              <span class="pill">Nutanix</span>
+              <span class="pill">GLPI</span>
+              <span class="pill">Discord Bots</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Carrousel projets (Splide) -->
-    <section class="mt-5">
-      <div class="d-flex align-items-center justify-content-between">
-        <h2 class="h4 text-led mb-3">Projets mis en avant</h2>
-        <div class="small text-light-600 d-none d-md-inline">Glissez ↔</div>
+    <!-- Ce que je fais -->
+    <section class="container py-5">
+      <div class="section-header mb-4" data-aos="fade-up">
+        <h2 class="section-title">Ce que je fais</h2>
+        <p class="section-subtitle">
+          Un mix entre développement, infrastructure et automatisation pour garder les systèmes fiables et simples à exploiter.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up">
+          <div class="card liquid-bubble h-100">
+            <div class="card-body">
+              <h3 class="card-title h5 mb-3"><i class="bi bi-diagram-3 me-2"></i> DevOps & Infra</h3>
+              <p class="card-text small text-muted">
+                Automatisation de déploiement, intégration continue, gestion de serveurs Linux,
+                reverse-proxy Nginx, supervision et logs centralisés.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card liquid-bubble h-100">
+            <div class="card-body">
+              <h3 class="card-title h5 mb-3"><i class="bi bi-braces-asterisk me-2"></i> Full-Stack</h3>
+              <p class="card-text small text-muted">
+                Applications web sur mesure avec Flask ou Node.js, intégration d’APIs (GLPI, Discord,
+                Nutanix, phpIPAM), interfaces claires et responsives.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card liquid-bubble h-100">
+            <div class="card-body">
+              <h3 class="card-title h5 mb-3"><i class="bi bi-shield-lock me-2"></i> Sécurité & Cloud privé</h3>
+              <p class="card-text small text-muted">
+                Sécurisation d’instances auto-hébergées, études de faisabilité HDS, durcissement des
+                services exposés et bonnes pratiques DevSecOps.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Points forts / badges -->
+    <section class="container py-5">
+      <div class="section-header mb-3" data-aos="fade-up">
+        <h2 class="section-title">Technos & outils</h2>
+      </div>
+      <div id="skills-pills" class="skills-pills d-flex flex-wrap gap-2" data-aos="fade-up">
+        <!-- Rempli dynamiquement par home.js -->
+      </div>
+    </section>
+
+    <!-- Projets en avant (Splide) -->
+    <section class="container py-5">
+      <div class="section-header mb-4" data-aos="fade-up">
+        <h2 class="section-title">Projets mis en avant</h2>
+        <p class="section-subtitle">
+          Quelques réalisations concrètes autour de l’automatisation, des VMs Nutanix et de l’administration de serveurs de jeu.
+        </p>
       </div>
 
-      <div id="projects-splide" class="splide" aria-label="Projets" data-aos="fade-up">
+      <div class="splide" id="featured-projects" data-aos="fade-up">
         <div class="splide__track">
           <ul class="splide__list">
             <li class="splide__slide">
-              <a class="card card-hover h-100" href="/projects.html#bastion">
+              <div class="card project-card liquid-bubble">
                 <div class="card-body">
-                  <h3 class="h5 text-led">Bastion web outils internes</h3>
-                  <p class="text-light-600">Hub d’outils via Flask, authentification, liens dynamiques, UI sobre.</p>
+                  <h3 class="h5 card-title mb-2">Bastion web interne (Flask)</h3>
+                  <p class="small text-muted mb-3">
+                    Portail centralisé des outils internes, authentification, liens dynamiques,
+                    design sobre et maintenable.
+                  </p>
+                  <a href="projects.html#bastion" class="btn btn-sm btn-outline-light">
+                    Voir le projet
+                  </a>
                 </div>
-              </a>
+              </div>
             </li>
             <li class="splide__slide">
-              <a class="card card-hover h-100" href="/projects.html#nutanix">
+              <div class="card project-card liquid-bubble">
                 <div class="card-body">
-                  <h3 class="h5 text-led">Fabrique de VMs Nutanix</h3>
-                  <p class="text-light-600">Déploiements automatiques depuis GLPI avec allocation IP via phpIPAM.</p>
+                  <h3 class="h5 card-title mb-2">Fabrique de VMs Nutanix</h3>
+                  <p class="small text-muted mb-3">
+                    Déploiement automatique de VMs à partir des données GLPI et phpIPAM, avec
+                    templates Nutanix et IPs réservées.
+                  </p>
+                  <a href="projects.html#nutanix" class="btn btn-sm btn-outline-light">
+                    Voir le projet
+                  </a>
                 </div>
-              </a>
+              </div>
             </li>
             <li class="splide__slide">
-              <a class="card card-hover h-100" href="/projects.html#squad">
+              <div class="card project-card liquid-bubble">
                 <div class="card-body">
-                  <h3 class="h5 text-led">Admin serveur Squad</h3>
-                  <p class="text-light-600">Bot Discord + RCON : vue équipes, logs temps réel, actions admin.</p>
+                  <h3 class="h5 card-title mb-2">Admin serveur Squad</h3>
+                  <p class="small text-muted mb-3">
+                    Bot Discord, RCON, affichage des équipes, commandes d’admin et intégration
+                    en temps réel des logs.
+                  </p>
+                  <a href="projects.html#squad" class="btn btn-sm btn-outline-light">
+                    Voir le projet
+                  </a>
                 </div>
-              </a>
+              </div>
             </li>
           </ul>
         </div>
@@ -157,23 +218,33 @@
     </section>
   </main>
 
-  <footer class="py-5 mt-4 border-top border-graphite bg-graphite text-center">
-    <div class="container small text-light-600">
-      © <span id="y"></span> Mathys Tournayre — <a href="/sitemap.xml" class="link-cyan">Sitemap</a>
+  <!-- FOOTER -->
+  <footer class="footer py-4 mt-5">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <span class="small text-muted">
+        © <span id="year"></span> Mathys Tournayre — Tous droits réservés.
+      </span>
+      <div class="d-flex align-items-center gap-3">
+        <a href="https://www.linkedin.com/in/mathys-tournayre-63772a1bb" class="text-muted small" target="_blank" rel="noreferrer">
+          <i class="bi bi-linkedin"></i> LinkedIn
+        </a>
+        <a href="https://discord.com" class="text-muted small" target="_blank" rel="noreferrer">
+          <i class="bi bi-discord"></i> Discord
+        </a>
+      </div>
     </div>
   </footer>
 
+  <!-- Chat widget -->
   <div id="chat-root"></div>
 
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-
-  <!-- Vendors -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <!-- JS libs -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
-  <!-- Scripts page -->
-  <script src="/assets/js/home.js?v=20251111-2"></script>
-  <script src="/assets/js/chat.js?v=20251111"></script>
+  <!-- Scripts -->
+  <script src="assets/js/home.js"></script>
+  <script src="assets/js/chat.js"></script>
 </body>
 </html>

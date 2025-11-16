@@ -1,73 +1,98 @@
-// home.js — effets légers et performants
-(() => {
-  // AOS animations
-  AOS.init({
-    duration: 550,
-    easing: 'ease-out',
-    once: true,
-    offset: 60,
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  // AOS init
+  if (window.AOS) {
+    AOS.init({
+      once: true,
+      duration: 600,
+      easing: "ease-out-quart",
+    });
+  }
 
-  // Splide carrousel projets (responsive)
-  const splide = new Splide('#projects-splide', {
-    type: 'loop',
-    perPage: 3,
-    gap: '16px',
-    arrows: true,
-    pagination: true,
-    breakpoints: {
-      992: { perPage: 2 },
-      576: { perPage: 1 }
+  // Intro overlay (type Palmer)
+  const overlay = document.getElementById("intro-overlay");
+  const prefersReduced =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (overlay) {
+    if (prefersReduced) {
+      overlay.classList.add("hidden");
+    } else {
+      setTimeout(() => {
+        overlay.classList.add("hidden");
+      }, 800);
     }
-  });
-  splide.mount();
+  }
 
-  // Typing effect (très léger, sans lib)
-  const typedEl = document.getElementById('typed');
-  if (typedEl) {
-    const full = typedEl.textContent.trim();
-    typedEl.textContent = '';
-    let i = 0;
-    const step = () => {
-      typedEl.textContent = full.slice(0, i++);
-      if (i <= full.length) requestAnimationFrame(step);
+  // Typing effect (simple)
+  const typingEl = document.getElementById("typing-text");
+  const fullText =
+    "DevOps & Full-Stack • Automatisation • Sécurité • Cloud privé";
+  if (typingEl && !prefersReduced) {
+    typingEl.textContent = "";
+    let idx = 0;
+    const type = () => {
+      if (idx <= fullText.length) {
+        typingEl.textContent = fullText.slice(0, idx);
+        idx++;
+        setTimeout(type, 30);
+      }
     };
-    setTimeout(step, 350);
+    type();
   }
 
-  // Parallaxe douce du halo de hero
-  const hero = document.querySelector('.hero');
-  const glow = document.querySelector('.hero-glow');
-  if (hero && glow) {
-    hero.addEventListener('mousemove', (e) => {
-      const r = hero.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top) / r.height;
-      glow.style.setProperty('--gx', (x * 100).toFixed(2) + '%');
-      glow.style.setProperty('--gy', (y * 100).toFixed(2) + '%');
+  // Skills pills
+  const skills = [
+    "Flask",
+    "Node.js",
+    "Nginx",
+    "Docker",
+    "Ansible",
+    "Nutanix",
+    "GLPI",
+    "phpIPAM",
+    "Discord Bots",
+    "RCON Squad",
+    "Linux",
+    "Self-hosting",
+  ];
+  const pillsContainer = document.getElementById("skills-pills");
+  if (pillsContainer) {
+    skills.forEach((s, i) => {
+      const span = document.createElement("span");
+      span.className = "pill";
+      span.style.opacity = "0";
+      span.textContent = s;
+      pillsContainer.appendChild(span);
+      setTimeout(() => {
+        span.style.transition = "opacity 0.4s ease-out, transform 0.4s ease-out";
+        span.style.opacity = "1";
+        span.style.transform = "translateY(0)";
+      }, 80 * i);
     });
   }
 
-  // Stagger sur les "pill" via IntersectionObserver
-  const skills = document.querySelectorAll('#skills .pill');
-  if (skills.length) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (en.isIntersecting) {
-          skills.forEach((el, idx) => {
-            el.style.transition = 'transform .35s ease, box-shadow .35s ease, border-color .35s ease';
-            el.style.transform = 'translateY(0)';
-            el.style.opacity = '1';
-            el.style.transitionDelay = `${idx * 50}ms`;
-          });
-          io.disconnect();
-        }
-      });
-    }, { threshold: 0.2 });
-    skills.forEach(el => {
-      el.style.transform = 'translateY(8px)';
-      el.style.opacity = '0';
-      io.observe(el);
-    });
+  // Splide for featured projects
+  if (window.Splide) {
+    const el = document.getElementById("featured-projects");
+    if (el) {
+      new Splide(el, {
+        type: "loop",
+        perPage: 2,
+        gap: "1.25rem",
+        autoplay: true,
+        breakpoints: {
+          768: {
+            perPage: 1,
+          },
+        },
+      }).mount();
+    }
   }
-})();
+
+  // Footer year
+  const yearSpan = document.getElementById("year");
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear().toString();
+  }
+});

@@ -1,163 +1,155 @@
-window.ChatWidget = (function(){
-  const root = document.getElementById('chat-root');
-  const state = {
-    open:false,
-    channelId: localStorage.getItem('mt_chat_channel') || null,
-    history:[],              // {id?, me, text, ts}
-    seen: new Set(),         // ids déjà rendus
-    outboxIds: new Set(),    // ids des messages postés via /api/message
-    botName: null,
-    timer:null
-  };
-  const API_BASE = '/api';
+(function () {
+  const API_BASE = "/api";
+  let channelId = null;
+  let polling = null;
+  let messagesCache = new Set();
 
-  init();  // fetch bot name then render
+  function createUI() {
+    const root = document.getElementById("chat-root");
+    if (!root) return;
 
-  async function init(){
-    try{
-      const r = await fetch(`${API_BASE}/health`);
-      const h = await r.json();
-      state.botName = h.bot_user || h.user || 'bot';
-    }catch{}
-    render();
-  }
+    // Toggle button
+    const toggleBtn = document.createElement("button");
+    toggleBtn.className = "chat-toggle-btn";
+    toggleBtn.innerHTML =
+      '<i class="bi bi-chat-dots"></i><span>Discuter</span>';
+    root.appendChild(toggleBtn);
 
-  function el(tag, attrs={}, kids=[]){
-    const e = document.createElement(tag); Object.assign(e, attrs);
-    kids.forEach(k => e.appendChild(typeof k==='string' ? document.createTextNode(k) : k));
-    return e;
-  }
+    // Panel
+    const panel = document.createElement("div");
+    panel.className = "chat-panel";
+    panel.innerHTML = `
+      <div class="chat-header">
+        <div>
+          <div class="chat-header-title">Chat avec Mathys</div>
+          <div class="small text-muted">Je répondrai dès que possible 👋</div>
+        </div>
+        <button class="btn btn-sm btn-outline-light rounded-pill px-2 py-1 chat-close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="chat-body" id="chat-body"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Écris ton message…" />
+        <button id="chat-send"><i class="bi bi-send"></i></button>
+      </div>
+    `;
+    root.appendChild(panel);
 
-  function render(){
-    root.innerHTML='';
-    const button = el('button',{className:'chat-button',onclick: open},[
-      el('i',{className:'bi bi-chat-dots'}),' Discuter'
-    ]);
-    root.appendChild(button);
-    if(!state.open) return;
+    const body = panel.querySelector("#chat-body");
+    const input = panel.querySelector("#chat-input");
+    const sendBtn = panel.querySelector("#chat-send");
+    const closeBtn = panel.querySelector(".chat-close");
 
-    const panel = el('div',{className:'chat-panel'});
-    const header = el('div',{className:'chat-header'},[
-      el('div',{},[
-        el('strong',{textContent:'Chat avec Mathys'}),
-        el('div',{className:'small-hint'},['Je réponds rapidement 👋'])
-      ]),
-      el('button',{className:'btn btn-sm btn-outline-cyan',onclick: close},[el('i',{className:'bi bi-x-lg'})])
-    ]);
-
-    const body = el('div',{className:'chat-body'});
-
-    // (ré)affiche l'historique proprement
-    body.innerHTML='';
-    state.history.forEach(m=>body.appendChild(renderMsg(m)));
-
-    const inputWrap = el('div',{className:'chat-input'});
-    const input = el('input',{className:'form-control',placeholder:'Écrivez votre message…',autofocus:true});
-    const send  = el('button',{className:'btn btn-neon'},[el('i',{className:'bi bi-send'}),' Envoyer']);
-
-    send.addEventListener('click', ()=> sendMsg(input, body));
-    input.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); send.click(); }});
-
-    inputWrap.append(input, send);
-    panel.append(header, body, inputWrap);
-    root.innerHTML=''; root.append(panel);
-
-    if(state.channelId && !state.timer){ state.timer = setInterval(poll, 2500); poll(); }
-  }
-
-  function renderMsg(m){
-    const wrap = el('div',{className:`msg ${m.me?'me':'bot'}`});
-    wrap.appendChild(document.createTextNode(m.text));
-    if(m.ts){
-      const meta = el('span',{className:'meta'},[
-        new Date(m.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
-      ]);
-      wrap.appendChild(meta);
-    }
-    return wrap;
-  }
-
-  async function sendMsg(input, body){
-    const text = input.value.trim(); if(!text) return; input.value='';
-    const now = Date.now();
-
-    // affichage immédiat côté client
-    const tempId = `local-${now}-${Math.random().toString(36).slice(2,6)}`;
-    const model = { id: tempId, me:true, text, ts:now };
-    state.history.push(model);
-    state.seen.add(tempId);
-    body.appendChild(renderMsg(model));
-    body.scrollTop = body.scrollHeight;
-
-    try{
-      if(!state.channelId){
-        // 1er message → création + echo
-        const r = await fetch(`${API_BASE}/start-chat`,{
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ firstMessage:text })
-        });
-        const data = await r.json();
-        if(!data.ok) throw new Error('start-chat failed');
-        state.channelId = data.channel_id || state.channelId;
-        if(state.channelId) localStorage.setItem('mt_chat_channel', state.channelId);
-        if(data.echo){
-          const echoMsg = { me:false, text:data.echo, ts:Date.now() };
-          state.history.push(echoMsg);
-          body.appendChild(renderMsg(echoMsg));
-        }
-        // poll tout de suite
-        poll();
-        if(!state.timer){ state.timer = setInterval(poll, 2500); }
-      }else{
-        // envoie au salon existant et mémorise l'id renvoyé
-        const r = await fetch(`${API_BASE}/message`,{
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ channel_id: state.channelId, content: text })
-        });
-        const data = await r.json();
-        if(data?.id){ state.outboxIds.add(data.id); }
+    // Toggle
+    toggleBtn.addEventListener("click", () => {
+      panel.classList.toggle("open");
+      if (panel.classList.contains("open")) {
+        input?.focus();
       }
-    }catch(e){
-      const err = { me:false, text:"Oups, une erreur est survenue. Réessayez dans un instant.", ts:Date.now() };
-      state.history.push(err);
-      body.appendChild(renderMsg(err));
+    });
+    closeBtn.addEventListener("click", () => panel.classList.remove("open"));
+
+    // Retrieve channel from localStorage
+    const stored = window.localStorage.getItem("chat_channel_id");
+    if (stored) {
+      channelId = stored;
+      startPolling();
     }
-  }
 
-  async function poll(){
-    if(!state.channelId) return;
-    try{
-      const res = await fetch(`${API_BASE}/messages?channel_id=${encodeURIComponent(state.channelId)}&limit=50`);
-      const data = await res.json();
-      const list = Array.isArray(data.messages) ? data.messages.slice() : [];
+    function appendMessage(author, content) {
+      const div = document.createElement("div");
+      div.className = "chat-msg " + (author === "me" ? "me" : "bot");
+      div.textContent = content;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
 
-      // tri asc sur timestamp
-      list.sort((a,b)=> new Date(a.timestamp) - new Date(b.timestamp));
-
-      let added=false;
-      for(const m of list){
-        if(!m.id) continue;
-        if(state.seen.has(m.id)) continue;    // déjà rendu
-
-        // si c'est un message qu'on vient d'envoyer via l'API → on le ignore (déjà affiché en "me")
-        if(state.outboxIds.has(m.id)){
-          state.seen.add(m.id);
-          continue;
+    async function startChat(firstMessage) {
+      try {
+        const res = await fetch(`${API_BASE}/start-chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstMessage,
+            page: window.location.pathname,
+          }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          channelId = data.channel_id;
+          window.localStorage.setItem("chat_channel_id", channelId);
+          appendMessage("bot", data.echo);
+          startPolling();
+        } else {
+          appendMessage("bot", "Une erreur est survenue, réessaie plus tard.");
         }
-
-        // tous les messages de Discord sont "incoming" (bot/agent)
-        const model = { id:m.id, me:false, text:m.content, ts: Date.parse(m.timestamp) || Date.now() };
-        state.history.push(model);
-        state.seen.add(m.id);
-        added=true;
+      } catch (err) {
+        console.error(err);
+        appendMessage("bot", "Impossible de contacter le serveur pour le moment.");
       }
-      if(added) render();
-    }catch(e){ /* silencieux */ }
+    }
+
+    async function sendMessage() {
+      const value = input.value.trim();
+      if (!value) return;
+      appendMessage("me", value);
+      input.value = "";
+
+      if (!channelId) {
+        await startChat(value);
+        return;
+      }
+      try {
+        await fetch(`${API_BASE}/message`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ channel_id: channelId, content: value }),
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function startPolling() {
+      if (polling) return;
+      polling = setInterval(async () => {
+        if (!channelId) return;
+        try {
+          const res = await fetch(
+            `${API_BASE}/messages?channel_id=${encodeURIComponent(
+              channelId
+            )}&limit=30`
+          );
+          const data = await res.json();
+          if (!data.ok || !Array.isArray(data.messages)) return;
+          data.messages.forEach((m) => {
+            if (!messagesCache.has(m.id)) {
+              messagesCache.add(m.id);
+              const isMe = m.author === "site";
+              if (!isMe) {
+                const div = document.createElement("div");
+                div.className = "chat-msg bot";
+                div.textContent = m.content;
+                body.appendChild(div);
+                body.scrollTop = body.scrollHeight;
+              }
+            }
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      }, 2500);
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
   }
 
-  function open(){ state.open=true; render(); }
-  function close(){ state.open=false; render(); if(state.timer){ clearInterval(state.timer); state.timer=null; } }
-
-  return { open };
+  document.addEventListener("DOMContentLoaded", createUI);
 })();
-    
