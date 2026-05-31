@@ -61,7 +61,7 @@ base-uri 'self';">
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  height: 100%;
+  min-height: 100%;
   max-width: 100%;
   font-family: 'Inter', sans-serif;
   background: #0a0a0a;
@@ -455,11 +455,26 @@ header {
    SECTIONS
 ====================== */
 section {
-  max-width: 1000px;
+  width: min(100%, 1120px);
+  max-width: none;
   margin: auto;
-  padding: 7rem 2rem;
+  padding: 7rem clamp(1.25rem, 4vw, 2rem);
   position: relative;
   z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  section {
+    width: 80vw;
+    max-width: 1520px;
+  }
+}
+
+@media (max-width: 720px) {
+  section {
+    width: 100%;
+    padding: 5rem 1.25rem;
+  }
 }
 
 section h2 {
@@ -473,43 +488,41 @@ section h2 {
    MODULE CARDS
 ====================== */
 .module {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.072), rgba(255,255,255,.018)),
-    rgba(9, 10, 12, .62);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border: 1px solid rgba(255,255,255,.115);
-  border-radius: 8px;
-  padding: clamp(1.35rem, 4vw, 3.1rem);
-  box-shadow:
-    0 24px 80px rgba(0, 0, 0, .46),
-    inset 0 1px 0 rgba(255,255,255,.08);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
   margin-bottom: 4rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .module::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius: inherit;
-  pointer-events:none;
-  background:
-    linear-gradient(90deg, rgba(255,159,67,.28), transparent 32%),
-    linear-gradient(180deg, rgba(255,255,255,.075), transparent 40%);
-  opacity:.32;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  padding:1px;
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  display: none;
 }
 .module:hover{
-  border-color: rgba(255,159,67,.26);
-  box-shadow:
-    0 30px 95px rgba(0,0,0,.5),
-    0 0 42px rgba(255,159,67,.08),
-    inset 0 1px 0 rgba(255,255,255,.11);
+  box-shadow: none;
+}
+
+#about .module,
+#contact .module {
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#about .module p,
+#contact .module p {
+  color: rgba(255,255,255,0.78);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  line-height: 1.75;
+}
+
+#about .module p {
+  border-left: 2px solid rgba(255,159,67,0.42);
+  padding-left: clamp(1rem, 2vw, 1.5rem);
 }
 
 /* ======================
@@ -517,15 +530,17 @@ section h2 {
 ====================== */
 .timeline {
   border-left: 0;
-  padding-left: clamp(1.2rem, 3vw, 2rem);
+  padding-left: clamp(.35rem, 1vw, .65rem);
+  display: grid;
+  gap: 1.05rem;
 }
 
 .timeline-item {
-  margin-bottom: 1.2rem;
-  padding: 1rem 1rem 1rem 1.25rem;
+  margin-bottom: 0;
+  padding: 1rem 0 1rem 1.35rem;
   border-left: 2px solid rgba(255,159,67,.52);
-  background: rgba(255,255,255,.035);
-  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(255,159,67,.075), rgba(255,255,255,0.018) 42%, transparent 100%);
+  border-radius: 0;
   position: relative;
 }
 .timeline-item::before{
@@ -618,7 +633,7 @@ section h2 {
 }
 
 .skillSphereStage{
-  width: min(860px, 100%);
+  width: min(1120px, 100%);
   height: clamp(320px, 56vh, 520px);
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.12);
@@ -919,58 +934,76 @@ section h2 {
 ====================== */
 .interest-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.4rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.35rem);
+  align-items: stretch;
 }
 
 .interest-card {
+  grid-column: span 4;
   background:
-    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
-    rgba(9,10,12,.66);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+    radial-gradient(520px 240px at 12% 0%, rgba(255,159,67,0.10), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
   border-radius: 8px;
-  padding: 1.35rem;
+  padding: clamp(1.15rem, 2vw, 1.55rem);
   text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.115);
-  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.46),
-    inset 0 1px 0 rgba(255,255,255,.075);
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+  box-shadow: none;
   position: relative;
   overflow: hidden;
+  min-height: 214px;
 }
 
 .interest-card:before{
   content:"";
   position:absolute;
-  inset:-2px;
-  background: radial-gradient(600px 220px at 20% 10%, rgba(255,159,67,0.12), transparent 55%);
+  left:0;
+  top:0;
+  bottom:0;
+  width:2px;
+  background: linear-gradient(180deg, rgba(255,159,67,.78), rgba(54,211,153,.42));
   opacity: 1;
   pointer-events:none;
 }
 
 .interest-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255,159,67,.28);
-  box-shadow:
-    0 28px 68px rgba(0,0,0,.52),
-    0 0 34px rgba(255, 150, 60, 0.12),
-    inset 0 1px 0 rgba(255,255,255,.11);
+  background:
+    radial-gradient(560px 260px at 12% 0%, rgba(255,159,67,0.16), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.072), rgba(255,255,255,.02));
+  box-shadow: 0 22px 54px rgba(0,0,0,.34);
+}
+
+.interest-card-feature {
+  grid-column: span 8;
+  background:
+    radial-gradient(760px 360px at 8% 0%, rgba(54,211,153,0.14), transparent 62%),
+    radial-gradient(580px 240px at 95% 20%, rgba(255,159,67,0.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
 }
 
 .interest-icon {
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
   border-radius: 8px;
-  background: rgba(255, 150, 60, 0.12);
+  background: rgba(255, 150, 60, 0.10);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  color: #ffb866;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
   margin-bottom: 1rem;
-  box-shadow: 0 0 20px rgba(255, 150, 60, 0.25);
-  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: none;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.interest-card-feature .interest-icon {
+  background: linear-gradient(135deg, rgba(54,211,153,0.18), rgba(255,159,67,0.12));
+  color: #36d399;
 }
 
 .interest-card h3 {
@@ -984,6 +1017,20 @@ section h2 {
   line-height: 1.55;
   position: relative;
   z-index: 1;
+}
+
+@media (max-width: 1100px) {
+  .interest-card,
+  .interest-card-feature {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 720px) {
+  .interest-card,
+  .interest-card-feature {
+    grid-column: span 12;
+  }
 }
 
 /* ======================
@@ -2222,26 +2269,32 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <h2>Centres d’intérêt</h2>
 
   <div class="module interest-grid">
+    <div class="interest-card interest-card-feature">
+      <div class="interest-icon">IA</div>
+      <h3>IA locale &amp; agents</h3>
+      <p>Veille et expérimentation autour d’Open WebUI, ComfyUI, Ollama, LM Studio, Vulkan et agents outillés pour automatiser sans perdre la maîtrise des données.</p>
+    </div>
+
     <div class="interest-card">
-      <div class="interest-icon">☁️</div>
+      <div class="interest-icon">CLD</div>
       <h3>Cloud &amp; Infrastructure</h3>
       <p>Architecture, haute disponibilité, supervision, industrialisation et optimisation des environnements.</p>
     </div>
 
     <div class="interest-card">
-      <div class="interest-icon">🔐</div>
+      <div class="interest-icon">SEC</div>
       <h3>Cybersécurité</h3>
       <p>Durcissement Linux, segmentation réseau, reverse proxy, bonnes pratiques, approche défense en profondeur.</p>
     </div>
 
     <div class="interest-card">
-      <div class="interest-icon">🧪</div>
+      <div class="interest-icon">LAB</div>
       <h3>Homelab &amp; Automatisation</h3>
       <p>Infrastructure perso (VMs, containers, reverse proxy, monitoring), scripts et standardisation des déploiements.</p>
     </div>
 
     <div class="interest-card">
-      <div class="interest-icon">🎮</div>
+      <div class="interest-icon">COM</div>
       <h3>Serveurs &amp; Communautés</h3>
       <p>Administration serveur (RCON / Discord), automatisation, outils de modération et observabilité.</p>
     </div>
@@ -2433,7 +2486,7 @@ window.addEventListener("resize", setRealVH);
   const secs = Array.from(document.querySelectorAll("section"));
   secs.forEach((section) => {
     section.classList.add("reveal");
-    const children = Array.from(section.querySelectorAll(":scope > h2, :scope > .module, :scope > .skillSphereWrap, :scope > .ai-layout > *, :scope > .ai-project-grid > *, :scope > .carousel-wrapper, :scope > .carousel-controls"))
+    const children = Array.from(section.querySelectorAll(":scope > h2, :scope > .module, :scope > .interest-grid > *, :scope > .skillSphereWrap, :scope > .ai-layout > *, :scope > .ai-project-grid > *, :scope > .carousel-wrapper, :scope > .carousel-controls"))
       .filter((el) => !el.hidden);
     children.forEach((el, index) => {
       el.classList.add("reveal-child");
