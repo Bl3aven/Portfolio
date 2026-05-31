@@ -12,13 +12,72 @@ if (!is_file($configPath)) {
 
 require $configPath;
 
-$name = "lead-" . date("Ymd-His") . "-" . bin2hex(random_bytes(3));
+function clean_contact_field($value, $limit = 80) {
+  $value = trim((string)$value);
+  $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value);
+  $value = preg_replace('/\s+/u', ' ', $value);
+
+  return function_exists("mb_substr")
+    ? mb_substr($value, 0, $limit, "UTF-8")
+    : substr($value, 0, $limit);
+}
+
+function clean_phone($value) {
+  $value = clean_contact_field($value, 30);
+  return trim(preg_replace('/[^\d+().\s-]/', '', $value));
+}
+
+function channel_slug($value) {
+  $value = trim((string)$value);
+  if (function_exists("iconv")) {
+    $converted = iconv("UTF-8", "ASCII//TRANSLIT//IGNORE", $value);
+    if ($converted !== false) {
+      $value = $converted;
+    }
+  }
+
+  $value = strtolower($value);
+  $value = preg_replace('/[^a-z0-9]+/', '-', $value);
+  $value = trim($value, "-");
+
+  return $value !== "" ? $value : "contact";
+}
+
+$input = json_decode(file_get_contents("php://input"), true);
+if (!is_array($input)) {
+  $input = [];
+}
+
+$lastName = clean_contact_field($input["lastName"] ?? $input["name"] ?? "", 80);
+$firstName = clean_contact_field($input["firstName"] ?? "", 80);
+$phone = clean_phone($input["phone"] ?? "");
+
+if ($lastName === "") {
+  http_response_code(400);
+  echo json_encode(["error" => "Name is required"], JSON_UNESCAPED_UNICODE);
+  exit;
+}
+
+$visitorDisplay = trim(($firstName ? $firstName . " " : "") . $lastName);
+$slug = channel_slug(trim($lastName . " " . $firstName));
+$suffix = date("md-His") . "-" . bin2hex(random_bytes(2));
+$channelSlug = substr($slug, 0, 70);
+$name = "portfolio-" . $channelSlug . "-" . $suffix;
+
+$topicLines = [
+  "Contact depuis le portfolio",
+  "Nom: " . $lastName,
+  "Prénom: " . ($firstName !== "" ? $firstName : "Non renseigné"),
+  "Téléphone: " . ($phone !== "" ? $phone : "Non renseigné"),
+  "Créé le: " . date("Y-m-d H:i:s")
+];
 
 $payload = json_encode([
   "name" => $name,
   "type" => 0,
-  "parent_id" => DISCORD_CATEGORY_ID
-]);
+  "parent_id" => DISCORD_CATEGORY_ID,
+  "topic" => implode("\n", $topicLines)
+], JSON_UNESCAPED_UNICODE);
 
 $ch = curl_init();
 curl_setopt_array($ch, [
@@ -41,7 +100,15 @@ $data = json_decode($response, true);
 
 if ($status >= 200 && $status < 300 && isset($data["id"])) {
   $_SESSION["channel_id"] = $data["id"];
-  echo json_encode(["status" => "ok"], JSON_UNESCAPED_UNICODE);
+  $_SESSION["visitor_display"] = $visitorDisplay;
+  $_SESSION["visitor_last_name"] = $lastName;
+  $_SESSION["visitor_first_name"] = $firstName;
+  $_SESSION["visitor_phone"] = $phone;
+
+  echo json_encode([
+    "status" => "ok",
+    "channel" => $name
+  ], JSON_UNESCAPED_UNICODE);
 } else {
   http_response_code(500);
   echo json_encode([

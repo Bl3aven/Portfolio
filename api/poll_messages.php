@@ -51,7 +51,7 @@ foreach (array_reverse($messages) as $msg) {
 
   $content = (string)$msg["content"];
   $isVisitorEcho =
-    strpos($content, "[Portfolio] VISITEUR:") === 0 ||
+    strpos($content, "[Portfolio]") === 0 ||
     strpos($content, "🌐 VISITEUR") === 0;
 
   if (!$isVisitorEcho) {

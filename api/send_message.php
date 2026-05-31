@@ -39,8 +39,11 @@ if (!$channel_id) {
   exit;
 }
 
+$visitorDisplay = trim((string)($_SESSION["visitor_display"] ?? "VISITEUR"));
+$visitorDisplay = $visitorDisplay !== "" ? $visitorDisplay : "VISITEUR";
+
 $payload = json_encode([
-  "content" => "[Portfolio] VISITEUR: " . $message,
+  "content" => "[Portfolio] " . $visitorDisplay . ": " . $message,
   "allowed_mentions" => [
     "parse" => []
   ]

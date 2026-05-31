@@ -1319,6 +1319,38 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 .assistant-body .assistant-error{
   color:#ffd0c7;
 }
+.assistant-contact-form{
+  display:grid;
+  gap:.7rem;
+  margin-top:.9rem;
+}
+.assistant-contact-form label{
+  display:grid;
+  gap:.35rem;
+  color:rgba(255,255,255,0.78);
+  font-size:.78rem;
+  font-weight:700;
+}
+.assistant-contact-form input{
+  width:100%;
+  min-height:40px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.06);
+  color:#fff;
+  padding:.65rem .8rem;
+  outline:none;
+  font:inherit;
+}
+.assistant-contact-form input:focus{
+  border-color:rgba(255,159,67,0.62);
+  box-shadow:0 0 0 3px rgba(255,159,67,0.14);
+}
+.assistant-field-error{
+  color:#ffd0c7;
+  font-size:.78rem;
+  min-height:1em;
+}
 .assistant-footer {
   padding: 0.8rem;
   display: grid;
@@ -2820,6 +2852,7 @@ const closeBtn = document.getElementById("assistantClose");
 
 let chatStarted = false;
 let chatStarting = false;
+let assistantContactDraft = null;
 const lastMessages = new Set();
 
 /* Hide bubble during modal initially */
@@ -2842,11 +2875,26 @@ function appendChatMessage(author, content, tone = "") {
 function showWelcomePrompt() {
   bodyBox.innerHTML = `
     <p>Salutt!!! 👋</p>
-    <p>Je remarque que tu es intéressé par mon profil, souhaiterais-tu prendre contact avec moi ?</p>
-    <div class="assistant-buttons">
-      <button type="button" onclick="startChat()">Oui</button>
-      <button type="button" onclick="closePrompt()">Non merci</button>
-    </div>
+    <p>Pour ouvrir un salon Discord clair, indique au moins ton nom. Le prénom et le téléphone sont facultatifs.</p>
+    <form id="assistantContactForm" class="assistant-contact-form" onsubmit="event.preventDefault(); startChat();">
+      <label>
+        Nom *
+        <input id="assistantLastName" name="lastName" autocomplete="family-name" maxlength="80" required>
+      </label>
+      <label>
+        Prénom
+        <input id="assistantFirstName" name="firstName" autocomplete="given-name" maxlength="80">
+      </label>
+      <label>
+        Téléphone
+        <input id="assistantPhone" name="phone" autocomplete="tel" inputmode="tel" maxlength="30">
+      </label>
+      <div id="assistantContactError" class="assistant-field-error" aria-live="polite"></div>
+      <div class="assistant-buttons">
+        <button type="submit">Ouvrir Discord</button>
+        <button type="button" onclick="closePrompt()">Non merci</button>
+      </div>
+    </form>
   `;
 }
 
@@ -2874,8 +2922,30 @@ setTimeout(() => {
 
 function closePrompt() { windowBox.style.display = "none"; }
 
+function getAssistantContact() {
+  return {
+    lastName: document.getElementById("assistantLastName")?.value.trim() || "",
+    firstName: document.getElementById("assistantFirstName")?.value.trim() || "",
+    phone: document.getElementById("assistantPhone")?.value.trim() || ""
+  };
+}
+
+function setAssistantContactError(message = "") {
+  const error = document.getElementById("assistantContactError");
+  if (error) error.textContent = message;
+}
+
 async function startChat() {
   if (chatStarted || chatStarting) return;
+
+  const formContact = getAssistantContact();
+  const contact = formContact.lastName ? formContact : assistantContactDraft || formContact;
+  if (!contact.lastName) {
+    setAssistantContactError("Le nom est nécessaire pour nommer le salon Discord.");
+    document.getElementById("assistantLastName")?.focus();
+    return;
+  }
+  assistantContactDraft = contact;
 
   chatStarting = true;
   bodyBox.innerHTML = "";
@@ -2883,7 +2953,12 @@ async function startChat() {
   footerBox.style.display = "none";
 
   try {
-    const response = await fetch("/api/start_chat.php", { method: "POST", credentials: "include" });
+    const response = await fetch("/api/start_chat.php", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contact)
+    });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.status !== "ok") {
       throw new Error(data.error || "Impossible d'ouvrir le salon Discord.");
