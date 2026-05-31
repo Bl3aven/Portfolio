@@ -1,0 +1,5 @@
+Options -Indexes
+
+<FilesMatch "^(config|config\.example|create_admin_channel)\.php$">
+  Require all denied
+</FilesMatch>

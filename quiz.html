@@ -1,0 +1,1674 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz Live — Kahoot-like (Single file)</title>
+
+  <!-- Decorative favicons (inline SVG data URIs) -->
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml;utf8,
+  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="%23ff7a00"/>
+        <stop offset="1" stop-color="%23ff9a3d"/>
+      </linearGradient>
+    </defs>
+    <rect width="64" height="64" rx="16" fill="url(%23g)"/>
+    <rect x="14" y="14" width="36" height="36" rx="12" fill="none" stroke="white" stroke-width="4" transform="rotate(12 32 32)"/>
+  </svg>' />
+  <link rel="apple-touch-icon" href='data:image/svg+xml;utf8,
+  <svg xmlns="http://www.w3.org/2000/svg" width="180" height="180">
+    <defs>
+      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop stop-color="%23ff7a00"/>
+        <stop offset="1" stop-color="%23ff9a3d"/>
+      </linearGradient>
+    </defs>
+    <rect width="180" height="180" rx="48" fill="url(%23g)"/>
+    <rect x="40" y="40" width="100" height="100" rx="32" fill="none" stroke="white" stroke-width="10" transform="rotate(12 90 90)"/>
+  </svg>' />
+  <meta name="theme-color" content="#ff7a00" />
+
+  <!-- Supabase Realtime (exposes window.supabase) -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --orange:#ff7a00;
+      --orange2:#ff9a3d;
+      --bg:#0b0d12;
+      --card:#141823;
+      --text:#fff;
+      --muted:#b8c0cc;
+      --good:#2dd36f;
+      --bad:#ff4d4d;
+      --line:rgba(255,255,255,.10);
+      --shadow:0 18px 55px rgba(0,0,0,.45);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 10% -10%, rgba(255,122,0,.28), transparent 55%),
+        radial-gradient(900px 500px at 105% 0%, rgba(255,154,61,.20), transparent 55%),
+        linear-gradient(180deg, #07080c, #0b0d12 30%, #07080c);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(7,8,12,.55);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar{
+      max-width:1200px; margin:0 auto;
+      padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:1000}
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      box-shadow: 0 14px 30px rgba(255,122,0,.25);
+      position:relative;
+    }
+    .logo:after{
+      content:""; position:absolute; inset:8px;
+      border-radius:10px; border:2px solid rgba(255,255,255,.75);
+      transform:rotate(12deg);
+    }
+    .meta{font-size:12px; color:var(--muted); font-weight:800; margin-top:2px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .pill b{color:#fff}
+
+    main{
+      max-width:1200px; margin:0 auto; padding:18px;
+      display:grid; grid-template-columns: 410px 1fr; gap:18px;
+    }
+    @media (max-width: 980px){ main{grid-template-columns:1fr} }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .head{
+      padding:16px 16px 12px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    }
+    .head h2{margin:0; font-size:18px}
+    .body{padding:16px}
+
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .col{display:flex; flex-direction:column; gap:10px}
+    .split{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width:520px){ .split{grid-template-columns:1fr} }
+    .hr{height:1px; background:var(--line); margin:12px 0}
+
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      padding:12px 14px; border-radius:14px;
+      font-weight:1000;
+      color:#0b0d12;
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      box-shadow: 0 18px 40px rgba(255,122,0,.22);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{transform: translateY(-1px); filter:saturate(1.08)}
+    .btn:active{transform: translateY(0px) scale(.99)}
+    .btn.secondary{
+      background: rgba(255,255,255,.08);
+      color:#fff;
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+    .btn.ghost{
+      background: transparent;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+    }
+    .btn.small{padding:9px 12px; border-radius:12px; font-size:13px}
+    .btn[disabled]{opacity:.55; cursor:not-allowed; transform:none; filter:none}
+
+    .input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(10,12,16,.55);
+      color:#fff;
+      outline:none;
+    }
+    .input::placeholder{color: rgba(184,192,204,.75)}
+    label{font-size:12px; color:var(--muted); font-weight:900}
+
+    .hint{
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,122,0,.10);
+      border:1px solid rgba(255,122,0,.20);
+      color: rgba(255,255,255,.92);
+      font-size:13px; line-height:1.35;
+    }
+    .danger{
+      padding:10px 12px; border-radius:14px;
+      background: rgba(255,77,77,.10);
+      border:1px solid rgba(255,77,77,.22);
+      color: rgba(255,255,255,.92);
+      font-size:13px; line-height:1.35;
+      display:none;
+    }
+
+    /* Stage */
+    .stage{min-height:560px; display:flex; flex-direction:column}
+    .progressWrap{
+      padding:14px 16px 12px 16px;
+      border-bottom:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .progressTop{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+    .qtitle{font-weight:1000; font-size:14px}
+    .timer{
+      display:flex; align-items:center; gap:10px;
+      font-weight:1000;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(255,122,0,.18);
+      border:1px solid rgba(255,122,0,.35);
+      min-width:120px;
+      justify-content:center;
+    }
+    .bar{
+      height:10px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    .bar>div{
+      height:100%; width:0%;
+      background: linear-gradient(90deg, var(--orange), var(--orange2));
+      transition: width .25s ease;
+    }
+    .center{display:grid; place-items:center; padding:28px 18px; text-align:center}
+    .subtle{color:var(--muted); font-size:13px; line-height:1.4}
+
+    .bigPin{
+      font-size:44px; letter-spacing:4px; font-weight:1000;
+      margin:8px 0 6px 0;
+      background: linear-gradient(90deg, var(--orange), var(--orange2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+
+    .questionBox{padding:18px 18px 10px 18px}
+    .questionText{font-size:22px; line-height:1.25; font-weight:1000; margin:0 0 14px 0}
+
+    .answers{
+      padding:0 18px 18px 18px;
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    @media (max-width:760px){ .answers{grid-template-columns:1fr} }
+    .answerBtn{
+      display:flex; align-items:center; gap:10px;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+      transition: transform .10s ease, background .10s ease, border-color .10s ease;
+      min-height:56px;
+      font-weight:1000;
+    }
+    .answerBtn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
+    .answerBtn:active{transform: translateY(0px) scale(.995)}
+    .answerBtn[disabled]{opacity:.55; cursor:not-allowed; transform:none}
+    .badge{
+      width:34px; height:34px;
+      border-radius:12px;
+      display:grid; place-items:center;
+      background: rgba(255,122,0,.18);
+      border:1px solid rgba(255,122,0,.35);
+      font-weight:1000;
+      flex:0 0 auto;
+    }
+    .answerBtn.correct{border-color: rgba(45,211,111,.55); background: rgba(45,211,111,.12)}
+    .answerBtn.wrong{border-color: rgba(255,77,77,.55); background: rgba(255,77,77,.12)}
+
+    .list{display:flex; flex-direction:column; gap:10px; margin-top:10px}
+    .playerRow{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.05);
+      border:1px solid var(--line);
+    }
+    .playerRow .name{font-weight:1000}
+    .playerRow .stats{font-size:12px; color:var(--muted)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      padding:3px 8px; border-radius:10px;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      color:#fff;
+      font-size:12px;
+    }
+
+    /* Upload box */
+    .drop{
+      border-radius: 16px;
+      border: 1px dashed rgba(255,255,255,.22);
+      background: rgba(255,255,255,.04);
+      padding: 14px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .dropIcon{
+      width:38px; height:38px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(255,122,0,.18);
+      border:1px solid rgba(255,122,0,.35);
+      flex:0 0 auto;
+      font-weight:1000;
+    }
+    .drop.dragover{
+      border-color: rgba(255,154,61,.65);
+      background: rgba(255,122,0,.08);
+    }
+
+    .toast{
+      position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
+      background: rgba(10,12,16,.85);
+      border: 1px solid rgba(255,255,255,.14);
+      color:#fff;
+      padding:10px 14px;
+      border-radius: 999px;
+      box-shadow: 0 18px 55px rgba(0,0,0,.5);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index:40;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-2px)}
+
+    /* Modal */
+    .modalWrap{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      z-index:50;
+      padding:18px;
+    }
+    .modal{
+      max-width:860px;
+      margin: 6vh auto;
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(20,24,35,.96), rgba(10,12,16,.92));
+      box-shadow: 0 22px 80px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .modalHead b{font-size:14px}
+    .modalBody{padding:16px}
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      line-height:1.45;
+      white-space:pre;
+      overflow:auto;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+    }
+
+    /* Start animation overlay */
+    .introWrap{
+      position:fixed; inset:0;
+      display:none;
+      z-index:60;
+      background:
+        radial-gradient(1100px 600px at 10% -10%, rgba(255,122,0,.24), transparent 55%),
+        radial-gradient(900px 500px at 105% 0%, rgba(255,154,61,.16), transparent 55%),
+        rgba(7,8,12,.78);
+      backdrop-filter: blur(10px);
+    }
+    .introCard{
+      max-width:760px;
+      margin: 18vh auto;
+      padding:22px 18px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      text-align:center;
+      transform: translateY(10px) scale(.98);
+      opacity: 0;
+      animation: introIn .55s ease forwards;
+    }
+    @keyframes introIn{
+      to{ transform: translateY(0px) scale(1); opacity:1; }
+    }
+    .introTitle{
+      font-size:34px;
+      font-weight:1100;
+      margin: 0 0 8px 0;
+      background: linear-gradient(90deg, var(--orange), var(--orange2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .introSub{color:var(--muted); font-weight:900}
+    .introKpi{
+      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .kpi{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:#fff;
+      font-weight:1000;
+      min-width:140px;
+    }
+
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        Quiz Live
+        <div class="meta">Kahoot-like • 1 fichier HTML • Temps réel via Supabase</div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="pill">Mode: <b id="uiMode">—</b></span>
+      <span class="pill">PIN: <b id="uiPin">—</b></span>
+      <span class="pill">État: <b id="uiState">Idle</b></span>
+      <button class="btn ghost small" id="btnJsonHelp">Format JSON</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT -->
+  <section class="card">
+    <div class="head">
+      <div>
+        <h2>Contrôle</h2>
+        <div class="meta">L’animateur charge un fichier JSON local puis lance la session.</div>
+      </div>
+      <button class="btn ghost small" id="btnReset">Reset</button>
+    </div>
+
+    <div class="body">
+      <div class="split">
+        <button class="btn" id="btnHost">Animateur</button>
+        <button class="btn secondary" id="btnPlayer">Participant</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <!-- Host -->
+      <div id="hostPanel" style="display:none;">
+        <div class="col">
+          <div class="hint">
+            <b>1 quiz par session.</b> Le fichier est chargé depuis ton ordinateur (pas de backend).
+          </div>
+
+          <div class="danger" id="hostErrorBox"></div>
+
+          <label>Charger un fichier quiz (.json)</label>
+          <div class="drop" id="dropZone">
+            <div class="dropIcon">⬆</div>
+            <div style="flex:1;">
+              <div style="font-weight:1000; margin-bottom:2px;">Glisse / dépose ton JSON ici</div>
+              <div class="subtle">ou clique “Choisir un fichier”. Validation stricte + valeurs par défaut.</div>
+              <div style="height:10px"></div>
+              <div class="row">
+                <input type="file" id="quizFile" accept="application/json,.json" style="display:none;">
+                <button class="btn secondary small" id="btnPickFile">Choisir un fichier</button>
+                <button class="btn ghost small" id="btnLockInfo">Détails</button>
+              </div>
+              <div class="subtle" style="margin-top:10px;">
+                Fichier: <b id="loadedFileName">—</b> • Titre: <b id="loadedTitle">—</b> • Questions: <b id="loadedCount">—</b>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="center" id="pinBox" style="display:none;">
+            <div class="subtle">Code PIN</div>
+            <div class="bigPin" id="pinValue">000000</div>
+            <div class="row" style="justify-content:center;">
+              <button class="btn small" id="btnCopyPin">Copier</button>
+              <button class="btn small" id="btnStart" disabled>Lancer</button>
+              <button class="btn secondary small" id="btnEnd" disabled>Terminer</button>
+            </div>
+            <div class="subtle" style="margin-top:10px;">
+              Joueurs: <b id="playerCount">0</b> • Max: <b>100</b>
+            </div>
+            <div class="row" style="justify-content:center; margin-top:10px;">
+              <button class="btn ghost small" id="btnDownloadXml" style="display:none;">Télécharger résultats (XML)</button>
+            </div>
+          </div>
+
+          <div class="list" id="playerList"></div>
+
+          <div class="row" style="justify-content:space-between; margin-top:6px;">
+            <span class="subtle">Pendant le quiz : passage auto question suivante.</span>
+            <button class="btn ghost small" id="btnSkip" disabled>Skip</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Player -->
+      <div id="playerPanel" style="display:none;">
+        <div class="col">
+          <label>Pseudo</label>
+          <input class="input" id="playerName" placeholder="Ex: Matt" maxlength="18" />
+
+          <label>Code PIN</label>
+          <input class="input" id="joinPin" placeholder="Ex: 482193" maxlength="10" />
+
+          <button class="btn" id="btnJoin">Rejoindre</button>
+          <div class="subtle">Règles anti-triche : pseudo unique + 1 seul onglet/appareil par session.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT -->
+  <section class="card stage">
+    <div class="progressWrap">
+      <div class="progressTop">
+        <div class="qtitle" id="stageTitle">En attente…</div>
+        <div class="timer" id="timerPill">⏱️ —</div>
+      </div>
+      <div class="bar"><div id="progressFill"></div></div>
+    </div>
+
+    <div id="stage">
+      <div class="center">
+        <h3 style="margin:0 0 8px 0;">Prêt ?</h3>
+        <div class="subtle" style="max-width:560px;">
+          Choisis <b>Animateur</b> ou <b>Participant</b>.
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="introWrap" id="introWrap">
+  <div class="introCard">
+    <div class="introTitle" id="introTitle">Quiz</div>
+    <div class="introSub" id="introDesc">Préparez-vous…</div>
+    <div class="introKpi">
+      <div class="kpi" id="introKpiQ">Questions: —</div>
+      <div class="kpi" id="introKpiPin">PIN: —</div>
+    </div>
+  </div>
+</div>
+
+<!-- JSON Help Modal -->
+<div class="modalWrap" id="jsonModalWrap" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="jsonModalTitle">
+    <div class="modalHead">
+      <b id="jsonModalTitle">Format du fichier JSON (Quiz)</b>
+      <div class="row">
+        <button class="btn ghost small" id="btnCopyJsonExample">Copier l’exemple</button>
+        <button class="btn secondary small" id="btnCloseJsonHelp">Fermer</button>
+      </div>
+    </div>
+    <div class="modalBody">
+      <div class="subtle" style="margin-bottom:12px;">
+        Champs <b>recommandés</b> (avec valeurs par défaut si absents). Les questions doivent avoir <b>4 réponses</b>.
+      </div>
+
+      <div class="code" id="jsonExample"></div>
+
+      <div class="hr"></div>
+
+      <div class="subtle">
+        <b>Règles</b> :
+        <ul style="margin:8px 0 0 18px; color: var(--muted); line-height:1.5;">
+          <li><b>title</b> (string) : défaut “Quiz Live”.</li>
+          <li><b>description</b> (string) : défaut vide.</li>
+          <li><b>timeLimit</b> (number) : temps par défaut en secondes (défaut 20).</li>
+          <li><b>questions[]</b> : liste d’objets question.</li>
+          <li>Dans chaque question : <b>question</b>, <b>answers[4]</b>, <b>correctIndex</b> (0..3).</li>
+          <li><b>weight</b> (number) : pondération (défaut 1). Score final = score Kahoot × weight.</li>
+          <li><b>explanation</b> (string) : optionnel.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================
+   CONFIG À REMPLACER (Supabase)
+   ============================ */
+const SUPABASE_URL = "https://fvnigapcvfutjkceanjq.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2bmlnYXBjdmZ1dGprY2VhbmpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwODU0MjksImV4cCI6MjA4NjY2MTQyOX0.dgWwen63MQEpAD_-uCYf0G_uyrUN05ttYd8YkKoMNpo";
+
+/* ============================
+   Helpers
+   ============================ */
+const $ = (id) => document.getElementById(id);
+const now = () => Date.now();
+const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+const randPin = () => String(Math.floor(100000 + Math.random()*900000));
+const uid = () => (crypto?.randomUUID ? crypto.randomUUID() : ("id_"+Math.random().toString(16).slice(2)));
+const escapeHtml = (str) => String(str)
+  .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1700);
+}
+
+/* JSON parse error -> line/col */
+function posToLineCol(text, pos){
+  let line = 1, col = 1;
+  for (let i=0;i<text.length && i<pos;i++){
+    if (text[i] === "\n"){ line++; col = 1; }
+    else col++;
+  }
+  return { line, col };
+}
+function parseJsonWithDetails(text){
+  try{
+    return { ok:true, value: JSON.parse(text) };
+  }catch(e){
+    const msg = String(e?.message || e);
+    // Try to extract "position N"
+    const m = msg.match(/position\s+(\d+)/i);
+    if (m){
+      const pos = Number(m[1]);
+      const lc = posToLineCol(text, pos);
+      return { ok:false, error: `JSON invalide : ${msg} (ligne ${lc.line}, colonne ${lc.col})` };
+    }
+    return { ok:false, error: `JSON invalide : ${msg}` };
+  }
+}
+
+/* ============================
+   UI refs
+   ============================ */
+const uiMode = $("uiMode");
+const uiPin = $("uiPin");
+const uiState = $("uiState");
+
+const btnReset = $("btnReset");
+const btnHost = $("btnHost");
+const btnPlayer = $("btnPlayer");
+
+const hostPanel = $("hostPanel");
+const playerPanel = $("playerPanel");
+
+const quizFileInput = $("quizFile");
+const dropZone = $("dropZone");
+const btnPickFile = $("btnPickFile");
+const btnLockInfo = $("btnLockInfo");
+
+const loadedFileName = $("loadedFileName");
+const loadedTitle = $("loadedTitle");
+const loadedCount = $("loadedCount");
+
+const hostErrorBox = $("hostErrorBox");
+
+const pinBox = $("pinBox");
+const pinValue = $("pinValue");
+const btnCopyPin = $("btnCopyPin");
+const btnStart = $("btnStart");
+const btnEnd = $("btnEnd");
+const btnSkip = $("btnSkip");
+const btnDownloadXml = $("btnDownloadXml");
+
+const playerList = $("playerList");
+const playerCount = $("playerCount");
+
+const playerName = $("playerName");
+const joinPin = $("joinPin");
+const btnJoin = $("btnJoin");
+
+const stage = $("stage");
+const stageTitle = $("stageTitle");
+const timerPill = $("timerPill");
+const progressFill = $("progressFill");
+
+/* Intro overlay */
+const introWrap = $("introWrap");
+const introTitle = $("introTitle");
+const introDesc = $("introDesc");
+const introKpiQ = $("introKpiQ");
+const introKpiPin = $("introKpiPin");
+
+/* JSON modal */
+const btnJsonHelp = $("btnJsonHelp");
+const jsonModalWrap = $("jsonModalWrap");
+const btnCloseJsonHelp = $("btnCloseJsonHelp");
+const btnCopyJsonExample = $("btnCopyJsonExample");
+const jsonExample = $("jsonExample");
+
+/* ============================
+   Modes / state
+   ============================ */
+const Mode = { NONE:"none", HOST:"host", PLAYER:"player" };
+let mode = Mode.NONE;
+
+/**
+ * IMPORTANT:
+ * Supabase v2 CDN exposes a global non-configurable property `window.supabase`.
+ * So we must NOT redeclare a global variable called `supabase`.
+ */
+let sb = null;
+let channel = null;
+
+let sessionPin = null;
+let quiz = null;           // normalized quiz
+let quizLocked = false;    // one quiz per session
+
+let myId = null;
+let myName = null;
+
+let tickTimer = null;
+
+/* Anti-cheat: one tab per pin */
+let bc = null;
+let tabIsPrimary = true;
+
+const host = {
+  started:false,
+  qIndex:-1,
+  questionStartTs:0,
+  questionTimeLimit:0,
+  receivedThisQ: new Set(), // ids answered current question
+  players: {},              // id:{id,name,score,totalTimeMs,answeredCount,correctCount}
+  nameToId: new Map(),      // anti duplicate names
+  maxPlayers: 100,
+  lastXmlBlobUrl: null
+};
+
+const player = {
+  joined:false,
+  started:false,
+  qIndex:-1,
+  questionStartTs:0,
+  questionTimeLimit:0,
+  hasAnswered:false,
+  lastQuestionPayload:null,
+  locked:false
+};
+
+/* ============================
+   JSON schema + defaults
+   ============================ */
+function normalizeQuiz(raw){
+  // defaults
+  const out = {
+    title: (typeof raw?.title === "string" && raw.title.trim()) ? raw.title.trim() : "Quiz Live",
+    description: (typeof raw?.description === "string") ? raw.description.trim() : "",
+    timeLimit: (typeof raw?.timeLimit === "number" && raw.timeLimit>0 && raw.timeLimit<=120) ? raw.timeLimit : 20,
+    questions: []
+  };
+
+  const qs = raw?.questions;
+  if (!Array.isArray(qs) || qs.length === 0){
+    return { ok:false, error:`questions[] manquant ou vide.` };
+  }
+
+  for (let i=0;i<qs.length;i++){
+    const q = qs[i];
+    const p = `questions[${i}]`;
+
+    if (!q || typeof q !== "object"){
+      return { ok:false, error:`${p} doit être un objet.` };
+    }
+    if (typeof q.question !== "string" || !q.question.trim()){
+      return { ok:false, error:`${p}.question doit être une chaîne non vide.` };
+    }
+    if (!Array.isArray(q.answers) || q.answers.length !== 4){
+      return { ok:false, error:`${p}.answers doit être un tableau de 4 éléments.` };
+    }
+    for (let a=0;a<4;a++){
+      if (typeof q.answers[a] !== "string" || !q.answers[a].trim()){
+        return { ok:false, error:`${p}.answers[${a}] doit être une chaîne non vide.` };
+      }
+    }
+    if (typeof q.correctIndex !== "number" || !Number.isFinite(q.correctIndex) || q.correctIndex<0 || q.correctIndex>3){
+      return { ok:false, error:`${p}.correctIndex doit être un nombre entre 0 et 3.` };
+    }
+
+    const tl = (typeof q.timeLimit === "number" && q.timeLimit>0 && q.timeLimit<=120) ? q.timeLimit : out.timeLimit;
+    const w = (typeof q.weight === "number" && Number.isFinite(q.weight) && q.weight>0 && q.weight<=20) ? q.weight : 1;
+    const expl = (typeof q.explanation === "string" && q.explanation.trim()) ? q.explanation.trim() : null;
+
+    out.questions.push({
+      question: q.question.trim(),
+      answers: q.answers.map(x => String(x).trim()),
+      correctIndex: q.correctIndex,
+      timeLimit: tl,
+      weight: w,
+      explanation: expl
+    });
+  }
+
+  return { ok:true, value: out };
+}
+
+function buildJsonExample(){
+  const example = {
+    title: "Culture générale",
+    description: "Quiz du vendredi",
+    timeLimit: 20,
+    questions: [
+      {
+        question: "Capitale du Japon ?",
+        answers: ["Tokyo","Pékin","Séoul","Bangkok"],
+        correctIndex: 0,
+        timeLimit: 15,
+        weight: 2,
+        explanation: "Tokyo est la capitale officielle."
+      },
+      {
+        question: "Combien font 7 × 8 ?",
+        answers: ["54","56","58","64"],
+        correctIndex: 1
+        // timeLimit défaut (20), weight défaut (1)
+      }
+    ]
+  };
+  jsonExample.textContent = JSON.stringify(example, null, 2);
+}
+buildJsonExample();
+
+/* ============================
+   Supabase
+   ============================ */
+function ensureSupabase(){
+  if (!SUPABASE_URL.startsWith("https://") || SUPABASE_ANON_KEY.length < 20 || SUPABASE_ANON_KEY.includes("REPLACE_ME")){
+    toast("Configure SUPABASE_URL + SUPABASE_ANON_KEY dans quiz.html");
+    throw new Error("Supabase non configuré");
+  }
+  if (!window.supabase || typeof window.supabase.createClient !== "function"){
+    toast("Supabase JS non chargé (CDN).");
+    throw new Error("Supabase JS non chargé");
+  }
+  if (!sb){
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      realtime: { params: { eventsPerSecond: 35 } } // a bit higher for ~100 players
+    });
+  }
+}
+
+async function joinChannel(pin, asHost){
+  ensureSupabase();
+
+  if (channel){
+    try{ await channel.unsubscribe(); }catch(e){}
+    channel = null;
+  }
+
+  channel = sb.channel(`quiz-${pin}`, {
+    config: { presence: { key: asHost ? ("host-"+uid()) : (myId || uid()) } }
+  });
+
+  channel
+    .on("broadcast", { event:"msg" }, (payload) => handle(payload.payload))
+    .on("presence", { event:"sync" }, () => { if (mode === Mode.HOST) syncPresence(); })
+    .on("presence", { event:"join" }, () => { if (mode === Mode.HOST) syncPresence(); })
+    .on("presence", { event:"leave" }, () => { if (mode === Mode.HOST) syncPresence(); });
+
+  await channel.subscribe(async (status) => {
+    if (status === "SUBSCRIBED"){
+      if (mode === Mode.HOST) await channel.track({ role:"host" });
+      if (mode === Mode.PLAYER) await channel.track({ role:"player", id: myId, name: myName });
+    }
+  });
+}
+
+function send(msg){
+  if (!channel) return;
+  channel.send({ type:"broadcast", event:"msg", payload: msg });
+}
+
+/* ============================
+   Presence sync + anti-cheat
+   ============================ */
+function syncPresence(){
+  if (!channel) return;
+  const state = channel.presenceState();
+
+  const presentPlayers = [];
+  for (const k of Object.keys(state)){
+    for (const meta of state[k]){
+      if (meta?.role === "player" && meta?.id && meta?.name){
+        presentPlayers.push({ id: String(meta.id), name: String(meta.name) });
+      }
+    }
+  }
+
+  // reset mapping each sync (safer)
+  host.nameToId = new Map();
+
+  // build host.players from presence (do not delete scores if already exists)
+  const seenIds = new Set();
+  for (const p of presentPlayers){
+    seenIds.add(p.id);
+
+    // max players enforcement (best-effort)
+    if (Object.keys(host.players).length >= host.maxPlayers && !host.players[p.id]){
+      send({ type:"KICK", playerId: p.id, reason:"Capacité atteinte (100 joueurs max)." });
+      continue;
+    }
+
+    // pseudo unique enforcement
+    const normalized = p.name.trim().toLowerCase();
+    if (!normalized){
+      send({ type:"KICK", playerId: p.id, reason:"Pseudo invalide." });
+      continue;
+    }
+
+    if (host.nameToId.has(normalized) && host.nameToId.get(normalized) !== p.id){
+      // someone already has this name -> kick the newcomer (best-effort)
+      send({ type:"KICK", playerId: p.id, reason:`Pseudo déjà utilisé : "${p.name}". Choisis-en un autre.` });
+      continue;
+    }
+    host.nameToId.set(normalized, p.id);
+
+    if (!host.players[p.id]){
+      host.players[p.id] = { id:p.id, name:p.name, score:0, totalTimeMs:0, answeredCount:0, correctCount:0 };
+      toast(`${p.name} rejoint`);
+    } else {
+      host.players[p.id].name = p.name;
+    }
+  }
+
+  renderLobby();
+}
+
+/* ============================
+   Quiz upload (host)
+   ============================ */
+function showHostError(msg){
+  hostErrorBox.style.display = "block";
+  hostErrorBox.innerHTML = `<b>Erreur :</b> ${escapeHtml(msg)}`;
+}
+function clearHostError(){
+  hostErrorBox.style.display = "none";
+  hostErrorBox.textContent = "";
+}
+
+async function hostLoadQuizFromFile(file){
+  if (quizLocked) return toast("Quiz déjà chargé (1 quiz par session).");
+  if (!file) return;
+
+  clearHostError();
+
+  try{
+    const text = await file.text();
+    const parsed = parseJsonWithDetails(text);
+    if (!parsed.ok){
+      showHostError(parsed.error);
+      toast("JSON invalide");
+      return;
+    }
+
+    const norm = normalizeQuiz(parsed.value);
+    if (!norm.ok){
+      showHostError(norm.error);
+      toast("JSON invalide (schéma)");
+      return;
+    }
+
+    quiz = norm.value;
+    quizLocked = true;
+
+    loadedFileName.textContent = file.name || "quiz.json";
+    loadedTitle.textContent = quiz.title;
+    loadedCount.textContent = String(quiz.questions.length);
+
+    uiState.textContent = "Quiz chargé";
+    toast("Quiz chargé ✓");
+
+    btnStart.disabled = false;
+    btnLockInfo.disabled = false;
+
+  }catch(e){
+    showHostError(String(e?.message || e));
+    toast("Erreur lecture fichier");
+  }
+}
+
+/* Drag & drop */
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropZone.classList.add("dragover");
+});
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropZone.classList.remove("dragover");
+  const f = e.dataTransfer?.files?.[0];
+  if (f) hostLoadQuizFromFile(f);
+});
+btnPickFile.addEventListener("click", () => quizFileInput.click());
+quizFileInput.addEventListener("change", () => {
+  const f = quizFileInput.files?.[0];
+  if (f) hostLoadQuizFromFile(f);
+});
+
+/* ============================
+   Score + XML export
+   ============================ */
+function pointsForAnswer(isCorrect, elapsedMs, timeLimitSec, weight){
+  if (!isCorrect) return 0;
+  const tlMs = (timeLimitSec || 0) * 1000;
+  const remaining = Math.max(0, tlMs - elapsedMs);
+  const ratio = tlMs > 0 ? (remaining / tlMs) : 0;
+  const base = Math.round(500 + 1000 * ratio); // 500..1500
+  return Math.round(base * (weight || 1));
+}
+
+function computeMaxPossibleScore(qz){
+  // max per question = 1500 * weight
+  return qz.questions.reduce((sum, q) => sum + 1500 * (q.weight || 1), 0);
+}
+
+function computeLeaderboard(){
+  const arr = Object.values(host.players).map(p => {
+    const avg = p.answeredCount ? (p.totalTimeMs / p.answeredCount) : Infinity;
+    return { id:p.id, name:p.name, score:p.score, totalTimeMs:p.totalTimeMs, avgTimeMs:avg, correctCount: p.correctCount || 0 };
+  });
+  arr.sort((a,b) => (b.score-a.score) || (a.avgTimeMs-b.avgTimeMs) || a.name.localeCompare(b.name));
+  return arr;
+}
+
+function toIsoLocal(d){
+  // simple ISO without timezone offset precision requirements
+  const pad = (n) => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
+function xmlEscape(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&apos;");
+}
+
+function buildResultsXml(leaderboard){
+  const maxScore = computeMaxPossibleScore(quiz);
+  const dateStr = toIsoLocal(new Date());
+
+  const playersXml = leaderboard.map((p, idx) => {
+    const note20 = maxScore > 0 ? clamp((p.score / maxScore) * 20, 0, 20) : 0;
+    return `
+    <player rank="${idx+1}">
+      <name>${xmlEscape(p.name)}</name>
+      <score>${p.score}</score>
+      <note_sur_20>${note20.toFixed(2)}</note_sur_20>
+      <bonnes_reponses>${p.correctCount || 0}</bonnes_reponses>
+      <temps_total_sec>${(p.totalTimeMs/1000).toFixed(2)}</temps_total_sec>
+    </player>`;
+  }).join("");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<quiz_result>
+  <title>${xmlEscape(quiz?.title || "Quiz Live")}</title>
+  <date>${xmlEscape(dateStr)}</date>
+  <questions>${quiz?.questions?.length || 0}</questions>
+  <score_max>${maxScore}</score_max>
+  <players>${playersXml}
+  </players>
+</quiz_result>`;
+}
+
+function prepareXmlDownload(leaderboard){
+  const xml = buildResultsXml(leaderboard);
+  const blob = new Blob([xml], { type:"application/xml;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  if (host.lastXmlBlobUrl) URL.revokeObjectURL(host.lastXmlBlobUrl);
+  host.lastXmlBlobUrl = url;
+
+  btnDownloadXml.style.display = "inline-flex";
+  btnDownloadXml.onclick = () => {
+    const a = document.createElement("a");
+    const safeTitle = (quiz?.title || "quiz").replace(/[^\w\d\-_. ]+/g, "_").slice(0,50);
+    a.href = url;
+    a.download = `resultats_${safeTitle}.xml`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+}
+
+/* ============================
+   Host game flow
+   ============================ */
+function showIntroOverlay(title, totalQ, pin){
+  introTitle.textContent = title || "Quiz";
+  introDesc.textContent = "Préparez-vous…";
+  introKpiQ.textContent = `Questions: ${totalQ}`;
+  introKpiPin.textContent = `PIN: ${pin || "—"}`;
+  introWrap.style.display = "block";
+  // hide after animation + short delay
+  setTimeout(() => { introWrap.style.display = "none"; }, 1800);
+}
+
+function hostStartGame(){
+  if (!quiz) return toast("Charge un quiz d’abord");
+  host.started = true;
+  host.qIndex = -1;
+
+  btnStart.disabled = true;
+  btnEnd.disabled = false;
+  btnSkip.disabled = false;
+
+  const title = quiz.title || "Quiz";
+  const total = quiz.questions.length;
+
+  // Intro overlay on host too
+  showIntroOverlay(title, total, sessionPin);
+
+  send({ type:"START", title, total, pin: sessionPin });
+  nextQuestion();
+}
+
+function nextQuestion(){
+  const total = quiz.questions.length;
+  const next = host.qIndex + 1;
+  if (next >= total) return endGame();
+
+  host.qIndex = next;
+  host.questionStartTs = now();
+  host.questionTimeLimit = quiz.questions[next].timeLimit ?? 20;
+  host.receivedThisQ = new Set();
+
+  const q = quiz.questions[next];
+  send({
+    type:"QUESTION",
+    qIndex: next,
+    total,
+    question: q.question,
+    answers: q.answers,
+    timeLimit: host.questionTimeLimit,
+    startTs: host.questionStartTs
+  });
+
+  renderHostQuestion(q);
+  startTick();
+
+  setTimeout(() => {
+    if (!host.started) return;
+    if (host.qIndex !== next) return;
+    revealAnswer();
+  }, host.questionTimeLimit * 1000);
+}
+
+function revealAnswer(){
+  const q = quiz.questions[host.qIndex];
+  send({ type:"REVEAL", qIndex: host.qIndex, correctIndex: q.correctIndex });
+  renderHostReveal(q);
+
+  setTimeout(() => {
+    if (!host.started) return;
+    nextQuestion();
+  }, 2200);
+}
+
+function endGame(){
+  host.started = false;
+  stopTick();
+
+  btnEnd.disabled = true;
+  btnSkip.disabled = true;
+
+  const leaderboard = computeLeaderboard();
+  send({ type:"END", leaderboard, title: quiz.title || "Quiz" });
+
+  renderFinal(leaderboard, quiz.title || "Quiz");
+  prepareXmlDownload(leaderboard);
+}
+
+/* ============================
+   Scoring (host)
+   ============================ */
+function hostApplyAnswer(msg){
+  if (!host.started) return;
+  if (msg.qIndex !== host.qIndex) return;
+
+  const p = host.players[msg.playerId];
+  if (!p) return;
+
+  // anti double answer
+  if (host.receivedThisQ.has(msg.playerId)) return;
+  host.receivedThisQ.add(msg.playerId);
+
+  const q = quiz.questions[host.qIndex];
+  const tlMs = (host.questionTimeLimit || (q.timeLimit ?? 20)) * 1000;
+  const answerTs = msg.answerTs || now();
+  const elapsed = clamp(answerTs - host.questionStartTs, 0, tlMs);
+
+  const correct = (msg.answerIndex === q.correctIndex);
+  const points = pointsForAnswer(correct, elapsed, host.questionTimeLimit, q.weight || 1);
+
+  p.score += points;
+  p.totalTimeMs += elapsed;
+  p.answeredCount += 1;
+  if (correct) p.correctCount = (p.correctCount || 0) + 1;
+
+  renderLobby();
+}
+
+/* ============================
+   Player rendering / answering
+   ============================ */
+function renderQuestionBase(questionText, answers, disabled){
+  const labels = ["A","B","C","D"];
+  stage.innerHTML = `
+    <div class="questionBox">
+      <div class="questionText">${escapeHtml(questionText)}</div>
+      <div class="subtle">Réponds vite : bonus de rapidité sur les bonnes réponses (pondération possible).</div>
+    </div>
+    <div class="answers">
+      ${answers.map((a,i)=>`
+        <button class="answerBtn" data-i="${i}" ${disabled ? "disabled" : ""}>
+          <span class="badge">${labels[i]}</span>
+          <span>${escapeHtml(a)}</span>
+        </button>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderPlayerQuestion(payload){
+  player.hasAnswered = false;
+  player.lastQuestionPayload = payload;
+
+  renderQuestionBase(payload.question, payload.answers, false);
+
+  stage.querySelectorAll(".answerBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (player.hasAnswered) return;
+      if (!tabIsPrimary) return toast("Anti-triche : onglet secondaire bloqué.");
+
+      player.hasAnswered = true;
+
+      const answerIndex = Number(btn.dataset.i);
+      const answerTs = now();
+
+      stage.querySelectorAll(".answerBtn").forEach(b => b.disabled = true);
+      toast("Réponse envoyée");
+
+      send({
+        type:"ANSWER",
+        playerId: myId,
+        qIndex: payload.qIndex,
+        answerIndex,
+        answerTs
+      });
+    });
+  });
+}
+
+function renderPlayerReveal(correctIndex){
+  const btns = stage.querySelectorAll(".answerBtn");
+  btns.forEach((b,i)=>{ if (i === correctIndex) b.classList.add("correct"); });
+}
+
+/* ============================
+   UI screens
+   ============================ */
+function renderIdle(){
+  stageTitle.textContent = "En attente…";
+  timerPill.textContent = "⏱️ —";
+  progressFill.style.width = "0%";
+  stage.innerHTML = `
+    <div class="center">
+      <h3 style="margin:0 0 8px 0;">Prêt ?</h3>
+      <div class="subtle" style="max-width:560px;">
+        Choisis <b>Animateur</b> ou <b>Participant</b>.
+      </div>
+    </div>
+  `;
+}
+
+function renderHostReady(){
+  stageTitle.textContent = quiz?.title ? quiz.title : "Host";
+  timerPill.textContent = "⏱️ —";
+  progressFill.style.width = "0%";
+  stage.innerHTML = `
+    <div class="center">
+      <h3 style="margin:0 0 8px 0;">Session prête</h3>
+      <div class="subtle" style="max-width:620px;">
+        PIN <b>${escapeHtml(sessionPin||"—")}</b> • Donne l’URL aux joueurs puis clique <b>Lancer</b>.
+      </div>
+      <div style="height:12px"></div>
+      <div class="hint">Anti-triche : pseudo unique + 1 onglet/appareil par session.</div>
+    </div>
+  `;
+}
+
+function renderLobby(){
+  if (mode !== Mode.HOST) return;
+  const list = Object.values(host.players)
+    .sort((a,b)=> (b.score-a.score) || a.name.localeCompare(b.name))
+    .map(p => `
+      <div class="playerRow">
+        <div>
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="stats">Score: <b>${p.score}</b> • Bonnes: ${p.correctCount||0} • Réponses: ${p.answeredCount||0}</div>
+        </div>
+        <div class="kbd">${escapeHtml(p.id.slice(0,4))}</div>
+      </div>
+    `).join("");
+
+  playerList.innerHTML = list || `<div class="subtle">Aucun joueur connecté.</div>`;
+  playerCount.textContent = String(Object.keys(host.players).length);
+}
+
+function renderHostQuestion(q){
+  stageTitle.textContent = `Question ${host.qIndex+1}/${quiz.questions.length}`;
+  renderQuestionBase(q.question, q.answers, true);
+}
+
+function renderHostReveal(q){
+  renderQuestionBase(q.question, q.answers, true);
+  const btns = stage.querySelectorAll(".answerBtn");
+  btns.forEach((b,i)=>{ if (i === q.correctIndex) b.classList.add("correct"); });
+}
+
+function renderFinal(leaderboard, title){
+  stageTitle.textContent = "Classement final";
+  timerPill.textContent = "⏱️ Terminé";
+  progressFill.style.width = "100%";
+
+  const maxScore = computeMaxPossibleScore(quiz);
+
+  const rows = (leaderboard||[]).map((p, idx) => {
+    const medal = idx===0?"🥇":idx===1?"🥈":idx===2?"🥉":"•";
+    const avg = (p.avgTimeMs===Infinity) ? "—" : (p.avgTimeMs/1000).toFixed(2)+"s";
+    const total = (p.totalTimeMs/1000).toFixed(2)+"s";
+    const note20 = maxScore > 0 ? clamp((p.score / maxScore) * 20, 0, 20) : 0;
+    return `
+      <div class="playerRow" style="gap:14px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="kbd" style="min-width:36px;text-align:center;">${medal}</div>
+          <div>
+            <div class="name">${escapeHtml(p.name)}</div>
+            <div class="stats">Score: <b>${p.score}</b> • Note: <b>${note20.toFixed(2)}/20</b> • Moy: ${avg} • Total: ${total}</div>
+          </div>
+        </div>
+        <div class="kbd">#${idx+1}</div>
+      </div>
+    `;
+  }).join("");
+
+  stage.innerHTML = `
+    <div class="center" style="padding-bottom:14px;">
+      <h3 style="margin:0 0 6px 0;">${escapeHtml(title)}</h3>
+      <div class="subtle">Tri: score desc, puis temps moyen asc. Note /20 basée sur le score max possible.</div>
+    </div>
+    <div style="padding:0 18px 18px 18px;">
+      <div class="list" style="margin-top:0;">
+        ${rows || `<div class="subtle">Aucun joueur.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+/* ============================
+   Timer / progress
+   ============================ */
+function startTick(){
+  if (tickTimer) return;
+  tickTimer = setInterval(() => {
+    if (mode === Mode.HOST && host.started && quiz && host.qIndex >= 0){
+      updateTimerAndProgress(host.qIndex, quiz.questions.length, host.questionStartTs, host.questionTimeLimit);
+    }
+    if (mode === Mode.PLAYER && player.started && player.qIndex >= 0){
+      updateTimerAndProgressPlayer(player.questionStartTs, player.questionTimeLimit, player.qIndex);
+    }
+  }, 150);
+}
+function stopTick(){
+  if (!tickTimer) return;
+  clearInterval(tickTimer);
+  tickTimer = null;
+}
+function updateTimerAndProgress(qIndex, totalQ, startTs, timeLimitSec){
+  const tlMs = (timeLimitSec || 0) * 1000;
+  const elapsed = clamp(now() - startTs, 0, tlMs);
+  const remainMs = Math.max(0, tlMs - elapsed);
+  const remainSec = Math.ceil(remainMs / 1000);
+
+  stageTitle.textContent = `Question ${qIndex+1}/${totalQ}`;
+  timerPill.textContent = `⏱️ ${remainSec}s`;
+  progressFill.style.width = Math.round(((qIndex+1)/totalQ)*100) + "%";
+}
+function updateTimerAndProgressPlayer(startTs, timeLimitSec, qIndex){
+  const tlMs = (timeLimitSec || 0) * 1000;
+  const elapsed = clamp(now() - startTs, 0, tlMs);
+  const remainSec = Math.ceil(Math.max(0, tlMs - elapsed) / 1000);
+
+  stageTitle.textContent = `Question ${qIndex+1}`;
+  timerPill.textContent = `⏱️ ${remainSec}s`;
+  progressFill.style.width = tlMs ? Math.round((elapsed/tlMs)*100) + "%" : "0%";
+}
+
+/* ============================
+   Anti-cheat (player): one tab per pin
+   ============================ */
+function setupBroadcastChannel(pin){
+  try{
+    if (bc) bc.close();
+    bc = new BroadcastChannel(`quiz_${pin}`);
+    const myTab = uid();
+
+    tabIsPrimary = true;
+
+    bc.onmessage = (ev) => {
+      const m = ev?.data;
+      if (!m || typeof m !== "object") return;
+
+      // if someone announces primary, others become secondary
+      if (m.type === "PRIMARY" && m.playerId === myId && m.tabId !== myTab){
+        tabIsPrimary = false;
+        toast("Anti-triche : un autre onglet est actif. Cet onglet est bloqué.");
+      }
+
+      // if asked who is primary, respond
+      if (m.type === "WHO_PRIMARY" && m.playerId === myId){
+        bc.postMessage({ type:"PRIMARY", playerId: myId, tabId: myTab, ts: now() });
+      }
+    };
+
+    // announce self
+    bc.postMessage({ type:"PRIMARY", playerId: myId, tabId: myTab, ts: now() });
+
+    // ask if another tab exists
+    setTimeout(() => bc.postMessage({ type:"WHO_PRIMARY", playerId: myId, tabId: myTab, ts: now() }), 50);
+
+  }catch(e){
+    // if BroadcastChannel not supported, fallback to best-effort localStorage (less strict)
+    tabIsPrimary = true;
+  }
+}
+
+/* ============================
+   Message handler
+   ============================ */
+function handle(msg){
+  if (!msg || typeof msg !== "object") return;
+
+  if (mode === Mode.HOST){
+    if (msg.type === "ANSWER") hostApplyAnswer(msg);
+    return;
+  }
+
+  if (mode === Mode.PLAYER){
+    if (msg.type === "KICK" && msg.playerId === myId){
+      player.locked = true;
+      uiState.textContent = "Refusé";
+      stage.innerHTML = `
+        <div class="center">
+          <h3 style="margin:0 0 8px 0;">Accès refusé</h3>
+          <div class="subtle" style="max-width:680px;">
+            ${escapeHtml(msg.reason || "Connexion refusée.")}
+            <div style="height:10px"></div>
+            <span class="kbd">Change de pseudo ou rafraîchis</span>
+          </div>
+        </div>
+      `;
+      stopTick();
+      toast("Connexion refusée");
+      return;
+    }
+
+    if (msg.type === "START"){
+      player.started = true;
+      player.qIndex = -1;
+      uiState.textContent = "En cours";
+      showIntroOverlay(msg.title || "Quiz", msg.total || "—", msg.pin || sessionPin);
+      toast("Le quiz démarre !");
+      return;
+    }
+    if (msg.type === "QUESTION"){
+      player.qIndex = msg.qIndex;
+      player.questionStartTs = msg.startTs;
+      player.questionTimeLimit = msg.timeLimit;
+      renderPlayerQuestion(msg);
+      startTick();
+      return;
+    }
+    if (msg.type === "REVEAL"){
+      renderPlayerReveal(msg.correctIndex);
+      return;
+    }
+    if (msg.type === "END"){
+      uiState.textContent = "Terminé";
+      renderFinal(msg.leaderboard || [], msg.title || "Quiz");
+      stopTick();
+      return;
+    }
+  }
+}
+
+/* ============================
+   Mode switching / actions
+   ============================ */
+function setMode(newMode){
+  mode = newMode;
+  uiMode.textContent = (mode === Mode.HOST) ? "Host" : (mode === Mode.PLAYER ? "Player" : "—");
+  hostPanel.style.display = (mode === Mode.HOST) ? "block" : "none";
+  playerPanel.style.display = (mode === Mode.PLAYER) ? "block" : "none";
+  renderIdle();
+}
+
+async function resetAll(){
+  stopTick();
+  if (channel){
+    try{ await channel.unsubscribe(); }catch(e){}
+    channel = null;
+  }
+
+  if (bc){
+    try{ bc.close(); }catch(e){}
+    bc = null;
+  }
+  tabIsPrimary = true;
+
+  sessionPin = null;
+  quiz = null;
+  quizLocked = false;
+
+  myId = null; myName = null;
+
+  host.started=false; host.qIndex=-1; host.questionStartTs=0; host.questionTimeLimit=0;
+  host.receivedThisQ = new Set();
+  host.players = {};
+  host.nameToId = new Map();
+  if (host.lastXmlBlobUrl){ URL.revokeObjectURL(host.lastXmlBlobUrl); host.lastXmlBlobUrl = null; }
+
+  player.joined=false; player.started=false; player.qIndex=-1; player.questionStartTs=0; player.questionTimeLimit=0; player.hasAnswered=false; player.locked=false;
+
+  uiPin.textContent = "—";
+  uiState.textContent = "Idle";
+
+  loadedFileName.textContent = "—";
+  loadedTitle.textContent = "—";
+  loadedCount.textContent = "—";
+  clearHostError();
+
+  btnStart.disabled = true;
+  btnEnd.disabled = true;
+  btnSkip.disabled = true;
+  btnDownloadXml.style.display = "none";
+
+  pinBox.style.display = "none";
+  playerList.innerHTML = "";
+  playerCount.textContent = "0";
+
+  setMode(Mode.NONE);
+  toast("Reset OK");
+}
+
+async function hostCreateSession(){
+  sessionPin = randPin();
+  uiPin.textContent = sessionPin;
+  uiState.textContent = "Session créée";
+
+  pinValue.textContent = sessionPin;
+  pinBox.style.display = "grid";
+
+  await joinChannel(sessionPin, true);
+  syncPresence();
+  renderHostReady();
+  toast("Session prête");
+}
+
+function normalizePlayerName(name){
+  // anti-cheat: strict-ish
+  const trimmed = (name || "").trim();
+  if (!trimmed) return null;
+  if (trimmed.length < 2) return null;
+  if (trimmed.length > 18) return null;
+  if (!/^[a-zA-Z0-9 _\-éèêëàâäîïôöùûüçÉÈÊËÀÂÄÎÏÔÖÙÛÜÇ]+$/.test(trimmed)) return null;
+  return trimmed;
+}
+
+async function playerJoinSession(){
+  const nameRaw = playerName.value || "";
+  const name = normalizePlayerName(nameRaw);
+  const pin = (joinPin.value || "").trim();
+
+  if (!name) return toast("Pseudo invalide (2-18, lettres/chiffres/espace/-/_).");
+  if (!pin) return toast("PIN requis");
+  if (player.locked) return toast("Connexion bloquée.");
+
+  // stable id per session (avoid refresh cheats)
+  const storageKey = `quiz_id_${pin}`;
+  const existing = localStorage.getItem(storageKey);
+  myId = existing || uid();
+  localStorage.setItem(storageKey, myId);
+
+  myName = name;
+  sessionPin = pin;
+
+  uiPin.textContent = sessionPin;
+  uiState.textContent = "Connecté";
+
+  await joinChannel(sessionPin, false);
+  player.joined = true;
+
+  setupBroadcastChannel(pin);
+
+  stage.innerHTML = `
+    <div class="center">
+      <h3 style="margin:0 0 8px 0;">Salut ${escapeHtml(myName)} 👋</h3>
+      <div class="subtle" style="max-width:700px;">
+        Connecté à la session <span class="kbd">${escapeHtml(sessionPin)}</span>. Attends la première question…
+        <div style="height:10px"></div>
+        <span class="kbd">Anti-triche actif</span> : pseudo unique + 1 onglet/appareil.
+      </div>
+    </div>
+  `;
+  toast("Rejoint !");
+}
+
+/* ============================
+   JSON modal
+   ============================ */
+function openJsonHelp(){
+  jsonModalWrap.style.display = "block";
+  jsonModalWrap.setAttribute("aria-hidden","false");
+}
+function closeJsonHelp(){
+  jsonModalWrap.style.display = "none";
+  jsonModalWrap.setAttribute("aria-hidden","true");
+}
+btnJsonHelp.addEventListener("click", openJsonHelp);
+btnCloseJsonHelp.addEventListener("click", closeJsonHelp);
+jsonModalWrap.addEventListener("click", (e) => {
+  if (e.target === jsonModalWrap) closeJsonHelp();
+});
+btnCopyJsonExample.addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText(jsonExample.textContent || "");
+    toast("Exemple copié");
+  }catch(e){
+    toast("Copie impossible");
+  }
+});
+
+/* ============================
+   Wire UI
+   ============================ */
+btnReset.addEventListener("click", resetAll);
+
+btnHost.addEventListener("click", async () => {
+  setMode(Mode.HOST);
+  await hostCreateSession();
+});
+
+btnPlayer.addEventListener("click", () => setMode(Mode.PLAYER));
+
+btnCopyPin.addEventListener("click", async () => {
+  try{ await navigator.clipboard.writeText(sessionPin || ""); toast("PIN copié"); }
+  catch(e){ toast("Copie impossible"); }
+});
+
+btnStart.addEventListener("click", hostStartGame);
+btnEnd.addEventListener("click", endGame);
+btnSkip.addEventListener("click", () => { if (mode===Mode.HOST && host.started) revealAnswer(); });
+
+btnJoin.addEventListener("click", playerJoinSession);
+
+btnLockInfo.addEventListener("click", () => {
+  if (!quiz) return toast("Charge un quiz d’abord");
+  toast(`Quiz verrouillé ✓ (${quiz.questions.length} questions)`);
+});
+
+/* Init */
+setMode(Mode.NONE);
+uiState.textContent = "Idle";
+</script>
+</body>
+</html>

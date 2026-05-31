@@ -2,23 +2,23 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Mathys Tournayre — DevOps &amp; Cloud Engineer</title>
+<title>Mathys Tournayre — DevOps & Cloud Engineer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="description" content="Mathys Tournayre — Alternant ingénieur ISEN chez Oxeegen France. DevOps, Cloud, Infrastructure &amp; Automatisation.">
+<meta name="description" content="Mathys Tournayre — Alternant ingénieur ISEN chez Oxeegen France. DevOps, Cloud, Infrastructure & Automatisation.">
 <meta name="author" content="Mathys Tournayre">
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Mathys Tournayre — DevOps &amp; Cloud Engineer">
-<meta property="og:description" content="Découvrez mon portfolio DevOps &amp; Cloud : automatisation, sécurité, CI/CD, cloud et infrastructures modernes.">
+<meta property="og:title" content="Mathys Tournayre — DevOps & Cloud Engineer">
+<meta property="og:description" content="Découvrez mon portfolio DevOps & Cloud : automatisation, sécurité, CI/CD, cloud et infrastructures modernes.">
 <meta property="og:url" content="https://tournayre.ovh/">
 <meta property="og:image" content="https://tournayre.ovh/og-preview.png">
 
 <!-- TWITTER / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mathys Tournayre — DevOps &amp; Cloud Engineer">
-<meta name="twitter:description" content="Portfolio DevOps &amp; Cloud Engineer — automatisation, sécurité, cloud &amp; infrastructures.">
+<meta name="twitter:title" content="Mathys Tournayre — DevOps & Cloud Engineer">
+<meta name="twitter:description" content="Portfolio DevOps & Cloud Engineer — automatisation, sécurité, cloud & infrastructures.">
 <meta name="twitter:image" content="https://tournayre.ovh/og-preview.png">
 
 <meta name="theme-color" content="#0a0a0a">
@@ -32,6 +32,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Taviraj:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+<link rel="manifest" href="/manifest.json">
+
 <meta http-equiv="Content-Security-Policy"
 content="default-src 'self' https: data:;
 img-src 'self' https: data: blob:;
@@ -41,8 +43,6 @@ style-src 'self' https: 'unsafe-inline';
 connect-src 'self' https: wss:;
 object-src 'none';
 base-uri 'self';">
-
-<link rel="manifest" href="/manifest.json">
 
 <!-- IMPORT MAP THREE.JS (STL only) -->
 <script type="importmap">
@@ -395,7 +395,6 @@ header {
   width: 22px;
   height: 22px;
   object-fit: contain;
-  border-radius: 6px;
   opacity: 0.95;
 }
 
@@ -493,60 +492,6 @@ section h2 {
   object-fit: contain;
 }
 
-
-/* ======================
-   SKILLS SPHERE (3D interactive)
-====================== */
-#skills3d{
-  width:100%;
-  height:650px;
-  position:relative;
-}
-
-#skills{
-  position:relative;
-  overflow:hidden;
-}
-
-.skillSphereWrap{
-  width: 100%;
-  display: grid;
-  place-items: center;
-  gap: 14px;
-}
-
-.skillSphereStage{
-  width: min(860px, 100%);
-  height: clamp(320px, 56vh, 520px);
-  border-radius: 34px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background:
-    radial-gradient(900px 520px at 20% 10%, rgba(255,159,67,0.12), transparent 55%),
-    radial-gradient(1200px 900px at 70% 60%, rgba(255,255,255,0.05), transparent 60%),
-    rgba(0,0,0,0.20);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 25px 70px rgba(0,0,0,0.55);
-  touch-action: none;
-  cursor: grab;
-}
-.skillSphereStage:active{ cursor: grabbing; }
-
-
-.skillSphereStage canvas{
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-}
-.skillSphereHint{
-  font-size: 0.92rem;
-  color: rgba(255,255,255,0.65);
-  letter-spacing: 0.04em;
-  text-align: center;
-}
 /* ======================
    PROJECTS CAROUSEL (original)
 ====================== */
@@ -667,15 +612,6 @@ section h2 {
 
 /* UX PATCH */
 .carousel, .carousel * { user-select: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.001ms !important;
-  }
-}
 
 /* ======================
    INTERESTS SECTION (améliorée)
@@ -913,6 +849,7 @@ footer {
   width:100%;
   height:100%;
   z-index:0;
+  opacity: 0.95;
 }
 
 .intro-vignette{
@@ -934,7 +871,7 @@ footer {
   margin: 0;
   text-align: center;
   padding: clamp(1.4rem, 4vw, 2.2rem);
-  width: min(870px, 100vw);
+  width: min(640px, 92vw);
 }
 
 .intro-kicker{
@@ -947,7 +884,7 @@ footer {
 }
 
 .modal-box h1{
-  font-size: clamp(2.6rem, 4.5vw, 10.6rem);
+  font-size: clamp(3.6rem, 4.5vw, 10.6rem);
   font-weight: 400;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -1017,30 +954,6 @@ footer {
   font-size: 0.85rem;
   color: rgba(255,255,255,0.55);
   letter-spacing: 0.08em;
-}
-
-@media (max-width: 620px) {
-  .modal-box {
-    width: min(100vw, 390px);
-    padding-inline: 1.1rem;
-  }
-
-  .intro-kicker {
-    font-size: 0.95rem;
-    letter-spacing: 0.38em;
-  }
-
-  .modal-box h1 {
-    font-size: clamp(2.2rem, 11vw, 3.4rem);
-    letter-spacing: 0.18em;
-    overflow-wrap: normal;
-    word-break: keep-all;
-  }
-
-  .intro-sub {
-    font-size: 0.98rem;
-    letter-spacing: 0.05em;
-  }
 }
 
 @keyframes breathe{
@@ -1172,21 +1085,6 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   flex-direction: column;
   overflow: hidden;
   z-index: 9999;
-}
-
-@media (max-width: 620px) {
-  #assistantBubble {
-    right: max(14px, env(safe-area-inset-right));
-    bottom: max(18px, env(safe-area-inset-bottom));
-  }
-
-  #assistantWindow {
-    width: min(360px, calc(100vw - 24px));
-    right: max(12px, env(safe-area-inset-right));
-    bottom: calc(92px + env(safe-area-inset-bottom));
-    max-height: min(460px, calc(100vh - 124px));
-    border-radius: 22px;
-  }
 }
 #assistantClose {
   float: right;
@@ -1443,7 +1341,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <div class="modal-box">
     <div class="intro-kicker">PORTFOLIO</div>
     <h1>TOURNAYRE MATHYS</h1>
-    <p class="intro-sub">Alternant &amp; Apprenti Ingénieur ISEN<br>chez Oxeegen France</p>
+    <p class="intro-sub">Alternant & Apprenti Ingénieur ISEN<br>chez Oxeegen France</p>
 
     <button id="enterBtn" class="enter-btn" type="button">
       Accéder au Portfolio
@@ -1486,7 +1384,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
     <!-- Mobile RIGHT -->
     <div class="nav-right nav-mobile">
-      <button id="menuToggle" class="menu-btn" type="button" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+      <button id="menuToggle" class="menu-btn">☰</button>
     </div>
 
   </div>
@@ -1507,11 +1405,11 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
 <header>
   <div class="hero">
-    <h1>DevOps &amp; <span>Cloud Engineer</span></h1>
+    <h1>DevOps & <span>Cloud Engineer</span></h1>
     <p>
       Je conçois des plateformes modernes, automatisées et sécurisées pour les environnements cloud et professionnels.
     </p>
-    <button type="button" onclick="document.querySelector('#projects').scrollIntoView({behavior:'smooth'})">
+    <button onclick="document.querySelector('#projects').scrollIntoView({behavior:'smooth'})">
       Explorer mes projets
     </button>
   </div>
@@ -1519,7 +1417,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
 <!-- SKILLS MARQUEE (délimitation propre et moderne entre titre et profil) -->
 <div id="skillMarqueeWrap">
-  <div class="skillMarquee">
+  <div class="skillMarquee" aria-label="Défilement des compétences">
     <div class="skillMarqueeTrack" id="skillMarqueeTrack">
       <!-- Placeholders logos + libellés -->
       <div class="skillChip"><img src="img/skill-cisco.svg" alt="">Cisco</div>
@@ -1556,10 +1454,10 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   </div>
 </section>
 
-<section id="certifications">
+<section id="about">
   <h2>Certifications</h2>
   <!-- CERT RIBBON -->
-  <div id="certRibbon">
+  <div id="certRibbon" aria-label="Ruban des certifications">
     <div class="ribbon-fade" aria-hidden="true"></div>
 
     <!-- Track (dupliqué via JS pour scroll infini propre) -->
@@ -1585,7 +1483,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
       <h3>Oxeegen — Technicien réseaux et systèmes (alternance)</h3>
       <div class="timeline-meta">Vitrolles • Sur site • sept. 2025 → aujourd’hui</div>
       <ul class="timeline-bullets">
-        <li>Exploitation et maintien en conditions opérationnelles d’infrastructures (réseau &amp; systèmes).</li>
+        <li>Exploitation et maintien en conditions opérationnelles d’infrastructures (réseau & systèmes).</li>
         <li>Automatisation de tâches et déploiements (scripts, procédures, standardisation).</li>
         <li>Participation aux projets d’évolution (sécurité, segmentation, supervision, amélioration continue).</li>
         <li>Rédaction de documentation et transfert de compétences (runbooks, procédures).</li>
@@ -1639,11 +1537,11 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     </div>
 
     <div class="timeline-item">
-      <h3>Aix-Marseille Université — BUT Réseaux &amp; Télécommunications</h3>
+      <h3>Aix-Marseille Université — BUT Réseaux & Télécommunications</h3>
       <div class="timeline-meta">2022 → 2025 (selon ton parcours)</div>
       <ul class="timeline-bullets">
         <li>Réseaux, systèmes, télécoms, virtualisation, services et exploitation.</li>
-        <li>Vie étudiante : Vice-Président du Conseil Étudiant (2023–2024) — leadership &amp; organisation.</li>
+        <li>Vie étudiante : Vice-Président du Conseil Étudiant (2023–2024) — leadership & organisation.</li>
       </ul>
     </div>
 
@@ -1651,7 +1549,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
       <h3>Groupe Scolaire St-Louis / Ste-Marie — Bac STI2D (SIN) — Mention Très Bien</h3>
       <div class="timeline-meta">2020 → 2021</div>
       <ul class="timeline-bullets">
-        <li>Spécialité systèmes d’information &amp; numérique : bases réseau, électronique, projets.</li>
+        <li>Spécialité systèmes d’information & numérique : bases réseau, électronique, projets.</li>
       </ul>
     </div>
 
@@ -1659,85 +1557,48 @@ body.loading #assistantBubble, body.loading #assistantWindow {
       <h3>INSA Lyon — Parcours Ingénierie (Master / Engineering)</h3>
       <div class="timeline-meta">août 2021 → juin 2022</div>
       <ul class="timeline-bullets">
-        <li>Base scientifique &amp; ingénierie, travail en équipe et projets.</li>
+        <li>Base scientifique & ingénierie, travail en équipe et projets.</li>
       </ul>
     </div>
 
   </div>
 </section>
 
-<!-- COMPETENCES (sphère 3D interactive) -->
+<!-- COMPETENCES (remplacé par nuage de logos cliquables) -->
 <section id="skills">
   <h2>Compétences</h2>
-
-  <div class="skillSphereWrap">
-    <div class="skillSphereStage" id="skillSphereStage"></div>
-    <div class="skillSphereHint">Glisse pour faire tourner, clique sur une compétence pour les détails.</div>
-  </div>
-
-  <!-- Legacy canvas/data kept hidden so older script paths remain harmless. -->
-  <div id="skills3d" hidden></div>
-  <div id="skillsData" hidden>
-
-    <div data-skill="linux" src="img/skill-linux.svg"></div>
-    <div data-skill="network" src="img/skill-cisco.svg"></div>
-    <div data-skill="python" src="img/skill-python.svg"></div>
-    <div data-skill="flask" src="img/skill-python.svg"></div>
-    <div data-skill="docker" src="img/skill-docker.svg"></div>
-    <div data-skill="ansible" src="img/skill-ansible.svg"></div>
-    <div data-skill="nutanix" src="img/skill-nutanix.svg"></div>
-    <div data-skill="security" src="img/skill-security.svg"></div>
-    <div data-skill="reverseproxy" src="img/skill-security.svg"></div>
-    <div data-skill="nmap" src="img/skill-security.svg"></div>
-    <div data-skill="wireshark" src="img/skill-cisco.svg"></div>
-    <div data-skill="glpi" src="img/placeholder-wide.svg"></div>
-    <div data-skill="pfsense" src="img/skill-security.svg"></div>
-    <div data-skill="nextcloud" src="img/placeholder-wide.svg"></div>
-    <div data-skill="opnsense" src="img/skill-security.svg"></div>
-    <div data-skill="yealink" src="img/skill-cisco.svg"></div>
-    <div data-skill="prtg" src="img/placeholder-wide.svg"></div>
-    <div data-skill="stormshield" src="img/skill-security.svg"></div>
-    <div data-skill="portainer" src="img/skill-docker.svg"></div>
-    <div data-skill="proxmox" src="img/skill-nutanix.svg"></div>
-    <div data-skill="phpipam" src="img/skill-cisco.svg"></div>
-    <div data-skill="vmware" src="img/skill-nutanix.svg"></div>
-    <div data-skill="ubiquiti" src="img/skill-cisco.svg"></div>
-    <div data-skill="comfyui" src="img/placeholder-wide.svg"></div>
-    <div data-skill="graylog" src="img/placeholder-wide.svg"></div>
-    <div data-skill="grafana" src="img/placeholder-wide.svg"></div>
-
-  </div>
-
-  <div id="skillCloudData" hidden>
-    <div class="skill-logo" data-skill="linux"><img src="img/skill-linux.svg" alt="Linux"></div>
-    <div class="skill-logo" data-skill="network"><img src="img/skill-cisco.svg" alt="Réseaux"></div>
-    <div class="skill-logo" data-skill="python"><img src="img/skill-python.svg" alt="Python"></div>
-    <div class="skill-logo" data-skill="flask"><img src="img/skill-python.svg" alt="Flask"></div>
-    <div class="skill-logo" data-skill="docker"><img src="img/skill-docker.svg" alt="Docker"></div>
-    <div class="skill-logo" data-skill="ansible"><img src="img/skill-ansible.svg" alt="Ansible"></div>
-    <div class="skill-logo" data-skill="nutanix"><img src="img/skill-nutanix.svg" alt="Nutanix"></div>
-    <div class="skill-logo" data-skill="security"><img src="img/skill-security.svg" alt="Sécurité"></div>
-    <div class="skill-logo" data-skill="reverseproxy"><img src="img/skill-security.svg" alt="Reverse proxy"></div>
-    <div class="skill-logo" data-skill="nmap"><img src="img/skill-security.svg" alt="Nmap"></div>
-    <div class="skill-logo" data-skill="wireshark"><img src="img/skill-cisco.svg" alt="Wireshark"></div>
-    <div class="skill-logo" data-skill="glpi"><img src="img/placeholder-wide.svg" alt="GLPI"></div>
-    <div class="skill-logo" data-skill="pfsense"><img src="img/skill-security.svg" alt="pfSense"></div>
-    <div class="skill-logo" data-skill="nextcloud"><img src="img/placeholder-wide.svg" alt="Nextcloud"></div>
-    <div class="skill-logo" data-skill="opnsense"><img src="img/skill-security.svg" alt="OPNsense"></div>
-    <div class="skill-logo" data-skill="yealink"><img src="img/skill-cisco.svg" alt="Yealink"></div>
-    <div class="skill-logo" data-skill="prtg"><img src="img/placeholder-wide.svg" alt="PRTG"></div>
-    <div class="skill-logo" data-skill="stormshield"><img src="img/skill-security.svg" alt="Stormshield"></div>
-    <div class="skill-logo" data-skill="portainer"><img src="img/skill-docker.svg" alt="Portainer"></div>
-    <div class="skill-logo" data-skill="proxmox"><img src="img/skill-nutanix.svg" alt="Proxmox"></div>
-    <div class="skill-logo" data-skill="phpipam"><img src="img/skill-cisco.svg" alt="phpIPAM"></div>
-    <div class="skill-logo" data-skill="vmware"><img src="img/skill-nutanix.svg" alt="VMware"></div>
-    <div class="skill-logo" data-skill="ubiquiti"><img src="img/skill-cisco.svg" alt="Ubiquiti"></div>
-    <div class="skill-logo" data-skill="comfyui"><img src="img/placeholder-wide.svg" alt="ComfyUI"></div>
-    <div class="skill-logo" data-skill="graylog"><img src="img/placeholder-wide.svg" alt="Graylog"></div>
-    <div class="skill-logo" data-skill="grafana"><img src="img/placeholder-wide.svg" alt="Grafana"></div>
+  <div class="module">
+    <div class="skill-cloud">
+      <!-- Placeholders : remplace les logos -->
+      <div class="skill-logo" data-skill="linux"><img src="https://i.redd.it/d8dzafq0653c1.png" alt="Linux"></div>
+      <div class="skill-logo" data-skill="network"><img src="https://static.vecteezy.com/ti/vecteur-libre/t1/9796798-lan-network-port-icon-on-white-background-flat-style-local-area-connector-icon-for-your-web-site-design-logo-app-ui-network-port-symbol-network-ethernet-port-sign-vectoriel.jpg" alt="Réseau"></div>
+      <div class="skill-logo" data-skill="python"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzB46Tx5um5xNkQRP9akSLmzkoFr436upX1A&s" alt="Python"></div>
+      <div class="skill-logo" data-skill="flask"><img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flask-logo-icon.png" alt="Flask"></div>
+      <div class="skill-logo" data-skill="docker"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJl4fp0SkQbTPU5ZxVl6AKWYuKCwM0gIhNtQ&s" alt="Docker"></div>
+      <div class="skill-logo" data-skill="ansible"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnnx1hNWs3lqyUuEGZeiTPJTfdwIbHYbfLlQ&s" alt="Ansible"></div>
+      <div class="skill-logo" data-skill="nutanix"><img src="https://1000logos.net/wp-content/uploads/2020/05/Logo-Nutanix.jpg" alt="Nutanix"></div>
+      <div class="skill-logo" data-skill="security"><img src="https://img.icons8.com/fluent/1200/metasploit.jpg" alt="Sécurité"></div>
+      <div class="skill-logo" data-skill="reverseproxy"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnH6X9VrjC9SrkmheA3mDdljxVlbRE40t5NA&s" alt="Reverse proxy"></div>
+      <div class="skill-logo" data-skill="nmap"><img src="https://seela.io/wp-content/uploads/2022/11/nmap-logo-256x256-1.png" alt="Nmap"></div>
+      <div class="skill-logo" data-skill="wireshark"><img src="https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/wireshark-icon.png" alt="Wireshark"></div>
+      <div class="skill-logo" data-skill="glpi"><img src="https://rdr-it.com/wp-content/uploads/2018/07/PictoGlpi.png" alt="Glpi"></div>
+      <div class="skill-logo" data-skill="pfsense"><img src="https://www.itandgeneral.com/wp-content/uploads/2023/11/pfsense-logo-square.png" alt="Pfsense "></div>
+      <div class="skill-logo" data-skill="nextcloud"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Nextcloud_Logo.svg/1280px-Nextcloud_Logo.svg.png" alt="Nextcloud"></div>
+      <div class="skill-logo" data-skill="opnsense"><img src="https://media.printables.com/media/prints/569734/images/4559833_5470d5aa-668a-440b-adf0-234c25fc7b7c/thumbs/inside/1280x960/png/opnsense.webp" alt="OPNsense"></div>
+      <div class="skill-logo" data-skill="yealink"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi4teT4Nvmzf1JWlErP6irpo9Hud4h5XP7XA&s" alt="Yealink"></div>
+      <div class="skill-logo" data-skill="prtg"><img src="https://www.agilenetwork-tn.com/web/image/11556-75bb2077/PRTG-LOGO-CARRE.png" alt="PRTG"></div>
+      <div class="skill-logo" data-skill="stormshield"><img src="https://img.beget.com/cp/plain/shared/E1-h-ZDFx6AcpRKsAtcIRMa8dl2DygTZ/portainer2x.png@.webp" alt="Stormshield"></div>
+      <div class="skill-logo" data-skill="portainer"><img src="https://img.beget.com/cp/plain/shared/E1-h-ZDFx6AcpRKsAtcIRMa8dl2DygTZ/portainer2x.png@.webp" alt="Portainer"></div>
+      <div class="skill-logo" data-skill="proxmox"><img src="https://www.meteobridge.com/wiki/images/a/af/Proxmox-logo.png" alt="Promox"></div>
+      <div class="skill-logo" data-skill="phpipam"><img src="https://net-security.fr/images/phpipam_logo.png" alt="phpipam"></div>
+      <div class="skill-logo" data-skill="vmware"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Vmware_workstation_16_icon.svg/960px-Vmware_workstation_16_icon.svg.png" alt="VMware"></div>
+      <div class="skill-logo" data-skill="ubiquiti"><img src="https://companieslogo.com/img/orig/UI-38398c48.png?t=1743653409" alt="Ubiquiti"></div>
+      <div class="skill-logo" data-skill="comfyui"><img src="https://images.prismic.io/sacra/aD9N_bh8WN-LVjuC_comfyui_logo.jpeg?auto=format,compress" alt="ComfyUI"></div>
+      <div class="skill-logo" data-skill="graylog"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzvT8HIq9t5NuwqKJkxRbp1pq6CpEpih__IQ&s" alt="Graylog"></div>
+      <div class="skill-logo" data-skill="grafana"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Grafana_logo.svg/960px-Grafana_logo.svg.png" alt="Grafana"></div>
+    </div>
   </div>
 </section>
-
 
 <section id="projects">
   <h2>Projets</h2>
@@ -1747,8 +1608,8 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   </div>
 
   <div class="carousel-controls">
-    <button class="carousel-btn" id="prevBtn" type="button">← Précédent</button>
-    <button class="carousel-btn" id="nextBtn" type="button">Suivant →</button>
+    <button class="carousel-btn" id="prevBtn">← Précédent</button>
+    <button class="carousel-btn" id="nextBtn">Suivant →</button>
   </div>
 </section>
 
@@ -1758,7 +1619,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <div class="module interest-grid">
     <div class="interest-card">
       <div class="interest-icon">☁️</div>
-      <h3>Cloud &amp; Infrastructure</h3>
+      <h3>Cloud & Infrastructure</h3>
       <p>Architecture, haute disponibilité, supervision, industrialisation et optimisation des environnements.</p>
     </div>
 
@@ -1770,13 +1631,13 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
     <div class="interest-card">
       <div class="interest-icon">🧪</div>
-      <h3>Homelab &amp; Automatisation</h3>
+      <h3>Homelab & Automatisation</h3>
       <p>Infrastructure perso (VMs, containers, reverse proxy, monitoring), scripts et standardisation des déploiements.</p>
     </div>
 
     <div class="interest-card">
       <div class="interest-icon">🎮</div>
-      <h3>Serveurs &amp; Communautés</h3>
+      <h3>Serveurs & Communautés</h3>
       <p>Administration serveur (RCON / Discord), automatisation, outils de modération et observabilité.</p>
     </div>
   </div>
@@ -1785,7 +1646,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 <section id="contact">
   <h2>Contact</h2>
   <div class="module contact">
-    <p>Ouvert aux opportunités professionnelles, cloud &amp; DevOps.</p>
+    <p>Ouvert aux opportunités professionnelles, cloud & DevOps.</p>
     <a href="mailto:mathys@tournayre.fr">mathys@tournayre.fr</a><br>
     <a href="https://www.linkedin.com/in/mathys-tournayre/" target="_blank" rel="noreferrer">LinkedIn</a>
   </div>
@@ -1796,11 +1657,11 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 </footer>
 
 <!-- INFO MODAL (Certifs + Skills) -->
-<div id="infoModal">
+<div id="infoModal" aria-hidden="true">
   <div class="info-box" role="dialog" aria-modal="true" aria-label="Informations">
     <div class="info-head">
       <h3 id="infoTitle">Titre</h3>
-      <button class="info-close" id="infoCloseBtn" type="button" title="Fermer">✕</button>
+      <button class="info-close" id="infoCloseBtn" title="Fermer">✕</button>
     </div>
     <div class="info-body">
       <div class="info-preview">
@@ -1818,14 +1679,14 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 </div>
 
 <!-- 3D PRINT MODAL (original) -->
-<div id="stlModal">
+<div id="stlModal" aria-hidden="true">
   <div class="stl-modal-box" role="dialog" aria-modal="true" aria-label="Galerie Impression 3D">
     <div class="stl-modal-header">
       <div>
         <h3>Impression 3D — Galerie</h3>
         <div class="hint">Clique sur une carte pour manipuler l’aperçu 3D (rotation auto). Clique sur la zone 3D pour ouvrir en plein écran. Échap pour fermer.</div>
       </div>
-      <button class="stl-close-btn" id="stlCloseBtn" type="button" title="Fermer">✕</button>
+      <button class="stl-close-btn" id="stlCloseBtn" title="Fermer">✕</button>
     </div>
     <div class="stl-modal-body">
       <div class="stl-grid" id="stlGrid"></div>
@@ -1834,11 +1695,11 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 </div>
 
 <!-- FULLSCREEN STL MODAL -->
-<div id="stlFullscreen">
+<div id="stlFullscreen" aria-hidden="true">
   <div id="viewer">
     <div id="fsLoader">Chargement du modèle…</div>
   </div>
-  <button id="fsClose" type="button" title="Fermer">✕</button>
+  <button id="fsClose" title="Fermer">✕</button>
 </div>
 
 <!-- ASSISTANT -->
@@ -1850,7 +1711,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <div class="assistant-body" id="assistantBody"></div>
   <div class="assistant-footer" id="assistantFooter" style="display:none">
     <textarea id="assistantInput" placeholder="Écris ton message..." rows="2"></textarea>
-    <button type="button" onclick="sendMessage()">Envoyer</button>
+    <button onclick="sendMessage()">Envoyer</button>
   </div>
 </div>
 
@@ -1858,78 +1719,6 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <span>💬</span>
   <div id="bubbleBadge">1</div>
 </div>
-
-
-<script type="module">
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160/build/three.module.js";
-
-const container = document.getElementById("skills3d");
-const skills = [...document.querySelectorAll("#skillsData div")];
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(55, container.clientWidth/container.clientHeight,1,2000);
-camera.position.z = 420;
-
-const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
-renderer.setSize(container.clientWidth,container.clientHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
-container.appendChild(renderer.domElement);
-
-const group = new THREE.Group();
-scene.add(group);
-
-const loader = new THREE.TextureLoader();
-const radius = 220;
-
-skills.forEach((el,i)=>{
-  const phi = Math.acos(-1+(2*i)/skills.length);
-  const theta = Math.sqrt(skills.length*Math.PI)*phi;
-
-  const texture = loader.load(el.getAttribute("src"));
-  const material = new THREE.SpriteMaterial({map:texture, transparent:true});
-  const sprite = new THREE.Sprite(material);
-
-  sprite.position.set(
-    radius*Math.cos(theta)*Math.sin(phi),
-    radius*Math.sin(theta)*Math.sin(phi),
-    radius*Math.cos(phi)
-  );
-
-  sprite.scale.set(42,42,1);
-  group.add(sprite);
-});
-
-let isDown=false, lastX=0, lastY=0;
-
-renderer.domElement.onpointerdown=e=>{
-  isDown=true;
-  lastX=e.clientX;
-  lastY=e.clientY;
-};
-
-window.onpointerup=()=> isDown=false;
-
-window.onpointermove=e=>{
-  if(!isDown) return;
-  group.rotation.y += (e.clientX-lastX)*0.005;
-  group.rotation.x += (e.clientY-lastY)*0.005;
-  lastX=e.clientX;
-  lastY=e.clientY;
-};
-
-function animate(){
-  requestAnimationFrame(animate);
-  group.rotation.y += 0.0015;
-  renderer.render(scene,camera);
-}
-animate();
-
-window.addEventListener("resize",()=>{
-  camera.aspect = container.clientWidth/container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth,container.clientHeight);
-});
-</script>
 
 <!-- ======================
      BASE SCRIPT (original + additions)
@@ -1971,16 +1760,11 @@ const mobileMenu = document.getElementById("mobileMenu");
 
 if (menuToggle && mobileMenu) {
   menuToggle.onclick = () => {
-    const open = mobileMenu.style.display !== "flex";
-    mobileMenu.style.display = open ? "flex" : "none";
-    menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    mobileMenu.style.display = mobileMenu.style.display === "flex" ? "none" : "flex";
   };
 
   mobileMenu.querySelectorAll("a").forEach(link => {
-    link.onclick = () => {
-      mobileMenu.style.display = "none";
-      menuToggle.setAttribute("aria-expanded", "false");
-    };
+    link.onclick = () => mobileMenu.style.display = "none";
   });
 
   document.addEventListener("click", (e) => {
@@ -1990,13 +1774,11 @@ if (menuToggle && mobileMenu) {
       !menuToggle.contains(e.target)
     ) {
       mobileMenu.style.display = "none";
-      menuToggle.setAttribute("aria-expanded", "false");
     }
   });
 
   window.addEventListener("scroll", () => {
     mobileMenu.style.display = "none";
-    menuToggle.setAttribute("aria-expanded", "false");
   }, { passive: true });
 }
 
@@ -2315,49 +2097,38 @@ document.querySelectorAll(".cert-logo").forEach(el=>{
 });
 
 /* ======================
-   SKILLS SPHERE: data (clic -> modal via THREE.js module)
+   SKILLS CLOUD: clic -> modal
 ====================== */
 const skillData = {
-  linux: { title:"Linux / Systèmes", desc:"Administration, durcissement, services, exploitation et troubleshooting.", img:"img/skill-preview-linux.jpg" },
-  network: { title:"Réseaux (Cisco)", desc:"VLAN, routage, switching, design, segmentation et diagnostic L2/L3.", img:"img/skill-preview-network.jpg" },
-  python: { title:"Python", desc:"Automatisation, scripts, intégrations API, tooling et maintenance.", img:"img/skill-preview-python.jpg" },
-  flask: { title:"Flask / Web", desc:"Apps internes (bastion), API, templates, logique backend et intégrations.", img:"img/skill-preview-flask.jpg" },
-  docker: { title:"Docker / Conteneurs", desc:"Build, images, compose, isolation, bonnes pratiques de déploiement.", img:"img/skill-preview-docker.jpg" },
-  ansible: { title:"Ansible", desc:"Provisioning, post-install, standardisation, idempotence et automatisation d’infra.", img:"img/skill-preview-ansible.jpg" },
-  nutanix: { title:"Nutanix", desc:"Opérations VM, templates, automatisation via Prism API et exploitation.", img:"img/skill-preview-nutanix.jpg" },
-  security: { title:"Sécurité", desc:"Hardening, contrôle d’accès, segmentation, hygiène et défense en profondeur.", img:"img/skill-preview-security.jpg" },
-  reverseproxy: { title:"Reverse Proxy", desc:"Nginx/Apache, TLS, vhosts, routage applicatif et sécurisation d’exposition.", img:"img/skill-preview-nginx.jpg" },
-
-  nmap: { title:"Nmap", desc:"Découverte réseau, audit de surface d’attaque, inventaire et troubleshooting.", img:"img/skill-preview-nmap.jpg" },
-  wireshark: { title:"Wireshark", desc:"Analyse de trames, diagnostic applicatif/réseau, compréhension des échanges.", img:"img/skill-preview-wireshark.jpg" },
-  glpi: { title:"GLPI", desc:"Inventaire, suivi, base de connaissance et automatisation via API.", img:"img/skill-preview-glpi.jpg" },
-  pfsense: { title:"pfSense", desc:"Firewall, NAT, VPN, règles, segmentation et services réseau.", img:"img/skill-preview-pfsense.jpg" },
-  opnsense: { title:"OPNsense", desc:"Firewall, IDS/IPS, politiques réseau, durcissement et segmentation.", img:"img/skill-preview-opnsense.jpg" },
-
-  nextcloud: { title:"Nextcloud", desc:"Collaboration, stockage, durcissement, intégration et exploitation.", img:"img/skill-preview-nextcloud.jpg" },
-  yealink: { title:"Yealink", desc:"Déploiement/administration VoIP, postes, provisioning et supervision.", img:"img/skill-preview-yealink.jpg" },
-  prtg: { title:"PRTG", desc:"Supervision, capteurs, alerting, dashboards et suivi de performance.", img:"img/skill-preview-prtg.jpg" },
-
-  stormshield: { title:"Stormshield", desc:"Administration et règles de sécurité (FW), politiques, VPN et exploitation.", img:"img/skill-preview-stormshield.jpg" },
-  portainer: { title:"Portainer", desc:"Gestion de stacks, déploiements Docker, environnements et RBAC.", img:"img/skill-preview-portainer.jpg" },
-  proxmox: { title:"Proxmox", desc:"Virtualisation, clusters, stockage, snapshots et exploitation.", img:"img/skill-preview-proxmox.jpg" },
-  phpipam: { title:"phpIPAM", desc:"Gestion d’adressage IP, inventaire réseau et intégration outillée.", img:"img/skill-preview-phpipam.jpg" },
-  vmware: { title:"VMware", desc:"Virtualisation, templates, exploitation et intégration (environnements pro).", img:"img/skill-preview-vmware.jpg" },
-  ubiquiti: { title:"Ubiquiti", desc:"Wi‑Fi/réseau (UniFi), adoption, configuration, supervision et maintenance.", img:"img/skill-preview-ubiquiti.jpg" },
-
-  graylog: { title:"Graylog", desc:"Centralisation de logs, parsing, alerting et investigation.", img:"img/skill-preview-graylog.jpg" },
-  grafana: { title:"Grafana", desc:"Dashboards, visualisation, métriques et observabilité.", img:"img/skill-preview-grafana.jpg" },
-
-  comfyui: { title:"ComfyUI", desc:"Workflows IA (expérimentation), automatisation de pipelines et itérations.", img:"img/skill-preview-comfyui.jpg" }
+  linux: { title:"Linux / Systèmes", desc:"Administration, durcissement, services, exploitation, troubleshooting.", img:"img/skill-preview-linux.jpg" },
+  network: { title:"Réseaux (Cisco)", desc:"VLAN, routage, switching, design, segmentation, compréhension L2/L3.", img:"img/skill-preview-network.jpg" },
+  python: { title:"Python", desc:"Automatisation, scripts outillés, intégrations API, tooling et maintenance.", img:"img/skill-preview-python.jpg" },
+  flask: { title:"Flask / Web", desc:"Apps internes (bastion), API, templates, logique backend, intégrations.", img:"img/skill-preview-flask.jpg" },
+  docker: { title:"Docker / Conteneurs", desc:"Build, run, compose, isolation, bonnes pratiques déploiement.", img:"img/skill-preview-docker.jpg" },
+  ansible: { title:"Ansible", desc:"Provisioning, post-install, standardisation, automatisation d’infra.", img:"img/skill-preview-ansible.jpg" },
+  nutanix: { title:"Nutanix", desc:"Opérations VM, templates, automatisation via API Prism, exploitation.", img:"img/skill-preview-nutanix.jpg" },
+  security: { title:"Sécurité", desc:"Hardening, reverse proxy, principes, hygiène, segmentation et contrôle.", img:"img/skill-preview-security.jpg" },
+  reverseproxy: { title:"Reverse Proxy", desc:"Nginx/Apache, TLS, vhosts, routage, sécurité d’exposition.", img:"img/skill-preview-nginx.jpg" },
+  git: { title:"Git", desc:"Workflows, branches, versions, collaboration et traçabilité.", img:"img/skill-preview-git.jpg" }
 };
 
-// Expose for module script
-window.__skillData = skillData;
+document.querySelectorAll(".skill-logo").forEach(el=>{
+  el.addEventListener("click", ()=>{
+    const key = el.getAttribute("data-skill");
+    const data = skillData[key];
+    if(!data) return;
+    openInfoModal({
+      title: data.title,
+      desc: data.desc,
+      img: data.img || "img/placeholder-wide.svg",
+      showLink: false
+    });
+  });
+});
 
 /* ======================
    INFO MODAL ENGINE
 ====================== */
-
 const infoModal = document.getElementById("infoModal");
 const infoTitle = document.getElementById("infoTitle");
 const infoDesc  = document.getElementById("infoDesc");
@@ -2624,23 +2395,13 @@ bubble.style.pointerEvents = "none";
 
 closeBtn.onclick = () => { windowBox.style.display = "none"; };
 
-function appendChatMessage(author, content) {
-  const line = document.createElement("p");
-  const label = document.createElement("strong");
-  label.textContent = `${author} :`;
-  line.appendChild(label);
-  line.append(` ${content}`);
-  bodyBox.appendChild(line);
-  bodyBox.scrollTop = bodyBox.scrollHeight;
-}
-
 function showWelcomePrompt() {
   bodyBox.innerHTML = `
     <p>Salutt!!! 👋</p>
     <p>Je remarque que tu es intéressé par mon profil, souhaiterais-tu prendre contact avec moi ?</p>
     <div class="assistant-buttons">
-      <button type="button" onclick="startChat()">Oui</button>
-      <button type="button" onclick="closePrompt()">Non merci</button>
+      <button onclick="startChat()">Oui</button>
+      <button onclick="closePrompt()">Non merci</button>
     </div>
   `;
 }
@@ -2683,7 +2444,7 @@ function sendMessage() {
   const msg = inputBox.value.trim();
   if (!msg) return;
 
-  appendChatMessage("Toi", msg);
+  bodyBox.innerHTML += `<p><strong>Toi :</strong> ${msg}</p>`;
   inputBox.value = "";
 
   fetch("/api/send_message.php", {
@@ -2720,7 +2481,8 @@ function pollMessages() {
             playNotifySound();
           }
 
-          appendChatMessage(displayName, msg.content);
+          bodyBox.innerHTML += `<p><strong>${displayName} :</strong> ${msg.content}</p>`;
+          bodyBox.scrollTop = bodyBox.scrollHeight;
         }
       });
     })
@@ -2729,331 +2491,6 @@ function pollMessages() {
 
 setInterval(pollMessages, 2000);
 </script>
-
-
-<!-- ======================
-     SKILLS SPHERE — THREE.JS MODULE (logos only • centered • inertia • click -> modal)
-====================== -->
-<script type="module">
-import * as THREE from "three";
-
-const stage = document.getElementById("skillSphereStage");
-const cloudData = document.getElementById("skillCloudData");
-
-if (stage && cloudData) {
-  const skills = Array.from(cloudData.querySelectorAll(".skill-logo"))
-    .map((el) => {
-      const key = (el.getAttribute("data-skill") || "").trim();
-      const imgEl = el.querySelector("img");
-      const src = imgEl?.getAttribute("src") || "";
-      const alt = (imgEl?.getAttribute("alt") || key || "Skill").trim();
-      return { key, src, alt };
-    })
-    .filter((s) => s.key && s.src);
-
-  // --- Scene
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(52, 1, 0.1, 5000);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setClearColor(0x000000, 0);
-  stage.appendChild(renderer.domElement);
-
-  const group = new THREE.Group();
-  scene.add(group);
-
-  // Soft light (no “sphere”, just nicer sprite edges)
-  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
-
-  const raycaster = new THREE.Raycaster();
-  const pointer = new THREE.Vector2();
-
-  const sprites = [];
-  let R = 90;               // sphere radius (auto-sized)
-  let baseScale = 22;       // sprite size (auto-sized)
-  let camZ = 260;           // camera distance (auto-sized)
-
-  function computeLayout() {
-    const w = stage.clientWidth || 1;
-    const h = stage.clientHeight || 1;
-
-    // renderer size
-    renderer.setSize(w, h, false);
-    camera.aspect = w / h;
-
-    // Sizing model (looks “Apple-like” on all ratios)
-    const minDim = Math.min(w, h);
-    R = Math.max(70, Math.min(140, minDim * 0.28));
-    baseScale = Math.max(18, Math.min(34, minDim * 0.08));
-    camZ = R * 2.75;
-
-    camera.position.set(0, 0, camZ);
-    camera.lookAt(0, 0, 0);
-    camera.updateProjectionMatrix();
-
-    // Reposition sprites if created
-    if (sprites.length) {
-      placeSprites();
-    }
-  }
-
-  // Fibonacci sphere distribution (uniform-ish)
-  function spherePoints(n) {
-    const pts = [];
-    const golden = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < n; i++) {
-      const t = (i + 0.5) / n;
-      const y = 1 - 2 * t;
-      const r = Math.sqrt(1 - y * y);
-      const phi = i * golden;
-      const x = Math.cos(phi) * r;
-      const z = Math.sin(phi) * r;
-      pts.push(new THREE.Vector3(x, y, z));
-    }
-    return pts;
-  }
-
-  let points = spherePoints(Math.max(1, skills.length));
-
-  function makeSkillTexture(skill) {
-    const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
-    const ctx = canvas.getContext("2d");
-    const accent = skill.key === "docker" ? "#2496ed"
-      : skill.key === "python" || skill.key === "flask" ? "#ffd43b"
-      : skill.key === "linux" ? "#f5c542"
-      : skill.key === "ansible" ? "#f5f5f7"
-      : skill.key === "security" || skill.key.includes("sense") ? "#ff9f43"
-      : "#36d399";
-
-    ctx.clearRect(0, 0, 256, 256);
-    ctx.fillStyle = "rgba(10, 10, 10, 0.82)";
-    ctx.strokeStyle = accent;
-    ctx.lineWidth = 10;
-    ctx.beginPath();
-    ctx.roundRect(20, 20, 216, 216, 46);
-    ctx.fill();
-    ctx.stroke();
-
-    ctx.fillStyle = accent;
-    ctx.shadowColor = accent;
-    ctx.shadowBlur = 18;
-    ctx.font = "700 66px Inter, Arial, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const label = skill.alt
-      .replace(/[^a-z0-9]/gi, " ")
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((part) => part[0])
-      .join("")
-      .slice(0, 3)
-      .toUpperCase() || skill.key.slice(0, 3).toUpperCase();
-    ctx.fillText(label, 128, 118);
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
-    ctx.font = "600 24px Inter, Arial, sans-serif";
-    const shortName = skill.alt.length > 13 ? `${skill.alt.slice(0, 12)}.` : skill.alt;
-    ctx.fillText(shortName, 128, 174);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    return texture;
-  }
-
-  function makeSprite(skill) {
-    const tex = makeSkillTexture(skill);
-
-    const mat = new THREE.SpriteMaterial({
-      map: tex,
-      transparent: true,
-      opacity: 0.98,
-      depthTest: false,
-      depthWrite: false
-    });
-
-    const sp = new THREE.Sprite(mat);
-    sp.userData = { ...skill };
-
-    // Default scale (adjusted each frame with depth)
-    sp.scale.set(baseScale, baseScale, 1);
-
-    group.add(sp);
-    sprites.push(sp);
-  }
-
-  skills.forEach(makeSprite);
-
-  function placeSprites() {
-    points = spherePoints(Math.max(1, sprites.length));
-    for (let i = 0; i < sprites.length; i++) {
-      const p = points[i].clone().multiplyScalar(R);
-      sprites[i].position.copy(p);
-    }
-  }
-
-  placeSprites();
-  computeLayout();
-
-  // Resize: responsive + when layout changes (module card animation / fonts / etc.)
-  const ro = new ResizeObserver(() => computeLayout());
-  ro.observe(stage);
-
-  // --- Interaction (drag + inertia)
-  let isDown = false;
-  let lastX = 0;
-  let lastY = 0;
-  let moved = 0;
-
-  let velX = 0;
-  let velY = 0;
-
-  // Base idle rotation (very subtle, premium)
-  const idle = 0.0012;
-
-  function clamp(v, a, b) {
-    return Math.max(a, Math.min(b, v));
-  }
-
-  function onPointerDown(e) {
-    isDown = true;
-    moved = 0;
-    lastX = e.clientX;
-    lastY = e.clientY;
-    stage.style.cursor = "grabbing";
-    renderer.domElement.setPointerCapture?.(e.pointerId);
-  }
-
-  function onPointerMove(e) {
-    if (!isDown) return;
-
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-
-    moved += Math.abs(dx) + Math.abs(dy);
-
-    // Sensitivity tuned for “Apple-like”
-    const rx = dy * 0.0042;
-    const ry = dx * 0.0048;
-
-    group.rotation.x = clamp(group.rotation.x + rx, -1.15, 1.15);
-    group.rotation.y += ry;
-
-    // inertia velocity
-    velX = rx;
-    velY = ry;
-
-    lastX = e.clientX;
-    lastY = e.clientY;
-  }
-
-  function pointerToNDC(e) {
-    const rect = renderer.domElement.getBoundingClientRect();
-    pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
-  }
-
-  function openSkillModal(key, fallback) {
-    const base = (window.__skillData && window.__skillData[key]) ? window.__skillData[key] : null;
-    const title = base?.title || fallback?.alt || key;
-    const desc  = base?.desc  || "Compétence utilisée en contexte d’exploitation, d’automatisation et de production.";
-    const img   = base?.img   || fallback?.src || "img/placeholder-wide.svg";
-
-    if (typeof window.openInfoModal === "function") {
-      window.openInfoModal({ title, desc, img, showLink: false });
-    }
-  }
-
-  function onPointerUp(e) {
-    if (!isDown) return;
-    isDown = false;
-    stage.style.cursor = "grab";
-
-    // Click detection (small movement threshold)
-    if (moved < 10) {
-      pointerToNDC(e);
-      raycaster.setFromCamera(pointer, camera);
-      const hits = raycaster.intersectObjects(sprites, false);
-      if (hits.length) {
-        const sp = hits[0].object;
-        openSkillModal(sp.userData.key, sp.userData);
-      }
-    }
-  }
-
-  renderer.domElement.addEventListener("pointerdown", onPointerDown, { passive: true });
-  renderer.domElement.addEventListener("pointermove", onPointerMove, { passive: true });
-  renderer.domElement.addEventListener("pointerup", onPointerUp, { passive: true });
-  renderer.domElement.addEventListener("pointercancel", () => { isDown = false; stage.style.cursor = "grab"; });
-
-  // Hover cursor (no heavy glow, just UX)
-  renderer.domElement.addEventListener("mousemove", (e) => {
-    if (isDown) return;
-    pointerToNDC(e);
-    raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObjects(sprites, false);
-    renderer.domElement.style.cursor = hits.length ? "pointer" : "grab";
-  });
-
-  // Tiny wheel zoom (optional, stays subtle)
-  renderer.domElement.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    const dz = e.deltaY * 0.08;
-    camZ = clamp(camZ + dz, R * 2.1, R * 3.4);
-    camera.position.z = camZ;
-  }, { passive: false });
-
-  // --- Render loop (depth scaling + softness)
-  const tmp = new THREE.Vector3();
-  const forward = new THREE.Vector3(0, 0, 1);
-
-  function tick() {
-    // Idle + inertia
-    if (!isDown) {
-      group.rotation.y += idle + velY;
-      group.rotation.x = clamp(group.rotation.x + velX, -1.15, 1.15);
-
-      // friction
-      velX *= 0.92;
-      velY *= 0.92;
-
-      // stop jitter
-      if (Math.abs(velX) < 0.00001) velX = 0;
-      if (Math.abs(velY) < 0.00001) velY = 0;
-    }
-
-    // Each sprite always faces the camera + depth-based size/opacity
-    for (const sp of sprites) {
-      sp.quaternion.copy(camera.quaternion);
-
-      sp.getWorldPosition(tmp);
-      // Normalize depth [-R..R] roughly by dot with camera forward
-      const depth = tmp.clone().normalize().dot(forward);
-      // We want: front bigger + more opaque, back smaller + slightly faded
-      const t = (depth + 1) * 0.5; // 0..1
-      const scale = baseScale * (0.72 + 0.58 * t);
-      sp.scale.set(scale, scale, 1);
-
-      sp.material.opacity = 0.34 + 0.64 * t;
-
-      // Ensure draw order: front on top
-      sp.renderOrder = Math.round(t * 1000);
-    }
-
-    renderer.render(scene, camera);
-    requestAnimationFrame(tick);
-  }
-
-  // Start with nice cursor state
-  stage.style.cursor = "grab";
-  requestAnimationFrame(() => { computeLayout(); tick(); });
-}
-</script>
-
 
 <!-- ======================
      STL THREE.JS MODULE (ONLY STL logic) — original (incomplet dans l’extrait précédent)

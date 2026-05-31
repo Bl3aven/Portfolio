@@ -1,0 +1,69 @@
+########################################
+# OVH STARTER SAFE ROOT .HTACCESS
+########################################
+
+# ==========================
+# 1. FORCE HTTPS
+# ==========================
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ==========================
+# 2. DISABLE DIRECTORY LISTING
+# ==========================
+Options -Indexes
+
+# ==========================
+# 3. BLOCK SENSITIVE FILES
+# ==========================
+<FilesMatch "^(\.env|\.git|\.htaccess|\.htpasswd|composer\.(json|lock)|package\.json|yarn\.lock|.*\.(bak|backup|old|sql|zip|tar|gz))$">
+  Require all denied
+</FilesMatch>
+
+# ==========================
+# 4. BASIC SECURITY HEADERS
+# ==========================
+<IfModule mod_headers.c>
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+<IfModule mod_mime.c>
+AddType application/manifest+json .webmanifest
+AddType model/stl .stl
+AddType image/svg+xml .svg
+</IfModule>
+
+# ==========================
+# 5. HOTLINK PROTECTION (IMAGES ONLY)
+# ==========================
+<IfModule mod_rewrite.c>
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https://(www\.)?tournayre\.ovh/ [NC]
+RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F,L]
+</IfModule>
+
+# ==========================
+# 6. CACHE STATIC FILES
+# ==========================
+<IfModule mod_expires.c>
+ExpiresActive On
+
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType text/css "access plus 7 days"
+ExpiresByType application/javascript "access plus 7 days"
+ExpiresDefault "access plus 2 days"
+</IfModule>
+
+########################################
+# END ROOT .HTACCESS
+########################################

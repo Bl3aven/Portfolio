@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural minimal</title>
+
+<style>
+html,body{
+    margin:0;
+    padding:0;
+    background:#05060c;
+    overflow:hidden;
+}
+canvas{
+    position:fixed;
+    inset:0;
+}
+</style>
+</head>
+
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
+
+let W,H;
+function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+// =========================
+// souris
+// =========================
+const mouse = {
+    x: W/2,
+    y: H/2,
+    lastX: W/2,
+    lastY: W/2,
+    node:null
+};
+
+window.addEventListener("mousemove", e=>{
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+
+// =========================
+// noeuds libres (peu nombreux)
+// =========================
+let nodes = [];
+const COUNT = 22;
+
+function newNode(x,y){
+    return {
+        x,y,
+        // vitesse augmentée
+        vx:(Math.random()-0.5)*0.32,
+        vy:(Math.random()-0.5)*0.32
+    };
+}
+
+for(let i=0;i<COUNT;i++){
+    nodes.push(newNode(Math.random()*W,Math.random()*H));
+}
+
+// =========================
+// noeud souris temporaire
+// =========================
+function updateMouseNode(){
+
+    let moved = Math.hypot(mouse.x-mouse.lastX, mouse.y-mouse.lastY);
+
+    if(moved > 8){
+        mouse.node = null;
+    }
+
+    if(!mouse.node){
+        mouse.node = newNode(mouse.x, mouse.y);
+    }
+
+    mouse.node.x += (mouse.x - mouse.node.x)*0.35;
+    mouse.node.y += (mouse.y - mouse.node.y)*0.35;
+
+    mouse.lastX = mouse.x;
+    mouse.lastY = mouse.y;
+}
+
+// =========================
+// animation
+// =========================
+function animate(){
+
+    // ⚠️ suppression traînée → fond plein
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle="#05060c";
+    ctx.fillRect(0,0,W,H);
+
+    updateMouseNode();
+
+    // mouvement noeuds
+    nodes.forEach(n=>{
+        n.x += n.vx;
+        n.y += n.vy;
+
+        if(n.x<0||n.x>W) n.vx*=-1;
+        if(n.y<0||n.y>H) n.vy*=-1;
+    });
+
+    // =========================
+    // CONNEXIONS TEMPORAIRES souris
+    // =========================
+    if(mouse.node){
+
+        let nearby = [];
+
+        nodes.forEach(n=>{
+            let d = Math.hypot(n.x-mouse.node.x, n.y-mouse.node.y);
+            if(d < 180){
+                nearby.push({n,d});
+            }
+        });
+
+        nearby.sort((a,b)=>a.d-b.d);
+        nearby = nearby.slice(0,3);
+
+        nearby.forEach(obj=>{
+            let n = obj.n;
+            let d = obj.d;
+
+            let alpha = 1 - d/180;
+
+            ctx.strokeStyle = "rgba(140,180,255,"+(alpha*0.35)+")";
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(n.x,n.y);
+            ctx.lineTo(mouse.node.x,mouse.node.y);
+            ctx.stroke();
+        });
+    }
+
+    // =========================
+    // dessiner noeuds libres
+    // =========================
+    nodes.forEach(n=>{
+        ctx.beginPath();
+        ctx.fillStyle="rgba(180,210,255,0.75)";
+        ctx.arc(n.x,n.y,2,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    // =========================
+    // dessiner noeud souris
+    // =========================
+    if(mouse.node){
+        ctx.beginPath();
+        ctx.fillStyle="rgba(255,255,255,1)";
+        ctx.arc(mouse.node.x,mouse.node.y,3,0,Math.PI*2);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.fillStyle="rgba(120,180,255,0.15)";
+        ctx.arc(mouse.node.x,mouse.node.y,12,0,Math.PI*2);
+        ctx.fill();
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
