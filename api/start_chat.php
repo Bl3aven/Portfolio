@@ -48,26 +48,26 @@ if (!is_array($input)) {
   $input = [];
 }
 
-$lastName = clean_contact_field($input["lastName"] ?? $input["name"] ?? "", 80);
-$firstName = clean_contact_field($input["firstName"] ?? "", 80);
+$firstName = clean_contact_field($input["firstName"] ?? $input["name"] ?? "", 80);
+$lastName = clean_contact_field($input["lastName"] ?? "", 80);
 $phone = clean_phone($input["phone"] ?? "");
 
-if ($lastName === "") {
+if ($firstName === "") {
   http_response_code(400);
-  echo json_encode(["error" => "Name is required"], JSON_UNESCAPED_UNICODE);
+  echo json_encode(["error" => "First name is required"], JSON_UNESCAPED_UNICODE);
   exit;
 }
 
 $visitorDisplay = trim(($firstName ? $firstName . " " : "") . $lastName);
-$slug = channel_slug(trim($lastName . " " . $firstName));
+$slug = channel_slug(trim($firstName . " " . $lastName));
 $suffix = date("md-His") . "-" . bin2hex(random_bytes(2));
 $channelSlug = substr($slug, 0, 70);
 $name = "portfolio-" . $channelSlug . "-" . $suffix;
 
 $topicLines = [
   "Contact depuis le portfolio",
-  "Nom: " . $lastName,
-  "Prénom: " . ($firstName !== "" ? $firstName : "Non renseigné"),
+  "Prénom: " . $firstName,
+  "Nom: " . ($lastName !== "" ? $lastName : "Non renseigné"),
   "Téléphone: " . ($phone !== "" ? $phone : "Non renseigné"),
   "Créé le: " . date("Y-m-d H:i:s")
 ];

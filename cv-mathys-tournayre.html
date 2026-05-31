@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Mathys Tournayre</title>
+<style>
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#151515;
+  background:#f3f4f6;
+}
+.page{
+  width:210mm;
+  min-height:297mm;
+  margin:0 auto;
+  background:#fff;
+  display:grid;
+  grid-template-columns:64mm 1fr;
+}
+.sidebar{
+  background:#101114;
+  color:#f5f5f7;
+  padding:16mm 9mm;
+}
+.main{
+  padding:16mm 13mm;
+}
+h1{
+  margin:0;
+  font-size:28pt;
+  line-height:1;
+  letter-spacing:-.02em;
+}
+.role{
+  margin:5mm 0 9mm;
+  color:#ff8a22;
+  font-weight:700;
+  font-size:11pt;
+}
+h2{
+  margin:0 0 5mm;
+  font-size:11pt;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:#ff8a22;
+}
+h3{
+  margin:0 0 1.5mm;
+  font-size:11pt;
+  color:#111;
+}
+p, li{
+  font-size:9.4pt;
+  line-height:1.45;
+}
+ul{
+  margin:2mm 0 0 5mm;
+  padding:0;
+}
+.block{ margin-bottom:9mm; }
+.sidebar .block{ margin-bottom:8mm; }
+.sidebar h2{ color:#ffb15f; }
+.sidebar p,
+.sidebar li{ color:#e5e7eb; }
+.muted{
+  color:#6b7280;
+  font-size:8.7pt;
+  margin-bottom:2mm;
+}
+.taglist{
+  display:flex;
+  flex-wrap:wrap;
+  gap:2mm;
+}
+.tag{
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);
+  color:#f5f5f7;
+  padding:1.5mm 2.4mm;
+  border-radius:3mm;
+  font-size:8pt;
+  font-weight:700;
+}
+.item{
+  padding-bottom:5mm;
+  margin-bottom:5mm;
+  border-bottom:1px solid #e5e7eb;
+}
+.item:last-child{
+  border-bottom:0;
+  margin-bottom:0;
+}
+.summary{
+  font-size:10pt;
+  line-height:1.55;
+  color:#30343b;
+}
+a{ color:inherit; text-decoration:none; }
+@page{ size:A4; margin:0; }
+@media print{
+  body{ background:#fff; }
+  .page{ margin:0; box-shadow:none; }
+}
+@media screen and (max-width: 760px){
+  .page{
+    width:100%;
+    min-height:auto;
+    grid-template-columns:1fr;
+  }
+  .sidebar,
+  .main{
+    padding:24px;
+  }
+  h1{
+    font-size:24pt;
+  }
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <aside class="sidebar">
+    <div class="block">
+      <h1>Mathys<br>Tournayre</h1>
+      <div class="role">DevOps &amp; Cloud Engineer</div>
+      <p>Alternant ingenieur ISEN chez Oxeegen France.</p>
+    </div>
+
+    <div class="block">
+      <h2>Contact</h2>
+      <p><a href="mailto:mathys@tournayre.fr">mathys@tournayre.fr</a></p>
+      <p><a href="https://www.linkedin.com/in/mathys-tournayre/">linkedin.com/in/mathys-tournayre</a></p>
+      <p><a href="https://tournayre.ovh/">tournayre.ovh</a></p>
+    </div>
+
+    <div class="block">
+      <h2>Competences</h2>
+      <div class="taglist">
+        <span class="tag">Linux</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Ansible</span>
+        <span class="tag">Nutanix</span>
+        <span class="tag">Cisco</span>
+        <span class="tag">Python</span>
+        <span class="tag">Flask</span>
+        <span class="tag">Reverse proxy</span>
+        <span class="tag">Supervision</span>
+        <span class="tag">IA locale</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Certifications</h2>
+      <ul>
+        <li>Cisco / CyberOps</li>
+        <li>AWS Academy</li>
+        <li>Stormshield CSNA / CSNE</li>
+        <li>SecNum Academie</li>
+        <li>PIX</li>
+      </ul>
+    </div>
+  </aside>
+
+  <section class="main">
+    <div class="block">
+      <h2>Profil</h2>
+      <p class="summary">
+        Profil infrastructure, cloud et automatisation. Je conçois, exploite et securise des environnements
+        systemes et reseaux avec une attention particuliere portee a la fiabilite, la documentation et
+        l'industrialisation.
+      </p>
+    </div>
+
+    <div class="block">
+      <h2>Experience</h2>
+      <div class="item">
+        <h3>Oxeegen - Technicien reseaux et systemes (alternance)</h3>
+        <div class="muted">Vitrolles - sept. 2025 a aujourd'hui</div>
+        <ul>
+          <li>Exploitation et maintien en conditions operationnelles d'infrastructures reseau et systemes.</li>
+          <li>Automatisation de taches, procedures et standardisation des deploiements.</li>
+          <li>Participation aux projets securite, segmentation, supervision et amelioration continue.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h3>Itinsell Cloud - Technicien reseau et systemes (alternance)</h3>
+        <div class="muted">La Ciotat - avr. 2024 a sept. 2025</div>
+        <ul>
+          <li>Conception d'un bastion web interne centralisant les outils et acces d'infrastructure.</li>
+          <li>Deploiement automatise de VMs via GLPI, Prism API, Nutanix et Ansible.</li>
+          <li>Etude de faisabilite d'une offre Nextcloud orientee conformite HDS / ISO 27001.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h3>L'HELICOIDAL - Poseur (CDD)</h3>
+        <div class="muted">juin 2023 a juil. 2023</div>
+        <ul>
+          <li>Installation et assemblage d'escaliers metalliques, lecture de plans et coordination terrain.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Formation</h2>
+      <div class="item">
+        <h3>ISEN - Diplome d'ingenieur numerique</h3>
+        <div class="muted">2025 a 2028</div>
+        <p>Cloud, cybersecurite, systemes distribues et ingenierie logicielle.</p>
+      </div>
+      <div class="item">
+        <h3>Aix-Marseille Universite - BUT Reseaux &amp; Telecommunications</h3>
+        <div class="muted">2022 a 2025</div>
+        <p>Reseaux, systemes, telecoms, virtualisation, services et exploitation.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>Projets</h2>
+      <ul>
+        <li>Fabrique de VMs Nutanix : GLPI, Prism API, Ansible et Flask.</li>
+        <li>Bastion web DevOps : portail securise pour outils cloud et infrastructure.</li>
+        <li>Lab IA locale : Open WebUI, Ollama, ComfyUI, LM Studio, Vulkan et agents OpenClaw.</li>
+        <li>Administration Squad : RCON, Discord API, logs et moderation temps reel.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+</body>
+</html>

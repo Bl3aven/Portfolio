@@ -39,6 +39,7 @@ font-src 'self' https://fonts.gstatic.com data:;
 script-src 'self' https: 'unsafe-inline';
 style-src 'self' https: 'unsafe-inline';
 connect-src 'self' https: wss:;
+frame-src 'self';
 object-src 'none';
 base-uri 'self';">
 
@@ -76,14 +77,32 @@ section{ scroll-margin-top: 140px; } /* ajusté car rubans en haut */
 /* Section reveal */
 section.reveal{
   opacity: 0;
-  transform: translateY(18px);
-  filter: blur(10px);
-  transition: opacity 700ms ease, transform 900ms cubic-bezier(.2,.9,.2,1), filter 900ms ease;
+  transform: translateY(28px) scale(.985);
+  filter: blur(12px);
+  transition:
+    opacity 720ms ease,
+    transform 980ms cubic-bezier(.16, 1, .3, 1),
+    filter 980ms ease;
 }
 section.reveal.show{
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
+}
+section.reveal .reveal-child{
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 680ms ease,
+    transform 820ms cubic-bezier(.16, 1, .3, 1),
+    border-color 280ms ease,
+    box-shadow 280ms ease,
+    background 280ms ease;
+  transition-delay: calc(var(--reveal-i, 0) * 85ms);
+}
+section.reveal.show .reveal-child{
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Soft focus pulse when clicking nav */
@@ -142,14 +161,24 @@ nav {
 .nav-right { justify-content: flex-start; }
 
 .nav-logo {
+  border: 0;
+  cursor: pointer;
   background-image: url("favicon/web-app-manifest-512x512.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  background-color: transparent;
   width: 150px;
   height: 40px;
   text-indent: -9999px;
   overflow: hidden;
+  transition: transform .25s ease, filter .25s ease;
+}
+.nav-logo:hover,
+.nav-logo:focus-visible{
+  transform: translateY(-1px) scale(1.04);
+  filter: drop-shadow(0 0 18px rgba(255,159,67,.42));
+  outline: none;
 }
 
 nav a {
@@ -327,17 +356,40 @@ header {
 .hero button {
   margin-top: 2.6rem;
   padding: 1rem 3rem;
-  border: none;
+  border: 1px solid rgba(255, 214, 174, .35);
   border-radius: 999px;
-  background: linear-gradient(135deg, #ff9f43, #ff6a00);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 42%),
+    linear-gradient(135deg, #ffb15f, #ff7a18 58%, #d95300);
   color: black;
-  font-weight: 600;
+  font-weight: 800;
+  letter-spacing: .01em;
   cursor: pointer;
-  transition: 0.4s;
+  position: relative;
+  transform: translateY(0);
+  box-shadow:
+    0 18px 0 #8d3500,
+    0 28px 46px rgba(255, 112, 18, .28),
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -10px 20px rgba(115,45,0,.18);
+  transition: transform .22s cubic-bezier(.16, 1, .3, 1), box-shadow .22s ease, filter .22s ease;
 }
 .hero button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(255, 150, 60, 0.6);
+  transform: translateY(-7px);
+  filter: saturate(1.08);
+  box-shadow:
+    0 25px 0 #8d3500,
+    0 40px 66px rgba(255, 112, 18, .36),
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -8px 18px rgba(115,45,0,.16);
+}
+.hero button:active {
+  transform: translateY(8px);
+  box-shadow:
+    0 7px 0 #8d3500,
+    0 18px 32px rgba(255, 112, 18, .22),
+    inset 0 8px 18px rgba(89,34,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.35);
 }
 
 /* ======================
@@ -421,23 +473,73 @@ section h2 {
    MODULE CARDS
 ====================== */
 .module {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(20px);
-  border-radius: 40px;
-  padding: 3.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.072), rgba(255,255,255,.018)),
+    rgba(9, 10, 12, .62);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,.115);
+  border-radius: 8px;
+  padding: clamp(1.35rem, 4vw, 3.1rem);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, .46),
+    inset 0 1px 0 rgba(255,255,255,.08);
   margin-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.module::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(255,159,67,.28), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,.075), transparent 40%);
+  opacity:.32;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  padding:1px;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.module:hover{
+  border-color: rgba(255,159,67,.26);
+  box-shadow:
+    0 30px 95px rgba(0,0,0,.5),
+    0 0 42px rgba(255,159,67,.08),
+    inset 0 1px 0 rgba(255,255,255,.11);
 }
 
 /* ======================
    TIMELINE
 ====================== */
 .timeline {
-  border-left: 2px solid rgba(255, 150, 60, 0.6);
-  padding-left: 2rem;
+  border-left: 0;
+  padding-left: clamp(1.2rem, 3vw, 2rem);
 }
 
-.timeline-item { margin-bottom: 2.5rem; }
+.timeline-item {
+  margin-bottom: 1.2rem;
+  padding: 1rem 1rem 1rem 1.25rem;
+  border-left: 2px solid rgba(255,159,67,.52);
+  background: rgba(255,255,255,.035);
+  border-radius: 8px;
+  position: relative;
+}
+.timeline-item::before{
+  content:"";
+  position:absolute;
+  left:-7px;
+  top:1.25rem;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#ff9f43;
+  box-shadow:0 0 0 5px rgba(255,159,67,.12);
+}
+.timeline-item:last-child{ margin-bottom:0; }
 
 .timeline-item h3 {
   color: #ff9f43;
@@ -518,7 +620,7 @@ section h2 {
 .skillSphereStage{
   width: min(860px, 100%);
   height: clamp(320px, 56vh, 520px);
-  border-radius: 34px;
+  border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.12);
   background:
     radial-gradient(900px 520px at 20% 10%, rgba(255,159,67,0.12), transparent 55%),
@@ -529,7 +631,9 @@ section h2 {
   align-items: center;
   justify-content: center;
   position: relative;
-  box-shadow: 0 25px 70px rgba(0,0,0,0.55);
+  box-shadow:
+    0 26px 76px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,.07);
   touch-action: none;
   cursor: grab;
 }
@@ -561,13 +665,17 @@ section h2 {
 .ai-lede,
 .ai-stack-panel,
 .ai-project{
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.115);
   background:
-    linear-gradient(135deg, rgba(255,159,67,0.08), rgba(54,211,153,0.05)),
-    rgba(12,12,14,0.74);
-  box-shadow: 0 20px 55px rgba(0,0,0,0.42);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+    linear-gradient(135deg, rgba(255,159,67,0.07), rgba(54,211,153,0.045)),
+    rgba(9,10,12,0.70);
+  box-shadow:
+    0 22px 64px rgba(0,0,0,0.44),
+    inset 0 1px 0 rgba(255,255,255,.075);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  position: relative;
+  overflow: hidden;
 }
 
 .ai-lede,
@@ -629,6 +737,16 @@ section h2 {
   display:flex;
   flex-direction:column;
   justify-content:space-between;
+}
+.ai-lede:hover,
+.ai-stack-panel:hover,
+.ai-project:hover{
+  border-color: rgba(54,211,153,.25);
+  transform: translateY(-3px);
+  box-shadow:
+    0 30px 82px rgba(0,0,0,.50),
+    0 0 36px rgba(54,211,153,.08),
+    inset 0 1px 0 rgba(255,255,255,.09);
 }
 
 .ai-project p{
@@ -749,19 +867,33 @@ section h2 {
   margin-top: 2.5rem;
 }
 .carousel-btn {
-  background: rgba(255, 150, 60, 0.15);
-  border: 1px solid rgba(255, 150, 60, 0.4);
+  background: linear-gradient(180deg, rgba(255,159,67,.20), rgba(255,159,67,.08));
+  border: 1px solid rgba(255, 150, 60, 0.38);
   color: #ff9f43;
   padding: 0.7rem 1.8rem;
-  border-radius: 999px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
   backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 0 rgba(103,43,0,.72),
+    0 18px 38px rgba(0,0,0,.36),
+    inset 0 1px 0 rgba(255,255,255,.12);
 }
 .carousel-btn:hover {
-  background: rgba(255, 150, 60, 0.3);
-  box-shadow: 0 0 20px rgba(255, 150, 60, 0.6);
-  transform: scale(1.1);
+  background: linear-gradient(180deg, rgba(255,159,67,.28), rgba(255,159,67,.12));
+  box-shadow:
+    0 14px 0 rgba(103,43,0,.72),
+    0 26px 48px rgba(255, 150, 60, 0.16),
+    inset 0 1px 0 rgba(255,255,255,.16);
+  transform: translateY(-4px);
+}
+.carousel-btn:active{
+  transform: translateY(5px);
+  box-shadow:
+    0 4px 0 rgba(103,43,0,.72),
+    0 12px 28px rgba(0,0,0,.28),
+    inset 0 6px 16px rgba(55,20,0,.32);
 }
 
 /* Mobile Carousel */
@@ -792,14 +924,19 @@ section h2 {
 }
 
 .interest-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  border-radius: 28px;
-  padding: 2.2rem;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018)),
+    rgba(9,10,12,.66);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-radius: 8px;
+  padding: 1.35rem;
   text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: 0.3s ease;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.115);
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.46),
+    inset 0 1px 0 rgba(255,255,255,.075);
   position: relative;
   overflow: hidden;
 }
@@ -814,14 +951,18 @@ section h2 {
 }
 
 .interest-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 25px 60px rgba(255, 150, 60, 0.26);
+  transform: translateY(-5px);
+  border-color: rgba(255,159,67,.28);
+  box-shadow:
+    0 28px 68px rgba(0,0,0,.52),
+    0 0 34px rgba(255, 150, 60, 0.12),
+    inset 0 1px 0 rgba(255,255,255,.11);
 }
 
 .interest-icon {
   width: 58px;
   height: 58px;
-  border-radius: 18px;
+  border-radius: 8px;
   background: rgba(255, 150, 60, 0.12);
   display: inline-flex;
   align-items: center;
@@ -849,6 +990,16 @@ section h2 {
    CONTACT
 ====================== */
 .contact { text-align: center; }
+.module.interest-grid{
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: visible;
+}
+.module.interest-grid::before{ display:none; }
 .contact a {
   display: inline-block;
   margin-top: 1.2rem;
@@ -995,6 +1146,98 @@ footer {
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.85);
   cursor:pointer;
+}
+
+/* ======================
+   CV MODAL
+====================== */
+#cvModal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(.8rem, 3vw, 1.4rem);
+  z-index: 15100;
+  background: rgba(0,0,0,.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+#cvModal.show{ display:flex; }
+.cv-box{
+  width: min(1060px, 96vw);
+  height: min(820px, 92vh);
+  display:grid;
+  grid-template-rows:auto 1fr;
+  border-radius: 8px;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg, rgba(255,159,67,.08), rgba(255,255,255,.035)),
+    rgba(8,8,10,.88);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 34px 110px rgba(0,0,0,.76);
+}
+.cv-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:1rem 1.1rem;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.cv-head h3{
+  color:#f5f5f7;
+  font-size:1rem;
+  letter-spacing:.04em;
+}
+.cv-actions{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+}
+.cv-download,
+.cv-close{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  font-weight:800;
+  cursor:pointer;
+}
+.cv-download{
+  padding:0 .95rem;
+  color:#111;
+  text-decoration:none;
+  background:linear-gradient(135deg, #ffb15f, #ff7a18);
+  box-shadow:0 10px 0 #8d3500, 0 18px 34px rgba(255,112,18,.20);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.cv-download:hover{
+  transform:translateY(-3px);
+  box-shadow:0 13px 0 #8d3500, 0 26px 44px rgba(255,112,18,.28);
+}
+.cv-close{
+  width:42px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+}
+.cv-preview{
+  min-height:0;
+  background:#121212;
+}
+.cv-preview iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  background:#fff;
+}
+@media (max-width: 720px){
+  .cv-box{ height: 88vh; }
+  .cv-head{ align-items:flex-start; flex-direction:column; }
+  .cv-actions{ width:100%; }
+  .cv-download{ flex:1; }
 }
 
 /* ======================
@@ -1614,7 +1857,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     </div>
 
     <!-- Logo -->
-    <div class="nav-logo">MATHYS</div>
+    <button class="nav-logo" id="cvLogoButton" type="button" aria-label="Afficher le CV de Mathys Tournayre">MATHYS</button>
 
     <!-- Desktop RIGHT -->
     <div class="nav-right nav-desktop">
@@ -2040,6 +2283,22 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   </div>
 </div>
 
+<!-- CV MODAL -->
+<div id="cvModal">
+  <div class="cv-box" role="dialog" aria-modal="true" aria-label="CV de Mathys Tournayre">
+    <div class="cv-head">
+      <h3>CV — Mathys Tournayre</h3>
+      <div class="cv-actions">
+        <a class="cv-download" href="cv-mathys-tournayre.pdf" download>Télécharger le CV</a>
+        <button class="cv-close" id="cvCloseBtn" type="button" aria-label="Fermer le CV">✕</button>
+      </div>
+    </div>
+    <div class="cv-preview">
+      <iframe src="cv-mathys-tournayre.html" title="Aperçu du CV de Mathys Tournayre"></iframe>
+    </div>
+  </div>
+</div>
+
 <!-- 3D PRINT MODAL (original) -->
 <div id="stlModal">
   <div class="stl-modal-box" role="dialog" aria-modal="true" aria-label="Galerie Impression 3D">
@@ -2172,7 +2431,15 @@ window.addEventListener("resize", setRealVH);
 ====================== */
 (function(){
   const secs = Array.from(document.querySelectorAll("section"));
-  secs.forEach(s => s.classList.add("reveal"));
+  secs.forEach((section) => {
+    section.classList.add("reveal");
+    const children = Array.from(section.querySelectorAll(":scope > h2, :scope > .module, :scope > .skillSphereWrap, :scope > .ai-layout > *, :scope > .ai-project-grid > *, :scope > .carousel-wrapper, :scope > .carousel-controls"))
+      .filter((el) => !el.hidden);
+    children.forEach((el, index) => {
+      el.classList.add("reveal-child");
+      el.style.setProperty("--reveal-i", index);
+    });
+  });
 
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(ent=>{
@@ -2626,9 +2893,29 @@ infoSecondaryBtn?.addEventListener("click", closeInfoModal);
 infoModal?.addEventListener("click", (e)=>{
   if(e.target === infoModal) closeInfoModal();
 });
+
+const cvModal = document.getElementById("cvModal");
+const cvLogoButton = document.getElementById("cvLogoButton");
+const cvCloseBtn = document.getElementById("cvCloseBtn");
+
+function openCvModal(){
+  cvModal?.classList.add("show");
+}
+
+function closeCvModal(){
+  cvModal?.classList.remove("show");
+}
+
+cvLogoButton?.addEventListener("click", openCvModal);
+cvCloseBtn?.addEventListener("click", closeCvModal);
+cvModal?.addEventListener("click", (e)=>{
+  if(e.target === cvModal) closeCvModal();
+});
+
 window.addEventListener("keydown", (e)=>{
   if(e.key === "Escape"){
     closeInfoModal();
+    closeCvModal();
   }
 });
 
@@ -2875,15 +3162,15 @@ function appendChatMessage(author, content, tone = "") {
 function showWelcomePrompt() {
   bodyBox.innerHTML = `
     <p>Salutt!!! 👋</p>
-    <p>Pour ouvrir un salon Discord clair, indique au moins ton nom. Le prénom et le téléphone sont facultatifs.</p>
+    <p>Pour ouvrir un salon Discord clair, indique au moins ton prénom. Le nom et le téléphone sont facultatifs.</p>
     <form id="assistantContactForm" class="assistant-contact-form" onsubmit="event.preventDefault(); startChat();">
       <label>
-        Nom *
-        <input id="assistantLastName" name="lastName" autocomplete="family-name" maxlength="80" required>
+        Prénom *
+        <input id="assistantFirstName" name="firstName" autocomplete="given-name" maxlength="80" required>
       </label>
       <label>
-        Prénom
-        <input id="assistantFirstName" name="firstName" autocomplete="given-name" maxlength="80">
+        Nom
+        <input id="assistantLastName" name="lastName" autocomplete="family-name" maxlength="80">
       </label>
       <label>
         Téléphone
@@ -2939,10 +3226,10 @@ async function startChat() {
   if (chatStarted || chatStarting) return;
 
   const formContact = getAssistantContact();
-  const contact = formContact.lastName ? formContact : assistantContactDraft || formContact;
-  if (!contact.lastName) {
-    setAssistantContactError("Le nom est nécessaire pour nommer le salon Discord.");
-    document.getElementById("assistantLastName")?.focus();
+  const contact = formContact.firstName ? formContact : assistantContactDraft || formContact;
+  if (!contact.firstName) {
+    setAssistantContactError("Le prénom est nécessaire pour nommer le salon Discord.");
+    document.getElementById("assistantFirstName")?.focus();
     return;
   }
   assistantContactDraft = contact;
