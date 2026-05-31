@@ -1,7 +1,7 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# Si pas de paramètre view=1 → bloqué
+# Block direct STL downloads unless the viewer requests view=1.
 RewriteCond %{QUERY_STRING} !(^|&)view=1(&|$)
 RewriteRule \.stl$ - [F,L]
 </IfModule>
