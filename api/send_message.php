@@ -40,8 +40,11 @@ if (!$channel_id) {
 }
 
 $payload = json_encode([
-  "content" => "🌐 VISITEUR : " . $message
-]);
+  "content" => "[Portfolio] VISITEUR: " . $message,
+  "allowed_mentions" => [
+    "parse" => []
+  ]
+], JSON_UNESCAPED_UNICODE);
 
 $ch = curl_init();
 curl_setopt_array($ch, [
@@ -55,7 +58,7 @@ curl_setopt_array($ch, [
   CURLOPT_POSTFIELDS => $payload
 ]);
 
-curl_exec($ch);
+$response = curl_exec($ch);
 $curlError = curl_error($ch);
 $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
@@ -63,6 +66,10 @@ curl_close($ch);
 if ($status >= 200 && $status < 300) {
   echo json_encode(["status" => "sent"], JSON_UNESCAPED_UNICODE);
 } else {
+  $data = json_decode($response, true);
   http_response_code(502);
-  echo json_encode(["error" => "Discord send failed", "details" => $curlError], JSON_UNESCAPED_UNICODE);
+  echo json_encode([
+    "error" => "Discord send failed",
+    "details" => $curlError ?: ($data["message"] ?? "Discord API error")
+  ], JSON_UNESCAPED_UNICODE);
 }

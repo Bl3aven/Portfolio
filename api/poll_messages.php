@@ -41,14 +41,24 @@ if ($status < 200 || $status >= 300 || !is_array($messages)) {
   exit;
 }
 
-// Filter only YOUR messages (not visitor echoes)
+// Filter only Discord replies (not visitor echoes).
 $output = [];
 
 foreach (array_reverse($messages) as $msg) {
-  if (isset($msg["content"], $msg["author"]["username"]) && strpos($msg["content"], "🌐 VISITEUR") === false) {
+  if (!isset($msg["content"], $msg["author"]["username"])) {
+    continue;
+  }
+
+  $content = (string)$msg["content"];
+  $isVisitorEcho =
+    strpos($content, "[Portfolio] VISITEUR:") === 0 ||
+    strpos($content, "🌐 VISITEUR") === 0;
+
+  if (!$isVisitorEcho) {
     $output[] = [
+      "id" => $msg["id"] ?? null,
       "author" => $msg["author"]["username"],
-      "content" => $msg["content"]
+      "content" => $content
     ];
   }
 }

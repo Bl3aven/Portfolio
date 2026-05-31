@@ -547,6 +547,111 @@ section h2 {
   letter-spacing: 0.04em;
   text-align: center;
 }
+
+/* ======================
+   AI LAB SECTION
+====================== */
+.ai-layout{
+  display:grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+  gap: 1.2rem;
+  align-items: stretch;
+}
+
+.ai-lede,
+.ai-stack-panel,
+.ai-project{
+  border: 1px solid rgba(255,255,255,0.12);
+  background:
+    linear-gradient(135deg, rgba(255,159,67,0.08), rgba(54,211,153,0.05)),
+    rgba(12,12,14,0.74);
+  box-shadow: 0 20px 55px rgba(0,0,0,0.42);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.ai-lede,
+.ai-stack-panel{
+  border-radius: 8px;
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+}
+
+.ai-lede p{
+  color: rgba(255,255,255,0.78);
+  line-height: 1.65;
+  margin-top: .85rem;
+}
+
+.ai-kicker{
+  color:#36d399;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.ai-lede h3,
+.ai-stack-panel h3,
+.ai-project h3{
+  color:#f5f5f7;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  margin: .25rem 0 .65rem;
+}
+
+.ai-stack-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+}
+
+.ai-stack-list span,
+.ai-tags span{
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.06);
+  color:rgba(255,255,255,0.82);
+  border-radius:999px;
+  padding:.44rem .72rem;
+  font-size:.78rem;
+  font-weight:700;
+}
+
+.ai-project-grid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.ai-project{
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 176px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.ai-project p{
+  color: rgba(255,255,255,0.72);
+  line-height: 1.5;
+  font-size: .9rem;
+}
+
+.ai-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin-top:1rem;
+}
+
+@media (max-width: 980px){
+  .ai-layout{ grid-template-columns:1fr; }
+  .ai-project-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px){
+  .ai-project-grid{ grid-template-columns: 1fr; }
+}
 /* ======================
    PROJECTS CAROUSEL (original)
 ====================== */
@@ -1211,6 +1316,9 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   font-size: 0.9rem;
   color: #e5e7eb;
 }
+.assistant-body .assistant-error{
+  color:#ffd0c7;
+}
 .assistant-footer {
   padding: 0.8rem;
   display: grid;
@@ -1479,6 +1587,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     <!-- Desktop RIGHT -->
     <div class="nav-right nav-desktop">
       <a href="#skills">Compétences</a>
+      <a href="#ai">IA</a>
       <a href="#projects">Projets</a>
       <a href="#interests">Centres d’intérêt</a>
       <a href="#contact">Contact</a>
@@ -1497,6 +1606,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     <a href="#experience">Expérience</a>
     <a href="#education">Formation</a>
     <a href="#skills">Compétences</a>
+    <a href="#ai">IA</a>
     <a href="#projects">Projets</a>
     <a href="#interests">Centres d’intérêt</a>
     <a href="#contact">Contact</a>
@@ -1703,38 +1813,119 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     <div data-skill="vmware" src="img/skill-nutanix.svg"></div>
     <div data-skill="ubiquiti" src="img/skill-cisco.svg"></div>
     <div data-skill="comfyui" src="img/placeholder-wide.svg"></div>
+    <div data-skill="openwebui" src="img/placeholder-wide.svg"></div>
+    <div data-skill="openclaw" src="img/placeholder-wide.svg"></div>
+    <div data-skill="lmstudio" src="img/placeholder-wide.svg"></div>
+    <div data-skill="vulkan" src="img/placeholder-wide.svg"></div>
+    <div data-skill="ollama" src="img/placeholder-wide.svg"></div>
     <div data-skill="graylog" src="img/placeholder-wide.svg"></div>
     <div data-skill="grafana" src="img/placeholder-wide.svg"></div>
 
   </div>
 
   <div id="skillCloudData" hidden>
-    <div class="skill-logo" data-skill="linux"><img src="img/skill-linux.svg" alt="Linux"></div>
-    <div class="skill-logo" data-skill="network"><img src="img/skill-cisco.svg" alt="Réseaux"></div>
-    <div class="skill-logo" data-skill="python"><img src="img/skill-python.svg" alt="Python"></div>
-    <div class="skill-logo" data-skill="flask"><img src="img/skill-python.svg" alt="Flask"></div>
-    <div class="skill-logo" data-skill="docker"><img src="img/skill-docker.svg" alt="Docker"></div>
-    <div class="skill-logo" data-skill="ansible"><img src="img/skill-ansible.svg" alt="Ansible"></div>
-    <div class="skill-logo" data-skill="nutanix"><img src="img/skill-nutanix.svg" alt="Nutanix"></div>
-    <div class="skill-logo" data-skill="security"><img src="img/skill-security.svg" alt="Sécurité"></div>
-    <div class="skill-logo" data-skill="reverseproxy"><img src="img/skill-security.svg" alt="Reverse proxy"></div>
-    <div class="skill-logo" data-skill="nmap"><img src="img/skill-security.svg" alt="Nmap"></div>
-    <div class="skill-logo" data-skill="wireshark"><img src="img/skill-cisco.svg" alt="Wireshark"></div>
-    <div class="skill-logo" data-skill="glpi"><img src="img/placeholder-wide.svg" alt="GLPI"></div>
-    <div class="skill-logo" data-skill="pfsense"><img src="img/skill-security.svg" alt="pfSense"></div>
-    <div class="skill-logo" data-skill="nextcloud"><img src="img/placeholder-wide.svg" alt="Nextcloud"></div>
-    <div class="skill-logo" data-skill="opnsense"><img src="img/skill-security.svg" alt="OPNsense"></div>
-    <div class="skill-logo" data-skill="yealink"><img src="img/skill-cisco.svg" alt="Yealink"></div>
-    <div class="skill-logo" data-skill="prtg"><img src="img/placeholder-wide.svg" alt="PRTG"></div>
-    <div class="skill-logo" data-skill="stormshield"><img src="img/skill-security.svg" alt="Stormshield"></div>
-    <div class="skill-logo" data-skill="portainer"><img src="img/skill-docker.svg" alt="Portainer"></div>
-    <div class="skill-logo" data-skill="proxmox"><img src="img/skill-nutanix.svg" alt="Proxmox"></div>
-    <div class="skill-logo" data-skill="phpipam"><img src="img/skill-cisco.svg" alt="phpIPAM"></div>
-    <div class="skill-logo" data-skill="vmware"><img src="img/skill-nutanix.svg" alt="VMware"></div>
-    <div class="skill-logo" data-skill="ubiquiti"><img src="img/skill-cisco.svg" alt="Ubiquiti"></div>
-    <div class="skill-logo" data-skill="comfyui"><img src="img/placeholder-wide.svg" alt="ComfyUI"></div>
-    <div class="skill-logo" data-skill="graylog"><img src="img/placeholder-wide.svg" alt="Graylog"></div>
-    <div class="skill-logo" data-skill="grafana"><img src="img/placeholder-wide.svg" alt="Grafana"></div>
+    <div class="skill-logo" data-skill="linux" data-icon="linux" data-color="FCC624" data-alt="Linux"></div>
+    <div class="skill-logo" data-skill="network" data-icon="cisco" data-color="1BA0D7" data-alt="Réseaux"></div>
+    <div class="skill-logo" data-skill="python" data-icon="python" data-color="3776AB" data-alt="Python"></div>
+    <div class="skill-logo" data-skill="flask" data-icon="flask" data-color="FFFFFF" data-alt="Flask"></div>
+    <div class="skill-logo" data-skill="docker" data-icon="docker" data-color="2496ED" data-alt="Docker"></div>
+    <div class="skill-logo" data-skill="ansible" data-icon="ansible" data-color="EE0000" data-alt="Ansible"></div>
+    <div class="skill-logo" data-skill="nutanix" data-icon="nutanix" data-color="024DA1" data-alt="Nutanix"></div>
+    <div class="skill-logo" data-skill="security" data-icon="securityscorecard" data-color="FF9F43" data-alt="Sécurité"></div>
+    <div class="skill-logo" data-skill="reverseproxy" data-icon="nginx" data-color="009639" data-alt="Reverse proxy"></div>
+    <div class="skill-logo" data-skill="nmap" data-src="img/skill-security.svg" data-alt="Nmap"></div>
+    <div class="skill-logo" data-skill="wireshark" data-icon="wireshark" data-color="1679A7" data-alt="Wireshark"></div>
+    <div class="skill-logo" data-skill="glpi" data-src="img/placeholder-wide.svg" data-alt="GLPI"></div>
+    <div class="skill-logo" data-skill="pfsense" data-icon="pfsense" data-color="212121" data-alt="pfSense"></div>
+    <div class="skill-logo" data-skill="nextcloud" data-icon="nextcloud" data-color="0082C9" data-alt="Nextcloud"></div>
+    <div class="skill-logo" data-skill="opnsense" data-icon="opnsense" data-color="D94F00" data-alt="OPNsense"></div>
+    <div class="skill-logo" data-skill="yealink" data-src="img/skill-cisco.svg" data-alt="Yealink"></div>
+    <div class="skill-logo" data-skill="prtg" data-src="img/placeholder-wide.svg" data-alt="PRTG"></div>
+    <div class="skill-logo" data-skill="stormshield" data-src="img/skill-security.svg" data-alt="Stormshield"></div>
+    <div class="skill-logo" data-skill="portainer" data-icon="portainer" data-color="13BEF9" data-alt="Portainer"></div>
+    <div class="skill-logo" data-skill="proxmox" data-icon="proxmox" data-color="E57000" data-alt="Proxmox"></div>
+    <div class="skill-logo" data-skill="phpipam" data-src="img/skill-cisco.svg" data-alt="phpIPAM"></div>
+    <div class="skill-logo" data-skill="vmware" data-icon="vmware" data-color="607078" data-alt="VMware"></div>
+    <div class="skill-logo" data-skill="ubiquiti" data-icon="ubiquiti" data-color="0559C9" data-alt="Ubiquiti"></div>
+    <div class="skill-logo" data-skill="openwebui" data-logo="https://raw.githubusercontent.com/open-webui/open-webui/main/static/favicon.png" data-src="img/placeholder-wide.svg" data-alt="Open WebUI"></div>
+    <div class="skill-logo" data-skill="comfyui" data-src="img/placeholder-wide.svg" data-alt="ComfyUI"></div>
+    <div class="skill-logo" data-skill="openclaw" data-src="img/placeholder-wide.svg" data-alt="OpenClaw"></div>
+    <div class="skill-logo" data-skill="lmstudio" data-icon="lmstudio" data-color="00A67E" data-alt="LM Studio"></div>
+    <div class="skill-logo" data-skill="vulkan" data-icon="vulkan" data-color="AC162C" data-alt="Vulkan"></div>
+    <div class="skill-logo" data-skill="ollama" data-icon="ollama" data-color="FFFFFF" data-alt="Ollama"></div>
+    <div class="skill-logo" data-skill="graylog" data-icon="graylog" data-color="FF3633" data-alt="Graylog"></div>
+    <div class="skill-logo" data-skill="grafana" data-icon="grafana" data-color="F46800" data-alt="Grafana"></div>
+  </div>
+</section>
+
+
+<section id="ai">
+  <h2>IA locale &amp; workflows</h2>
+
+  <div class="ai-layout">
+    <div class="ai-lede">
+      <div class="ai-kicker">Lab personnel</div>
+      <h3>Interfaces, agents et inf&eacute;rence locale</h3>
+      <p>
+        Je travaille autour d'une stack IA auto-h&eacute;bergeable : interfaces LLM, workflows g&eacute;n&eacute;ratifs,
+        agents outill&eacute;s et ex&eacute;cution locale de mod&egrave;les. L'objectif est de garder la main sur les
+        donn&eacute;es, les co&ucirc;ts, les performances et l'int&eacute;gration avec l'infrastructure existante.
+      </p>
+      <p>
+        Les exp&eacute;rimentations couvrent Open WebUI avec Ollama, ComfyUI pour les pipelines visuels,
+        OpenClaw pour les usages agentiques, et LM Studio sur backend Vulkan pour exploiter du
+        mat&eacute;riel local quand CUDA n'est pas l'option la plus naturelle.
+      </p>
+    </div>
+
+    <div class="ai-stack-panel">
+      <h3>Stack suivie</h3>
+      <div class="ai-stack-list">
+        <span>Open WebUI</span>
+        <span>ComfyUI</span>
+        <span>OpenClaw</span>
+        <span>LM Studio</span>
+        <span>Vulkan</span>
+        <span>Ollama</span>
+        <span>Docker</span>
+        <span>Reverse proxy</span>
+        <span>GPU local</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-project-grid">
+    <article class="ai-project">
+      <div>
+        <h3>Open WebUI + Ollama</h3>
+        <p>Portail priv&eacute; pour discuter avec des mod&egrave;les locaux, g&eacute;rer plusieurs backends et exposer une API interne propre.</p>
+      </div>
+      <div class="ai-tags"><span>LLM</span><span>Docker</span><span>API</span></div>
+    </article>
+
+    <article class="ai-project">
+      <div>
+        <h3>ComfyUI</h3>
+        <p>Workflows images et automatisation de pipelines par n&oelig;uds, avec versions reproductibles et exp&eacute;rimentation rapide.</p>
+      </div>
+      <div class="ai-tags"><span>Diffusion</span><span>Nodes</span><span>GPU</span></div>
+    </article>
+
+    <article class="ai-project">
+      <div>
+        <h3>LM Studio + Vulkan</h3>
+        <p>Tests de mod&egrave;les locaux sur machines non CUDA, comparaison des performances et choix du bon backend d'inf&eacute;rence.</p>
+      </div>
+      <div class="ai-tags"><span>Vulkan</span><span>Local LLM</span><span>Bench</span></div>
+    </article>
+
+    <article class="ai-project">
+      <div>
+        <h3>OpenClaw &amp; agents</h3>
+        <p>Exploration d'agents capables d'orchestrer des t&acirc;ches, avec attention particuli&egrave;re aux permissions et aux limites de s&eacute;curit&eacute;.</p>
+      </div>
+      <div class="ai-tags"><span>Agents</span><span>Automation</span><span>SecOps</span></div>
+    </article>
   </div>
 </section>
 
@@ -2348,7 +2539,12 @@ const skillData = {
   graylog: { title:"Graylog", desc:"Centralisation de logs, parsing, alerting et investigation.", img:"img/skill-preview-graylog.jpg" },
   grafana: { title:"Grafana", desc:"Dashboards, visualisation, métriques et observabilité.", img:"img/skill-preview-grafana.jpg" },
 
-  comfyui: { title:"ComfyUI", desc:"Workflows IA (expérimentation), automatisation de pipelines et itérations.", img:"img/skill-preview-comfyui.jpg" }
+  comfyui: { title:"ComfyUI", desc:"Workflows IA visuels par nœuds, automatisation de pipelines et itérations reproductibles.", img:"img/placeholder-wide.svg" },
+  openwebui: { title:"Open WebUI", desc:"Interface auto-hébergée pour LLMs, connexion à Ollama et APIs compatibles, gestion des utilisateurs et workflows.", img:"img/placeholder-wide.svg" },
+  openclaw: { title:"OpenClaw", desc:"Exploration d'agents IA capables d'orchestrer des tâches, avec cadrage strict des permissions et des usages.", img:"img/placeholder-wide.svg" },
+  lmstudio: { title:"LM Studio", desc:"Exécution et comparaison de modèles locaux, notamment avec backend Vulkan sur machines non CUDA.", img:"img/placeholder-wide.svg" },
+  vulkan: { title:"Vulkan", desc:"Backend d'accélération graphique exploité pour tester l'inférence locale sur GPU compatibles.", img:"img/placeholder-wide.svg" },
+  ollama: { title:"Ollama", desc:"Service local pour télécharger, servir et intégrer des modèles LLM dans une stack privée.", img:"img/placeholder-wide.svg" }
 };
 
 // Expose for module script
@@ -2431,6 +2627,12 @@ const projects = [
     desc: "Architecture conforme HDS & ISO 27001 pour hébergement sécurisé.",
     img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
     stack: ["Nextcloud", "ISO 27001", "HDS", "Reverse Proxy"]
+  },
+  {
+    title: "Lab IA locale",
+    desc: "Open WebUI, Ollama, LM Studio/Vulkan, ComfyUI et agents OpenClaw en environnement maîtrisé.",
+    img: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+    stack: ["Open WebUI", "Ollama", "ComfyUI", "LM Studio", "Vulkan"]
   },
   {
     title: "Impression 3D (Galerie)",
@@ -2617,6 +2819,8 @@ const inputBox = document.getElementById("assistantInput");
 const closeBtn = document.getElementById("assistantClose");
 
 let chatStarted = false;
+let chatStarting = false;
+const lastMessages = new Set();
 
 /* Hide bubble during modal initially */
 bubble.style.opacity = "0";
@@ -2624,8 +2828,9 @@ bubble.style.pointerEvents = "none";
 
 closeBtn.onclick = () => { windowBox.style.display = "none"; };
 
-function appendChatMessage(author, content) {
+function appendChatMessage(author, content, tone = "") {
   const line = document.createElement("p");
+  if (tone) line.className = tone;
   const label = document.createElement("strong");
   label.textContent = `${author} :`;
   line.appendChild(label);
@@ -2669,33 +2874,61 @@ setTimeout(() => {
 
 function closePrompt() { windowBox.style.display = "none"; }
 
-function startChat() {
-  if (chatStarted) return;
+async function startChat() {
+  if (chatStarted || chatStarting) return;
 
-  chatStarted = true;
-  bodyBox.innerHTML = `<p>Parfait ! 🎉 Tu peux m’écrire ici, je te répondrai très vite.</p>`;
-  footerBox.style.display = "flex";
+  chatStarting = true;
+  bodyBox.innerHTML = "";
+  appendChatMessage("Assistant", "Ouverture du salon Discord...");
+  footerBox.style.display = "none";
 
-  fetch("/api/start_chat.php", { method: "POST", credentials: "include" }).catch(()=>{});
+  try {
+    const response = await fetch("/api/start_chat.php", { method: "POST", credentials: "include" });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.status !== "ok") {
+      throw new Error(data.error || "Impossible d'ouvrir le salon Discord.");
+    }
+
+    chatStarted = true;
+    lastMessages.clear();
+    bodyBox.innerHTML = `<p>Parfait ! Tu peux m’écrire ici, je te répondrai très vite.</p>`;
+    footerBox.style.display = "flex";
+    inputBox?.focus();
+  } catch (error) {
+    chatStarted = false;
+    bodyBox.innerHTML = "";
+    appendChatMessage("Assistant", "Le lien Discord ne répond pas pour le moment. Tu peux réessayer ou m'écrire par mail.", "assistant-error");
+    const retry = document.createElement("div");
+    retry.className = "assistant-buttons";
+    retry.innerHTML = `<button type="button" onclick="startChat()">Réessayer</button>`;
+    bodyBox.appendChild(retry);
+  } finally {
+    chatStarting = false;
+  }
 }
 
-function sendMessage() {
+async function sendMessage() {
   const msg = inputBox.value.trim();
   if (!msg) return;
 
   appendChatMessage("Toi", msg);
   inputBox.value = "";
 
-  fetch("/api/send_message.php", {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: msg })
-  }).catch(()=>{});
+  try {
+    const response = await fetch("/api/send_message.php", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msg })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.status !== "sent") {
+      throw new Error(data.error || "Message non envoyé.");
+    }
+  } catch (error) {
+    appendChatMessage("Assistant", "Le message n'a pas été remis à Discord. Réessaie dans quelques instants.", "assistant-error");
+  }
 }
-
-/* DISCORD POLLING */
-let lastMessages = [];
 
 function pollMessages() {
   if (!chatStarted) return;
@@ -2703,13 +2936,14 @@ function pollMessages() {
   fetch("/api/poll_messages.php", { credentials: "include" })
     .then(res => res.json())
     .then(data => {
+      if (!Array.isArray(data)) return;
       data.forEach(msg => {
-        const key = msg.author + msg.content;
-        if (!lastMessages.includes(key)) {
-          lastMessages.push(key);
+        const key = `${msg.id || ""}:${msg.author || ""}:${msg.content || ""}`;
+        if (!lastMessages.has(key)) {
+          lastMessages.add(key);
 
           const displayName =
-            msg.author.toLowerCase() === "bleaven"
+            String(msg.author || "").toLowerCase() === "bleaven"
               ? "Mathys"
               : msg.author;
 
@@ -2745,11 +2979,15 @@ if (stage && cloudData) {
     .map((el) => {
       const key = (el.getAttribute("data-skill") || "").trim();
       const imgEl = el.querySelector("img");
-      const src = imgEl?.getAttribute("src") || "";
-      const alt = (imgEl?.getAttribute("alt") || key || "Skill").trim();
-      return { key, src, alt };
+      const icon = (el.getAttribute("data-icon") || "").trim();
+      const color = (el.getAttribute("data-color") || "FFFFFF").trim().replace(/^#/, "");
+      const dynamicSrc = icon ? `https://cdn.simpleicons.org/${encodeURIComponent(icon)}/${encodeURIComponent(color)}` : "";
+      const src = el.getAttribute("data-logo") || dynamicSrc || el.getAttribute("data-src") || imgEl?.getAttribute("src") || "";
+      const fallbackSrc = el.getAttribute("data-src") || imgEl?.getAttribute("src") || "img/placeholder-wide.svg";
+      const alt = (el.getAttribute("data-alt") || imgEl?.getAttribute("alt") || key || "Skill").trim();
+      return { key, src, fallbackSrc, alt, color };
     })
-    .filter((s) => s.key && s.src);
+    .filter((s) => s.key);
 
   // --- Scene
   const scene = new THREE.Scene();
@@ -2817,17 +3055,31 @@ if (stage && cloudData) {
 
   let points = spherePoints(Math.max(1, skills.length));
 
-  function makeSkillTexture(skill) {
-    const canvas = document.createElement("canvas");
-    canvas.width = 256;
-    canvas.height = 256;
-    const ctx = canvas.getContext("2d");
-    const accent = skill.key === "docker" ? "#2496ed"
+  function accentFor(skill) {
+    if (skill.color && /^[0-9a-f]{6}$/i.test(skill.color)) return `#${skill.color}`;
+    return skill.key === "docker" ? "#2496ed"
       : skill.key === "python" || skill.key === "flask" ? "#ffd43b"
       : skill.key === "linux" ? "#f5c542"
       : skill.key === "ansible" ? "#f5f5f7"
       : skill.key === "security" || skill.key.includes("sense") ? "#ff9f43"
       : "#36d399";
+  }
+
+  function drawImageContained(ctx, img, x, y, w, h) {
+    const iw = img.naturalWidth || img.width || 1;
+    const ih = img.naturalHeight || img.height || 1;
+    const ratio = Math.min(w / iw, h / ih);
+    const dw = iw * ratio;
+    const dh = ih * ratio;
+    ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+  }
+
+  function makeSkillCanvas(skill, logo = null) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+    const accent = accentFor(skill);
 
     ctx.clearRect(0, 0, 256, 256);
     ctx.fillStyle = "rgba(10, 10, 10, 0.82)";
@@ -2838,31 +3090,70 @@ if (stage && cloudData) {
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = accent;
-    ctx.shadowColor = accent;
-    ctx.shadowBlur = 18;
-    ctx.font = "700 66px Inter, Arial, sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const label = skill.alt
-      .replace(/[^a-z0-9]/gi, " ")
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((part) => part[0])
-      .join("")
-      .slice(0, 3)
-      .toUpperCase() || skill.key.slice(0, 3).toUpperCase();
-    ctx.fillText(label, 128, 118);
+    if (logo) {
+      ctx.shadowColor = accent;
+      ctx.shadowBlur = 16;
+      drawImageContained(ctx, logo, 62, 46, 132, 112);
+    } else {
+      ctx.fillStyle = accent;
+      ctx.shadowColor = accent;
+      ctx.shadowBlur = 18;
+      ctx.font = "700 66px Inter, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const label = skill.alt
+        .replace(/[^a-z0-9]/gi, " ")
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((part) => part[0])
+        .join("")
+        .slice(0, 3)
+        .toUpperCase() || skill.key.slice(0, 3).toUpperCase();
+      ctx.fillText(label, 128, 118);
+    }
 
     ctx.shadowBlur = 0;
     ctx.fillStyle = "rgba(255, 255, 255, 0.78)";
     ctx.font = "600 24px Inter, Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     const shortName = skill.alt.length > 13 ? `${skill.alt.slice(0, 12)}.` : skill.alt;
     ctx.fillText(shortName, 128, 174);
 
+    return canvas;
+  }
+
+  function makeSkillTexture(skill) {
+    const canvas = makeSkillCanvas(skill);
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     return texture;
+  }
+
+  function loadLogo(candidates, onLogo) {
+    const urls = candidates.filter(Boolean);
+    const tryNext = (index) => {
+      if (index >= urls.length) return;
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.referrerPolicy = "no-referrer";
+      img.onload = () => onLogo(img);
+      img.onerror = () => tryNext(index + 1);
+      img.src = urls[index];
+    };
+    tryNext(0);
+  }
+
+  function hydrateSpriteLogo(sprite, skill) {
+    loadLogo([skill.src, skill.fallbackSrc], (img) => {
+      const nextCanvas = makeSkillCanvas(skill, img);
+      const nextTexture = new THREE.CanvasTexture(nextCanvas);
+      nextTexture.colorSpace = THREE.SRGBColorSpace;
+      const previous = sprite.material.map;
+      sprite.material.map = nextTexture;
+      sprite.material.needsUpdate = true;
+      previous?.dispose?.();
+    });
   }
 
   function makeSprite(skill) {
@@ -2884,6 +3175,7 @@ if (stage && cloudData) {
 
     group.add(sp);
     sprites.push(sp);
+    hydrateSpriteLogo(sp, skill);
   }
 
   skills.forEach(makeSprite);
