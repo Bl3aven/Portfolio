@@ -1,6 +1,8 @@
 {
-  "name": "Portfolio - Mathys",
-  "short_name": "Mathys",
+  "name": "Mathys Tournayre — DevOps, Cloud & IA",
+  "short_name": "Tournayre IA",
+  "description": "Portfolio DevOps, Cloud, automatisation et IA locale de Mathys Tournayre.",
+  "lang": "fr",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",

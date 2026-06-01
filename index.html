@@ -2,23 +2,23 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Mathys Tournayre — DevOps &amp; Cloud Engineer</title>
+<title>Mathys Tournayre — DevOps, Cloud &amp; IA Engineer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="description" content="Mathys Tournayre — Alternant ingénieur ISEN chez Oxeegen France. DevOps, Cloud, Infrastructure &amp; Automatisation.">
+<meta name="description" content="Mathys Tournayre — Alternant ingénieur ISEN chez Oxeegen France. DevOps, Cloud, IA locale, infrastructure &amp; automatisation.">
 <meta name="author" content="Mathys Tournayre">
 
 <!-- OPEN GRAPH -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Mathys Tournayre — DevOps &amp; Cloud Engineer">
-<meta property="og:description" content="Découvrez mon portfolio DevOps &amp; Cloud : automatisation, sécurité, CI/CD, cloud et infrastructures modernes.">
+<meta property="og:title" content="Mathys Tournayre — DevOps, Cloud &amp; IA Engineer">
+<meta property="og:description" content="Découvrez mon portfolio DevOps, Cloud &amp; IA : automatisation, sécurité, CI/CD, infrastructures modernes et IA locale.">
 <meta property="og:url" content="https://tournayre.ovh/">
 <meta property="og:image" content="https://tournayre.ovh/og-preview.png">
 
 <!-- TWITTER / X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mathys Tournayre — DevOps &amp; Cloud Engineer">
-<meta name="twitter:description" content="Portfolio DevOps &amp; Cloud Engineer — automatisation, sécurité, cloud &amp; infrastructures.">
+<meta name="twitter:title" content="Mathys Tournayre — DevOps, Cloud &amp; IA Engineer">
+<meta name="twitter:description" content="Portfolio DevOps, Cloud &amp; IA — automatisation, sécurité, cloud, infrastructures et IA locale.">
 <meta name="twitter:image" content="https://tournayre.ovh/og-preview.png">
 
 <meta name="theme-color" content="#0a0a0a">
@@ -803,6 +803,7 @@ section h2 {
   height: 300px;
   transform-style: preserve-3d;
   transition: transform 0.9s cubic-bezier(.22,.61,.36,1);
+  touch-action: pan-y;
 }
 
 .carousel-card {
@@ -912,9 +913,72 @@ section h2 {
 }
 
 /* Mobile Carousel */
-@media (max-width: 600px) {
-  .carousel { width: 240px; height: 240px; }
-  .carousel-card { width: 200px; height: 250px; margin-left: -100px; margin-top: -125px; }
+@media (max-width: 720px) {
+  .carousel-wrapper{
+    perspective:none;
+    margin-top:1.2rem;
+    min-height: 400px;
+    overflow:hidden;
+  }
+  .carousel{
+    width:min(318px, calc(100vw - 2.6rem));
+    height: 372px;
+    transform:none !important;
+    transform-style: flat;
+  }
+  .carousel-card{
+    width:100%;
+    height:356px;
+    left:0;
+    top:0;
+    margin:0;
+    opacity:0;
+    pointer-events:none;
+    transform:translateX(105%) scale(.94) !important;
+    transition:opacity .32s ease, transform .38s cubic-bezier(.16, 1, .3, 1);
+  }
+  .carousel-card.is-active{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateX(0) scale(1) !important;
+    z-index:3;
+  }
+  .carousel-card.is-prev{
+    opacity:.32;
+    transform:translateX(-108%) scale(.92) !important;
+    z-index:1;
+  }
+  .carousel-card.is-next{
+    opacity:.32;
+    transform:translateX(108%) scale(.92) !important;
+    z-index:1;
+  }
+  .card-face{
+    border-radius: 8px;
+  }
+  .card-face img{
+    height:150px;
+  }
+  .card-face .content{
+    padding:1.05rem;
+  }
+  .card-face h3{
+    font-size:1.32rem;
+    line-height:1.14;
+  }
+  .card-face p{
+    font-size:.92rem;
+    line-height:1.45;
+  }
+  .carousel-controls{
+    gap:.8rem;
+    margin-top:1rem;
+  }
+  .carousel-btn{
+    flex:1 1 0;
+    max-width:150px;
+    padding:.72rem .85rem;
+  }
 }
 
 /* UX PATCH */
@@ -1273,6 +1337,8 @@ footer {
 .cv-preview{
   min-height:0;
   background:#121212;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
 }
 .cv-preview iframe{
   width:100%;
@@ -1281,10 +1347,57 @@ footer {
   background:#fff;
 }
 @media (max-width: 720px){
-  .cv-box{ height: 88vh; }
-  .cv-head{ align-items:flex-start; flex-direction:column; }
-  .cv-actions{ width:100%; }
-  .cv-download{ flex:1; }
+  #cvModal{
+    align-items:stretch;
+    padding:
+      max(.55rem, env(safe-area-inset-top))
+      max(.55rem, env(safe-area-inset-right))
+      max(.55rem, env(safe-area-inset-bottom))
+      max(.55rem, env(safe-area-inset-left));
+  }
+  .cv-box{
+    width:100%;
+    height: calc((var(--vh, 1vh) * 100) - max(1.1rem, env(safe-area-inset-top)) - max(1.1rem, env(safe-area-inset-bottom)));
+    max-height:none;
+  }
+  .cv-head{
+    align-items:center;
+    flex-direction:row;
+    padding:.72rem;
+    gap:.7rem;
+  }
+  .cv-head h3{
+    font-size:.9rem;
+    min-width:0;
+  }
+  .cv-actions{
+    width:auto;
+    flex:0 0 auto;
+    gap:.5rem;
+  }
+  .cv-download{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:0 .72rem;
+    font-size:.84rem;
+    box-shadow:0 6px 0 #8d3500, 0 12px 24px rgba(255,112,18,.18);
+  }
+  .cv-close{
+    width:38px;
+    min-height:38px;
+  }
+  .cv-preview iframe{
+    display:block;
+    min-height:100%;
+  }
+}
+
+@supports (height: 100dvh){
+  @media (max-width: 720px){
+    .cv-box{
+      height: calc(100dvh - max(1.1rem, env(safe-area-inset-top)) - max(1.1rem, env(safe-area-inset-bottom)));
+    }
+  }
 }
 
 /* ======================
@@ -1939,7 +2052,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
 <header>
   <div class="hero">
-    <h1>DevOps &amp; <span>Cloud Engineer</span></h1>
+    <h1>DevOps, Cloud &amp; <span>IA Engineer</span></h1>
     <p>
       Je conçois des plateformes modernes, automatisées et sécurisées pour les environnements cloud et professionnels.
     </p>
@@ -2342,12 +2455,12 @@ body.loading #assistantBubble, body.loading #assistantWindow {
     <div class="cv-head">
       <h3>CV — Mathys Tournayre</h3>
       <div class="cv-actions">
-        <a class="cv-download" href="cv-tournayre-fr-2026.pdf" download>Télécharger le CV</a>
+        <a class="cv-download" href="cv-tournayre-fr-2026.pdf" download aria-label="Télécharger le CV">Télécharger</a>
         <button class="cv-close" id="cvCloseBtn" type="button" aria-label="Fermer le CV">✕</button>
       </div>
     </div>
     <div class="cv-preview">
-      <iframe src="cv-mathys-tournayre.html" title="Aperçu du CV de Mathys Tournayre"></iframe>
+      <iframe src="cv-mathys-tournayre.html?modal=1" title="Aperçu du CV de Mathys Tournayre"></iframe>
     </div>
   </div>
 </div>
@@ -3017,8 +3130,34 @@ const projects = [
 
 const carousel = document.getElementById("carousel");
 let angle = 0;
+let activeProject = 0;
 const step = 360 / projects.length;
 const radius = 340;
+const mobileCarouselQuery = window.matchMedia("(max-width: 720px)");
+const carouselCards = [];
+
+function projectIndex(index){
+  return (index + projects.length) % projects.length;
+}
+
+function renderCarousel(){
+  if (!carousel) return;
+
+  if (mobileCarouselQuery.matches) {
+    carousel.style.transform = "none";
+    carouselCards.forEach((card, index) => {
+      card.classList.toggle("is-active", index === activeProject);
+      card.classList.toggle("is-prev", index === projectIndex(activeProject - 1));
+      card.classList.toggle("is-next", index === projectIndex(activeProject + 1));
+    });
+    return;
+  }
+
+  carousel.style.transform = `rotateY(${angle}deg)`;
+  carouselCards.forEach((card) => {
+    card.classList.remove("is-active", "is-prev", "is-next");
+  });
+}
 
 /* Build cards */
 projects.forEach((p, i) => {
@@ -3058,12 +3197,23 @@ projects.forEach((p, i) => {
   };
 
   carousel.appendChild(card);
+  carouselCards.push(card);
 });
+renderCarousel();
+if (mobileCarouselQuery.addEventListener) {
+  mobileCarouselQuery.addEventListener("change", renderCarousel);
+} else {
+  mobileCarouselQuery.addListener(renderCarousel);
+}
 
 /* Rotation buttons */
 function rotateCarousel(dir = 1) {
-  angle += step * dir;
-  carousel.style.transform = `rotateY(${angle}deg)`;
+  if (mobileCarouselQuery.matches) {
+    activeProject = projectIndex(activeProject - dir);
+  } else {
+    angle += step * dir;
+  }
+  renderCarousel();
 }
 
 document.getElementById("nextBtn").onclick = () => rotateCarousel(-1);
@@ -3085,10 +3235,10 @@ window.addEventListener("mouseup", () => {
 });
 
 carousel.addEventListener("mousemove", e => {
-  if (!isDragging) return;
+  if (!isDragging || mobileCarouselQuery.matches) return;
   const delta = e.clientX - startX;
   angle += delta * 0.15;
-  carousel.style.transform = `rotateY(${angle}deg)`;
+  renderCarousel();
   startX = e.clientX;
 });
 
@@ -3096,15 +3246,26 @@ carousel.addEventListener("mousemove", e => {
 let velocity = 0;
 let lastX = 0;
 let lastTime = 0;
+let touchStartX = 0;
+let touchDeltaX = 0;
 
 carousel.addEventListener("touchstart", e => {
   lastX = e.touches[0].clientX;
+  touchStartX = lastX;
+  touchDeltaX = 0;
   lastTime = Date.now();
   velocity = 0;
-});
+}, { passive: true });
 
 carousel.addEventListener("touchmove", e => {
   const x = e.touches[0].clientX;
+  touchDeltaX = x - touchStartX;
+
+  if (mobileCarouselQuery.matches) {
+    lastX = x;
+    return;
+  }
+
   const now = Date.now();
 
   const dx = x - lastX;
@@ -3113,17 +3274,22 @@ carousel.addEventListener("touchmove", e => {
   angle += dx * 0.045;
   velocity = (dx / dt) * 16;
 
-  carousel.style.transform = `rotateY(${angle}deg)`;
+  renderCarousel();
 
   lastX = x;
   lastTime = now;
-});
+}, { passive: true });
 
 carousel.addEventListener("touchend", () => {
+  if (mobileCarouselQuery.matches) {
+    if (Math.abs(touchDeltaX) > 38) rotateCarousel(touchDeltaX < 0 ? -1 : 1);
+    return;
+  }
+
   const momentum = () => {
     velocity *= 0.9;
     angle += velocity * 10;
-    carousel.style.transform = `rotateY(${angle}deg)`;
+    renderCarousel();
 
     if (Math.abs(velocity) > 0.02) requestAnimationFrame(momentum);
   };

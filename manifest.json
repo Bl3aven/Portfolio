@@ -1,6 +1,8 @@
 {
-  "name": "Mathys Tournayre — DevOps & Cloud Engineer",
-  "short_name": "Tournayre",
+  "name": "Mathys Tournayre — DevOps, Cloud & IA",
+  "short_name": "Tournayre IA",
+  "description": "Portfolio DevOps, Cloud, automatisation et IA locale de Mathys Tournayre.",
+  "lang": "fr",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0a",
