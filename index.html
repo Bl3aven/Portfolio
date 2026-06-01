@@ -21,7 +21,10 @@
 <meta name="twitter:description" content="Portfolio DevOps, Cloud &amp; IA — automatisation, sécurité, cloud, infrastructures et IA locale.">
 <meta name="twitter:image" content="https://tournayre.ovh/og-preview.png">
 
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" id="browserThemeColor" content="#120d08">
+<meta name="msapplication-TileColor" content="#120d08">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <!-- FAVICONS -->
 <link rel="icon" href="favicon/favicon.ico">
@@ -3094,6 +3097,60 @@ function setRealVH() {
 }
 setRealVH();
 window.addEventListener("resize", setRealVH);
+
+/* ======================
+   BROWSER THEME COLOR
+====================== */
+(function initBrowserThemeColor(){
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const tileMeta = document.querySelector('meta[name="msapplication-TileColor"]');
+  if (!themeMeta) return;
+
+  const defaultColor = "#120d08";
+  const sectionColors = {
+    about: "#0d1117",
+    experience: "#12100c",
+    education: "#0f1116",
+    skills: "#10140f",
+    ai: "#10121c",
+    projects: "#120d08",
+    profiles: "#0b1513",
+    interests: "#14110b",
+    contact: "#120d08"
+  };
+  const visibleSections = new Map();
+
+  function setBrowserChromeColor(color = defaultColor){
+    themeMeta.setAttribute("content", color);
+    tileMeta?.setAttribute("content", color);
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    setBrowserChromeColor();
+    return;
+  }
+
+  const colorObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        visibleSections.set(entry.target, entry.intersectionRatio);
+      } else {
+        visibleSections.delete(entry.target);
+      }
+    });
+
+    const current = Array.from(visibleSections.entries())
+      .sort((a, b) => b[1] - a[1])[0]?.[0];
+
+    setBrowserChromeColor(sectionColors[current?.id] || defaultColor);
+  }, {
+    threshold: [0.15, 0.35, 0.55, 0.75],
+    rootMargin: "-18% 0px -45% 0px"
+  });
+
+  document.querySelectorAll("section[id]").forEach((section) => colorObserver.observe(section));
+  setBrowserChromeColor();
+})();
 
 /* ======================
    SECTION REVEAL
