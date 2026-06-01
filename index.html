@@ -3860,8 +3860,8 @@ function appendChatMessage(author, content, tone = "") {
 
 function showWelcomePrompt() {
   bodyBox.innerHTML = `
-    <p>Salutt!!! 👋</p>
-    <p>Pour ouvrir un salon Discord clair, indique au moins ton prénom. Le nom et le téléphone sont facultatifs.</p>
+    <p>Salut !</p>
+    <p>Pour démarrer la discussion, indique au moins ton prénom. Le nom et le téléphone sont facultatifs.</p>
     <form id="assistantContactForm" class="assistant-contact-form" onsubmit="event.preventDefault(); startChat();">
       <label>
         Prénom *
@@ -3877,7 +3877,7 @@ function showWelcomePrompt() {
       </label>
       <div id="assistantContactError" class="assistant-field-error" aria-live="polite"></div>
       <div class="assistant-buttons">
-        <button type="submit">Ouvrir Discord</button>
+        <button type="submit">Démarrer la discussion</button>
         <button type="button" onclick="closePrompt()">Non merci</button>
       </div>
     </form>
@@ -3927,7 +3927,7 @@ async function startChat() {
   const formContact = getAssistantContact();
   const contact = formContact.firstName ? formContact : assistantContactDraft || formContact;
   if (!contact.firstName) {
-    setAssistantContactError("Le prénom est nécessaire pour nommer le salon Discord.");
+    setAssistantContactError("Le prénom est nécessaire pour démarrer la discussion.");
     document.getElementById("assistantFirstName")?.focus();
     return;
   }
@@ -3935,7 +3935,7 @@ async function startChat() {
 
   chatStarting = true;
   bodyBox.innerHTML = "";
-  appendChatMessage("Assistant", "Ouverture du salon Discord...");
+  appendChatMessage("Assistant", "Préparation de la discussion...");
   footerBox.style.display = "none";
 
   try {
@@ -3947,7 +3947,7 @@ async function startChat() {
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok || data.status !== "ok") {
-      throw new Error(data.error || "Impossible d'ouvrir le salon Discord.");
+      throw new Error(data.error || "Impossible de démarrer la discussion.");
     }
 
     chatStarted = true;
@@ -3958,7 +3958,7 @@ async function startChat() {
   } catch (error) {
     chatStarted = false;
     bodyBox.innerHTML = "";
-    appendChatMessage("Assistant", "Le lien Discord ne répond pas pour le moment. Tu peux réessayer ou m'écrire par mail.", "assistant-error");
+    appendChatMessage("Assistant", "La discussion ne répond pas pour le moment. Tu peux réessayer ou m'écrire par mail.", "assistant-error");
     const retry = document.createElement("div");
     retry.className = "assistant-buttons";
     retry.innerHTML = `<button type="button" onclick="startChat()">Réessayer</button>`;
@@ -3987,7 +3987,7 @@ async function sendMessage() {
       throw new Error(data.error || "Message non envoyé.");
     }
   } catch (error) {
-    appendChatMessage("Assistant", "Le message n'a pas été remis à Discord. Réessaie dans quelques instants.", "assistant-error");
+    appendChatMessage("Assistant", "Le message n'a pas été transmis. Réessaie dans quelques instants.", "assistant-error");
   }
 }
 
