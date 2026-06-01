@@ -1125,6 +1125,208 @@ section h2 {
 /* UX PATCH */
 .carousel, .carousel * { user-select: none; }
 
+/* ======================
+   PUBLIC PROFILES WIDGETS
+====================== */
+.profile-grid{
+  display:grid;
+  grid-template-columns:minmax(0, 1.45fr) minmax(280px, .65fr);
+  gap:clamp(1rem, 2vw, 1.35rem);
+  align-items:stretch;
+}
+
+.profile-panel{
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(680px 280px at 18% 0%, rgba(255,159,67,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  padding:clamp(1.1rem, 2.2vw, 1.55rem);
+  min-height:100%;
+  position:relative;
+  overflow:hidden;
+}
+
+.profile-panel::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:2px;
+  background:linear-gradient(180deg, rgba(255,159,67,.82), rgba(54,211,153,.44));
+  pointer-events:none;
+}
+
+.profile-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+
+.profile-kicker{
+  color:#36d399;
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.profile-head h3{
+  color:#f5f5f7;
+  font-size:clamp(1.16rem, 2vw, 1.45rem);
+  margin-top:.25rem;
+}
+
+.profile-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:0 .9rem;
+  border-radius:999px;
+  border:1px solid rgba(255,159,67,.34);
+  color:#ffb866;
+  text-decoration:none;
+  font-size:.84rem;
+  font-weight:800;
+  white-space:nowrap;
+  background:rgba(255,159,67,.075);
+  transition:transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.profile-link:hover,
+.profile-link:focus-visible{
+  transform:translateY(-1px);
+  border-color:rgba(255,159,67,.56);
+  background:rgba(255,159,67,.13);
+  outline:none;
+}
+
+.github-repo-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:.85rem;
+}
+
+.github-repo{
+  display:flex;
+  flex-direction:column;
+  gap:.72rem;
+  min-height:146px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(0,0,0,.22);
+  padding:.95rem;
+  color:inherit;
+  text-decoration:none;
+  transition:transform .22s ease, border-color .22s ease, background .22s ease;
+}
+
+.github-repo:hover,
+.github-repo:focus-visible{
+  transform:translateY(-3px);
+  border-color:rgba(255,159,67,.34);
+  background:rgba(255,255,255,.045);
+  outline:none;
+}
+
+.github-repo h4{
+  color:#ff9f43;
+  font-size:.98rem;
+  line-height:1.2;
+}
+
+.github-repo p{
+  color:rgba(255,255,255,.72);
+  font-size:.86rem;
+  line-height:1.45;
+  flex:1;
+}
+
+.repo-meta{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.65rem;
+  color:rgba(255,255,255,.58);
+  font-size:.76rem;
+  font-weight:700;
+}
+
+.repo-language{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+}
+
+.repo-language::before{
+  content:"";
+  width:.56rem;
+  height:.56rem;
+  border-radius:50%;
+  background:var(--repo-color, #ff9f43);
+}
+
+.github-empty{
+  grid-column:1 / -1;
+  border-radius:8px;
+  border:1px dashed rgba(255,255,255,.16);
+  color:rgba(255,255,255,.66);
+  padding:1rem;
+  line-height:1.5;
+}
+
+.linkedin-panel p{
+  color:rgba(255,255,255,.76);
+  line-height:1.58;
+}
+
+.linkedin-facts{
+  display:grid;
+  gap:.85rem;
+  margin:1.2rem 0;
+}
+
+.linkedin-facts div{
+  border-top:1px solid rgba(255,255,255,.09);
+  padding-top:.75rem;
+}
+
+.linkedin-facts dt{
+  color:rgba(255,255,255,.52);
+  font-size:.76rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:.25rem;
+}
+
+.linkedin-facts dd{
+  color:#f5f5f7;
+  font-weight:750;
+}
+
+@media (max-width: 980px){
+  .profile-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 680px){
+  .profile-head{
+    flex-direction:column;
+  }
+  .github-repo-grid{
+    grid-template-columns:1fr;
+  }
+  .profile-link{
+    width:100%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -2235,9 +2437,9 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   <h2>Profil</h2>
   <div class="module">
     <p>
-      Alternant ingénieur ISEN chez Oxeegen France, spécialisé en automatisation, infrastructure moderne et DevOps.
+      Alternant ingénieur ISEN chez Oxeegen France, spécialisé en automatisation, infrastructure moderne, DevOps et IA locale.
       Je conçois des systèmes fiables, maintenables et sécurisés, avec une approche orientée production : documentation,
-      monitoring, durcissement, et automatisation des opérations.
+      monitoring, durcissement, automatisation des opérations et intégration raisonnée d'outils IA.
     </p>
   </div>
 </section>
@@ -2519,6 +2721,52 @@ body.loading #assistantBubble, body.loading #assistantWindow {
   </div>
 </section>
 
+<section id="profiles">
+  <h2>GitHub &amp; LinkedIn</h2>
+
+  <div class="profile-grid">
+    <article class="profile-panel github-panel">
+      <div class="profile-head">
+        <div>
+          <div class="profile-kicker">Dépôts publics</div>
+          <h3>GitHub — Bl3aven</h3>
+        </div>
+        <a class="profile-link" href="https://github.com/Bl3aven" target="_blank" rel="noreferrer">Voir GitHub</a>
+      </div>
+      <div class="github-repo-grid" id="githubRepoGrid" aria-live="polite">
+        <div class="github-empty">Chargement des projets publics GitHub...</div>
+      </div>
+    </article>
+
+    <article class="profile-panel linkedin-panel">
+      <div class="profile-head">
+        <div>
+          <div class="profile-kicker">Profil pro</div>
+          <h3>LinkedIn</h3>
+        </div>
+        <a class="profile-link" href="https://www.linkedin.com/in/mathys-tournayre/" target="_blank" rel="noreferrer">Voir LinkedIn</a>
+      </div>
+      <p>
+        Aperçu rapide du profil professionnel : parcours, alternance, compétences Cloud, DevOps, infrastructure et IA locale.
+      </p>
+      <dl class="linkedin-facts">
+        <div>
+          <dt>Positionnement</dt>
+          <dd>DevOps, Cloud &amp; IA Engineer</dd>
+        </div>
+        <div>
+          <dt>Formation</dt>
+          <dd>Apprenti ingénieur ISEN</dd>
+        </div>
+        <div>
+          <dt>Focus</dt>
+          <dd>Automatisation, cybersécurité, LLM local, supervision</dd>
+        </div>
+      </dl>
+    </article>
+  </div>
+</section>
+
 <section id="interests">
   <h2>Centres d’intérêt</h2>
 
@@ -2558,7 +2806,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 <section id="contact">
   <h2>Contact</h2>
   <div class="module contact">
-    <p>Ouvert aux opportunités professionnelles, cloud &amp; DevOps.</p>
+    <p>Ouvert aux opportunités professionnelles Cloud, DevOps, infrastructure &amp; IA locale.</p>
     <a href="mailto:mathys@tournayre.fr">mathys@tournayre.fr</a><br>
     <a href="https://www.linkedin.com/in/mathys-tournayre/" target="_blank" rel="noreferrer">LinkedIn</a>
   </div>
@@ -2740,7 +2988,7 @@ window.addEventListener("resize", setRealVH);
   const secs = Array.from(document.querySelectorAll("section"));
   secs.forEach((section) => {
     section.classList.add("reveal");
-    const children = Array.from(section.querySelectorAll(":scope > h2, :scope > .module, :scope > .interest-grid > *, :scope > .skillSphereWrap, :scope > .ai-layout > *, :scope > .ai-project-grid > *, :scope > .carousel-wrapper, :scope > .carousel-controls"))
+    const children = Array.from(section.querySelectorAll(":scope > h2, :scope > .module, :scope > .interest-grid > *, :scope > .profile-grid > *, :scope > .skillSphereWrap, :scope > .ai-layout > *, :scope > .ai-project-grid > *, :scope > .carousel-wrapper, :scope > .carousel-controls"))
       .filter((el) => !el.hidden);
     children.forEach((el, index) => {
       el.classList.add("reveal-child");
@@ -3436,6 +3684,97 @@ carousel.addEventListener("touchend", () => {
   };
   momentum();
 });
+
+/* ======================
+   GITHUB PUBLIC REPOS WIDGET
+====================== */
+const githubRepoGrid = document.getElementById("githubRepoGrid");
+const githubFallbackRepos = [
+  {
+    name: "Portfolio",
+    description: "Portfolio personnel avec assistant de contact, CV, nuage de compétences et lab IA.",
+    html_url: "https://github.com/Bl3aven/Portfolio",
+    language: "HTML",
+    stargazers_count: 0,
+    pushed_at: "2026-06-01T00:00:00Z"
+  }
+];
+
+const languageColors = {
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  JavaScript: "#f1e05a",
+  TypeScript: "#3178c6",
+  Python: "#3572A5",
+  PHP: "#4F5D95",
+  Shell: "#89e051",
+  Vue: "#41b883",
+  Dockerfile: "#384d54"
+};
+
+function formatRepoDate(value){
+  if (!value) return "Mis à jour récemment";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Mis à jour récemment";
+  return `MAJ ${new Intl.DateTimeFormat("fr-FR", { month: "short", year: "numeric" }).format(date)}`;
+}
+
+function createRepoCard(repo){
+  const card = document.createElement("a");
+  card.className = "github-repo";
+  card.href = repo.html_url;
+  card.target = "_blank";
+  card.rel = "noreferrer";
+
+  const title = document.createElement("h4");
+  title.textContent = repo.name;
+
+  const desc = document.createElement("p");
+  desc.textContent = repo.description || "Dépôt public GitHub à consulter.";
+
+  const meta = document.createElement("div");
+  meta.className = "repo-meta";
+
+  const language = document.createElement("span");
+  language.className = "repo-language";
+  language.textContent = repo.language || "Code";
+  language.style.setProperty("--repo-color", languageColors[repo.language] || "#ff9f43");
+
+  const stars = document.createElement("span");
+  stars.textContent = `★ ${repo.stargazers_count || 0}`;
+
+  const updated = document.createElement("span");
+  updated.textContent = formatRepoDate(repo.pushed_at || repo.updated_at);
+
+  meta.append(language, stars, updated);
+  card.append(title, desc, meta);
+  return card;
+}
+
+function renderGithubRepos(repos){
+  if (!githubRepoGrid) return;
+  githubRepoGrid.textContent = "";
+  repos.slice(0, 6).forEach((repo) => githubRepoGrid.appendChild(createRepoCard(repo)));
+}
+
+async function loadGithubRepos(){
+  if (!githubRepoGrid) return;
+  try {
+    const response = await fetch("https://api.github.com/users/Bl3aven/repos?sort=updated&per_page=12", {
+      headers: { Accept: "application/vnd.github+json" }
+    });
+    if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+    const repos = await response.json();
+    const visibleRepos = repos
+      .filter((repo) => !repo.fork && !repo.archived)
+      .sort((a, b) => new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at));
+    renderGithubRepos(visibleRepos.length ? visibleRepos : githubFallbackRepos);
+  } catch (error) {
+    renderGithubRepos(githubFallbackRepos);
+  }
+}
+
+loadGithubRepos();
 
 /* ======================
    WEB AUDIO ENGINE (original)

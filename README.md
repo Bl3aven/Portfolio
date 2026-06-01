@@ -4,9 +4,8 @@ Version récupérée depuis le serveur SFTP OVH (`www`) puis nettoyée pour GitH
 
 ## Structure
 
-- `index.html` : portfolio principal avec animations, assistant de contact, modales, compétences et viewer STL.
+- `index.html` : portfolio principal avec animations, assistant de contact, widgets GitHub/LinkedIn, modales, compétences et viewer STL.
 - `quiz.html` : quiz live autonome.
-- `sandbox.html` : page utilitaire.
 - `api/*.php` : endpoints Discord utilisés par l'assistant de contact.
 - `stl/` : modèles 3D affichés dans le portfolio.
 
