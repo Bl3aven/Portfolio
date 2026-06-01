@@ -154,7 +154,7 @@ nav {
 
 .nav-left, .nav-right {
   display: flex;
-  gap: .7rem;
+  gap: clamp(.9rem, 1.45vw, 1.45rem);
 }
 
 .nav-left { justify-content: flex-end; }
@@ -186,78 +186,66 @@ nav a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
-  padding: 0 .88rem;
+  min-height: 32px;
+  padding: 0 .1rem;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.07);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.015)),
-    rgba(255,255,255,.018);
+  border: 0;
+  background: transparent;
   color: #d1d5db;
   text-decoration: none;
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: 650;
   line-height: 1;
   white-space: nowrap;
+  letter-spacing: .01em;
   isolation: isolate;
-  overflow: hidden;
+  overflow: visible;
   transform: translateY(0);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.08),
-    inset 0 -8px 14px rgba(0,0,0,.16),
-    0 0 0 rgba(255,159,67,0);
+  text-shadow: 0 0 0 rgba(255,159,67,0);
   transition:
     color .22s ease,
     transform .22s cubic-bezier(.16, 1, .3, 1),
-    border-color .22s ease,
-    background .22s ease,
-    box-shadow .22s ease;
+    text-shadow .22s ease;
 }
 nav a::before{
   content:"";
   position:absolute;
-  inset:-1px auto -1px -48%;
-  width:42%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
-  transform:skewX(-18deg) translateX(-120%);
+  inset:-.42rem -.62rem;
+  border-radius:999px;
+  background:
+    radial-gradient(circle at 50% 100%, rgba(255,159,67,.16), transparent 62%),
+    rgba(255,255,255,.035);
   opacity:0;
+  transform:scale(.94);
   pointer-events:none;
-  z-index:0;
+  z-index:-1;
+  transition:opacity .22s ease, transform .22s ease;
 }
 nav a::after{
   content:"";
   position:absolute;
-  left:18%;
-  right:18%;
-  bottom:5px;
+  left:0;
+  right:0;
+  bottom:.1rem;
   height:1px;
   border-radius:999px;
   background:linear-gradient(90deg, transparent, rgba(255,159,67,.95), transparent);
   opacity:0;
-  transform:scaleX(.45);
+  transform:scaleX(.18);
   transform-origin:center;
   transition:opacity .22s ease, transform .22s ease;
 }
 nav a:hover,
 nav a:focus-visible {
   color: #fff;
-  border-color: rgba(255,159,67,.38);
-  background:
-    linear-gradient(180deg, rgba(255,159,67,.20), rgba(255,159,67,.055)),
-    rgba(255,255,255,.035);
-  transform: translateY(-3px);
-  box-shadow:
-    0 10px 0 rgba(92,38,0,.62),
-    0 22px 34px rgba(0,0,0,.30),
-    0 0 28px rgba(255,159,67,.16),
-    inset 0 1px 0 rgba(255,255,255,.18),
-    inset 0 -10px 18px rgba(88,34,0,.18);
+  transform: translateY(-1px);
+  text-shadow: 0 0 18px rgba(255,159,67,.32);
   outline: none;
 }
 nav a:hover::before,
 nav a:focus-visible::before{
   opacity:1;
-  animation: navButtonShine .62s ease forwards;
+  transform:scale(1);
 }
 nav a:hover::after,
 nav a:focus-visible::after{
@@ -265,16 +253,8 @@ nav a:focus-visible::after{
   transform:scaleX(1);
 }
 nav a:active{
-  transform:translateY(2px);
-  box-shadow:
-    0 3px 0 rgba(92,38,0,.70),
-    0 10px 22px rgba(0,0,0,.24),
-    inset 0 8px 18px rgba(45,18,0,.34);
-}
-
-@keyframes navButtonShine{
-  from{ transform:skewX(-18deg) translateX(-120%); }
-  to{ transform:skewX(-18deg) translateX(380%); }
+  color:#ff9f43;
+  transform:translateY(0);
 }
 
 /* Mobile nav */
@@ -290,8 +270,8 @@ nav a:active{
   width: 42px;
   height: 42px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 150, 60, 0.4);
-  background: rgba(255, 150, 60, 0.15);
+  border: 1px solid rgba(255, 150, 60, 0.28);
+  background: rgba(255, 150, 60, 0.075);
   color: #ff9f43;
   font-size: 1.2rem;
   cursor: pointer;
@@ -299,9 +279,8 @@ nav a:active{
   overflow:hidden;
   transition:transform .22s cubic-bezier(.16, 1, .3, 1), box-shadow .22s ease, background .22s ease, border-color .22s ease;
   box-shadow:
-    0 7px 0 rgba(91,38,0,.58),
-    0 16px 28px rgba(0,0,0,.26),
-    inset 0 1px 0 rgba(255,255,255,.16);
+    0 10px 28px rgba(0,0,0,.24),
+    inset 0 1px 0 rgba(255,255,255,.10);
 }
 .menu-btn::before{
   content:"";
@@ -314,14 +293,13 @@ nav a:active{
 }
 .menu-btn:hover,
 .menu-btn:focus-visible{
-  transform:translateY(-3px);
-  border-color:rgba(255,159,67,.65);
-  background:rgba(255,159,67,.22);
+  transform:translateY(-1px);
+  border-color:rgba(255,159,67,.46);
+  background:rgba(255,159,67,.12);
   box-shadow:
-    0 10px 0 rgba(91,38,0,.64),
-    0 22px 34px rgba(0,0,0,.34),
-    0 0 28px rgba(255,159,67,.20),
-    inset 0 1px 0 rgba(255,255,255,.22);
+    0 14px 32px rgba(0,0,0,.30),
+    0 0 22px rgba(255,159,67,.14),
+    inset 0 1px 0 rgba(255,255,255,.16);
   outline:none;
 }
 .menu-btn:hover::before,
@@ -330,11 +308,10 @@ nav a:active{
   transform:rotate(55deg);
 }
 .menu-btn:active{
-  transform:translateY(2px);
+  transform:translateY(0);
   box-shadow:
-    0 3px 0 rgba(91,38,0,.68),
-    0 10px 22px rgba(0,0,0,.24),
-    inset 0 8px 18px rgba(45,18,0,.34);
+    0 8px 20px rgba(0,0,0,.24),
+    inset 0 4px 14px rgba(45,18,0,.28);
 }
 .mobile-menu {
   position: absolute;
@@ -394,12 +371,11 @@ nav a:active{
     max-width: 1120px;
   }
   nav a {
-    padding-inline: .7rem;
     font-size: .86rem;
   }
   .nav-left,
   .nav-right {
-    gap: .5rem;
+    gap: .72rem;
   }
 }
 
@@ -2174,6 +2150,7 @@ body.loading #assistantBubble, body.loading #assistantWindow {
       <a href="#about">Profil</a>
       <a href="#experience">Expérience</a>
       <a href="#education">Formation</a>
+      <a href="#skills">Compétences</a>
     </div>
 
     <!-- Mobile LEFT -->
@@ -2186,7 +2163,6 @@ body.loading #assistantBubble, body.loading #assistantWindow {
 
     <!-- Desktop RIGHT -->
     <div class="nav-right nav-desktop">
-      <a href="#skills">Compétences</a>
       <a href="#ai">IA</a>
       <a href="#projects">Projets</a>
       <a href="#interests">Centres d’intérêt</a>
