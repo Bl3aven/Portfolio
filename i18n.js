@@ -1,13 +1,12 @@
 /**
  * i18n.js — Internationalisation FR/EN du portfolio
- * Détection automatique de la langue du navigateur + sélecteur manuel
+ * Détection automatique de la langue du navigateur.
  */
 (function(){
   'use strict';
 
   const DEFAULT_LANG = 'fr';
   const SUPPORTED = ['fr', 'en'];
-  const STORAGE_KEY = 'portfolio-lang';
 
   // =====================
   // DICTIONNAIRE DE TRADUCTIONS
@@ -301,13 +300,14 @@
   // DÉTECTION DE LANGUE
   // =====================
   function detectLang(){
-    // 1. localStorage
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && SUPPORTED.includes(stored)) return stored;
+    const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || ''];
 
-    // 2. navigator.language
-    const navLang = (navigator.language || navigator.userLanguage || '').split('-')[0].toLowerCase();
-    if (SUPPORTED.includes(navLang)) return navLang;
+    for (const candidate of browserLanguages) {
+      const lang = String(candidate || '').split('-')[0].toLowerCase();
+      if (SUPPORTED.includes(lang)) return lang;
+    }
 
     return DEFAULT_LANG;
   }
@@ -323,7 +323,6 @@
       if (!SUPPORTED.includes(val)) return;
       if (val === currentLang) return;
       currentLang = val;
-      localStorage.setItem(STORAGE_KEY, val);
       applyTranslations();
       if (typeof window.__onLangChange === 'function') window.__onLangChange(val);
     },
@@ -336,6 +335,199 @@
 
     getDict(){ return dict; }
   };
+  window.__t = (key, fallback) => window.__i18n.t(key, fallback);
+
+  function translateValue(entry, fallback = ''){
+    if (typeof entry === 'string') return window.__i18n.t(entry, fallback);
+    if (entry && typeof entry === 'object') {
+      return entry[currentLang] || entry[DEFAULT_LANG] || fallback;
+    }
+    return fallback;
+  }
+
+  function setContent(selector, entry, mode = 'text'){
+    const value = translateValue(entry);
+    document.querySelectorAll(selector).forEach(el => {
+      if (mode === 'html') el.innerHTML = value;
+      else el.textContent = value;
+    });
+  }
+
+  function setAttr(selector, attr, entry){
+    const value = translateValue(entry);
+    document.querySelectorAll(selector).forEach(el => el.setAttribute(attr, value));
+  }
+
+  function setLeadingText(selector, entry){
+    const value = translateValue(entry);
+    document.querySelectorAll(selector).forEach(el => {
+      const firstTextNode = Array.from(el.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+      if (firstTextNode) firstTextNode.nodeValue = `${value} `;
+      else el.insertBefore(document.createTextNode(`${value} `), el.firstChild);
+    });
+  }
+
+  function removeLegacySwitcher(){
+    document.querySelectorAll('#langSwitcher, .lang-switcher').forEach(el => el.remove());
+  }
+
+  function applySelectorTranslations(){
+    const textMap = [
+      ['.intro-kicker', 'intro.kicker'],
+      ['.modal-box h1', 'intro.name'],
+      ['.intro-hint', 'intro.hint'],
+      ['.nav-left.nav-mobile.mobile-title', 'nav.portfolio'],
+
+      ['.nav-left.nav-desktop a:nth-child(1), #mobileMenu a:nth-child(1)', 'nav.profile'],
+      ['.nav-left.nav-desktop a:nth-child(2), #mobileMenu a:nth-child(2)', 'nav.experience'],
+      ['.nav-left.nav-desktop a:nth-child(3), #mobileMenu a:nth-child(3)', 'nav.education'],
+      ['.nav-left.nav-desktop a:nth-child(4), #mobileMenu a:nth-child(4)', 'nav.skills'],
+      ['.nav-right.nav-desktop a:nth-child(1), #mobileMenu a:nth-child(5)', 'nav.ai'],
+      ['.nav-right.nav-desktop a:nth-child(2), #mobileMenu a:nth-child(6)', 'nav.projects'],
+      ['.nav-right.nav-desktop a:nth-child(3), #mobileMenu a:nth-child(7)', 'nav.interests'],
+      ['.nav-right.nav-desktop a:nth-child(4), #mobileMenu a:nth-child(8)', 'nav.contact'],
+
+      ['#about .section-kicker', { fr: 'Profil', en: 'Profile' }],
+      ['#about h2', { fr: 'À propos', en: 'About' }],
+      ['#about .section-subtitle', { fr: 'Ingénieur ISEN en alternance, DevOps & IA locale.', en: 'ISEN engineering apprentice, DevOps & local AI.' }],
+      ['#experience .section-kicker', { fr: 'Parcours', en: 'Background' }],
+      ['#experience h2', 'section.experience'],
+      ['#experience .section-subtitle', { fr: 'Mon parcours professionnel technique et opérationnel.', en: 'My technical and operational professional background.' }],
+      ['#education .section-kicker', 'nav.education'],
+      ['#education h2', { fr: 'Études', en: 'Education' }],
+      ['#education .section-subtitle', { fr: 'Double compétence réseaux/systèmes et ingénierie numérique.', en: 'Dual focus in networks/systems and digital engineering.' }],
+      ['#skills .section-kicker', 'nav.skills'],
+      ['#skills h2', { fr: 'Stack technique', en: 'Technical Stack' }],
+      ['#skills .section-subtitle, #skills .skillSphereHint', 'skills.hint'],
+      ['#ai .section-kicker', { fr: 'IA', en: 'AI' }],
+      ['#ai h2', 'section.ai'],
+      ['#ai .section-subtitle', { fr: 'Stack auto-hébergée, interfaces LLM, agents outillés.', en: 'Self-hosted stack, LLM interfaces and tooled agents.' }],
+      ['#projects .section-kicker', { fr: 'Réalisations', en: 'Work' }],
+      ['#projects h2', 'section.projects'],
+      ['#projects .section-subtitle', { fr: 'Sélection de projets techniques et infrastructures.', en: 'Selected technical and infrastructure projects.' }],
+      ['#profiles .section-kicker', { fr: 'Public', en: 'Public' }],
+      ['#profiles h2', 'section.profiles'],
+      ['#profiles .section-subtitle', { fr: 'Mes profils publics et projets open source.', en: 'My public profiles and open source projects.' }],
+      ['#interests .section-kicker', { fr: 'Passions', en: 'Interests' }],
+      ['#interests h2', 'section.interests'],
+      ['#interests .section-subtitle', { fr: "Ce qui m'anime au quotidien, en dehors du code.", en: 'What drives me outside of code.' }],
+      ['#contact .section-kicker', 'section.contact'],
+      ['#contact h2', { fr: 'Restons en lien', en: "Let's Connect" }],
+      ['#contact .contact p', 'contact.text'],
+
+      ['#experience .timeline-item:nth-child(1) h3', 'exp.oxeegen.title'],
+      ['#experience .timeline-item:nth-child(1) .timeline-meta', 'exp.oxeegen.meta'],
+      ['#experience .timeline-item:nth-child(1) li:nth-child(1)', 'exp.oxeegen.1'],
+      ['#experience .timeline-item:nth-child(1) li:nth-child(2)', 'exp.oxeegen.2'],
+      ['#experience .timeline-item:nth-child(1) li:nth-child(3)', 'exp.oxeegen.3'],
+      ['#experience .timeline-item:nth-child(1) li:nth-child(4)', 'exp.oxeegen.4'],
+      ['#experience .timeline-item:nth-child(2) h3', 'exp.itinsell.title'],
+      ['#experience .timeline-item:nth-child(2) .timeline-meta', 'exp.itinsell.meta'],
+      ['#experience .timeline-item:nth-child(2) li:nth-child(2)', 'exp.itinsell.2'],
+      ['#experience .timeline-item:nth-child(2) li:nth-child(3)', 'exp.itinsell.3'],
+      ['#experience .timeline-item:nth-child(2) li:nth-child(4)', 'exp.itinsell.4'],
+      ['#experience .timeline-item:nth-child(3) h3', 'exp.helicoidal.title'],
+      ['#experience .timeline-item:nth-child(3) .timeline-meta', 'exp.helicoidal.meta'],
+      ['#experience .timeline-item:nth-child(3) li:nth-child(1)', 'exp.helicoidal.1'],
+      ['#experience .timeline-item:nth-child(4) h3', 'exp.starbucks.title'],
+      ['#experience .timeline-item:nth-child(4) .timeline-meta', 'exp.starbucks.meta'],
+      ['#experience .timeline-item:nth-child(4) li:nth-child(1)', 'exp.starbucks.1'],
+
+      ['#education .timeline-item:nth-child(1) h3', 'edu.isen.title'],
+      ['#education .timeline-item:nth-child(1) .timeline-meta', 'edu.isen.meta'],
+      ['#education .timeline-item:nth-child(1) li:nth-child(1)', 'edu.isen.1'],
+      ['#education .timeline-item:nth-child(1) li:nth-child(2)', 'edu.isen.2'],
+      ['#education .timeline-item:nth-child(2) h3', 'edu.amu.title'],
+      ['#education .timeline-item:nth-child(2) .timeline-meta', 'edu.amu.meta'],
+      ['#education .timeline-item:nth-child(2) li:nth-child(1)', 'edu.amu.1'],
+      ['#education .timeline-item:nth-child(2) li:nth-child(2)', 'edu.amu.2'],
+      ['#education .timeline-item:nth-child(3) h3', 'edu.bac.title'],
+      ['#education .timeline-item:nth-child(3) .timeline-meta', 'edu.bac.meta'],
+      ['#education .timeline-item:nth-child(3) li:nth-child(1)', 'edu.bac.1'],
+      ['#education .timeline-item:nth-child(4) h3', 'edu.insa.title'],
+      ['#education .timeline-item:nth-child(4) .timeline-meta', 'edu.insa.meta'],
+      ['#education .timeline-item:nth-child(4) li:nth-child(1)', 'edu.insa.1'],
+
+      ['#ai .ai-stack h3', 'ai.stack.title'],
+      ['#ai .ai-stack-list span:nth-child(9)', 'ai.stack.gpulocal'],
+      ['#ai .ai-card:nth-child(1) h3', 'ai.project.owu.title'],
+      ['#ai .ai-card:nth-child(1) p', 'ai.project.owu.desc'],
+      ['#ai .ai-card:nth-child(2) h3', 'ai.project.comfy.title'],
+      ['#ai .ai-card:nth-child(2) p', 'ai.project.comfy.desc'],
+      ['#ai .ai-card:nth-child(3) h3', 'ai.project.lmstudio.title'],
+      ['#ai .ai-card:nth-child(3) p', 'ai.project.lmstudio.desc'],
+      ['#ai .ai-card:nth-child(4) h3', 'ai.project.agents.title'],
+      ['#ai .ai-card:nth-child(4) p', 'ai.project.agents.desc'],
+
+      ['#projects .project-card:nth-child(1) h3', 'project.nutanix.title'],
+      ['#projects .project-card:nth-child(1) p', 'project.nutanix.desc'],
+      ['#projects .project-card:nth-child(2) h3', 'project.bastion.title'],
+      ['#projects .project-card:nth-child(2) p', 'project.bastion.desc'],
+      ['#projects .project-card:nth-child(3) h3', 'project.squad.title'],
+      ['#projects .project-card:nth-child(3) p', 'project.squad.desc'],
+      ['#projects .project-card:nth-child(4) h3', 'project.nextcloud.title'],
+      ['#projects .project-card:nth-child(4) p', 'project.nextcloud.desc'],
+      ['#projects .project-card:nth-child(5) h3', 'project.ailab.title'],
+      ['#projects .project-card:nth-child(5) p', 'project.ailab.desc'],
+      ['#projects .project-card:nth-child(6) h3', 'project.stl.title'],
+      ['#projects .project-card:nth-child(6) p', 'project.stl.desc'],
+      ['#projects .project-print-badge', { fr: 'Ouvrir la galerie 3D', en: 'Open 3D Gallery' }],
+
+      ['#profiles .profile-card:nth-child(1) h3', 'profiles.github.title'],
+      ['#profiles .github-empty', 'profiles.github.loading'],
+      ['#profiles .profile-card:nth-child(2) h3', 'profiles.linkedin.title'],
+      ['#linkedinStaticBadge .linkedin-static-top p', 'profiles.linkedin.identity'],
+      ['#linkedinStaticBadge > p', 'profiles.linkedin.desc'],
+      ['#linkedinStaticBadge .linkedin-static-cta', 'profiles.linkedin.cta'],
+      ['#profiles .linkedin-facts div:nth-child(1) dt', 'profiles.linkedin.position'],
+      ['#profiles .linkedin-facts div:nth-child(1) dd', 'profiles.linkedin.position.value'],
+      ['#profiles .linkedin-facts div:nth-child(2) dt', 'profiles.linkedin.formation'],
+      ['#profiles .linkedin-facts div:nth-child(2) dd', 'profiles.linkedin.formation.value'],
+      ['#profiles .linkedin-facts div:nth-child(3) dt', 'profiles.linkedin.focus'],
+      ['#profiles .linkedin-facts div:nth-child(3) dd', 'profiles.linkedin.focus.value'],
+
+      ['#interests .interest-card:nth-child(1) h3', 'interest.ai.title'],
+      ['#interests .interest-card:nth-child(1) p', 'interest.ai.desc'],
+      ['#interests .interest-card:nth-child(2) h3', 'interest.cloud.title'],
+      ['#interests .interest-card:nth-child(2) p', 'interest.cloud.desc'],
+      ['#interests .interest-card:nth-child(3) h3', 'interest.security.title'],
+      ['#interests .interest-card:nth-child(3) p', 'interest.security.desc'],
+      ['#interests .interest-card:nth-child(4) h3', 'interest.homelab.title'],
+      ['#interests .interest-card:nth-child(4) p', 'interest.homelab.desc'],
+      ['#interests .interest-card:nth-child(5) h3', 'interest.communities.title'],
+      ['#interests .interest-card:nth-child(5) p', 'interest.communities.desc'],
+      ['#interests .interest-card:nth-child(6) h3', { fr: 'Tir sportif', en: 'Sport Shooting' }],
+      ['#interests .interest-card:nth-child(6) p', { fr: 'Champion de France tir vitesse 2017, vice-champion 2023, multiples titres en équipe.', en: 'French speed shooting champion in 2017, vice-champion in 2023 and multiple team titles.' }],
+
+      ['.cv-head h3', 'cv.title'],
+      ['.cv-download', 'cv.download'],
+      ['.assistant-footer button', 'assistant.send.btn']
+    ];
+
+    const htmlMap = [
+      ['.intro-sub', 'intro.sub'],
+      ['#enterBtn', {
+        fr: 'Accéder au Portfolio<span class="enter-glow" aria-hidden="true"></span>',
+        en: 'Enter Portfolio<span class="enter-glow" aria-hidden="true"></span>'
+      }],
+      ['header .hero h1', 'hero.title'],
+      ['#about .about-text', 'about.text'],
+      ['#experience .timeline-item:nth-child(2) li:nth-child(1)', 'exp.itinsell.1']
+    ];
+
+    textMap.forEach(([selector, entry]) => setContent(selector, entry));
+    htmlMap.forEach(([selector, entry]) => setContent(selector, entry, 'html'));
+
+    setContent('header .hero p', 'hero.desc');
+    setContent('.skillChip:nth-child(8), .skillChip:nth-child(16)', 'skillchip.security');
+    setAttr('#introModal', 'aria-label', { fr: 'Écran de chargement', en: 'Loading screen' });
+    setAttr('#menuToggle', 'aria-label', { fr: 'Ouvrir le menu', en: 'Open menu' });
+    setAttr('#cvLogoButton', 'aria-label', { fr: 'Afficher le CV de Mathys Tournayre', en: 'Show Mathys Tournayre resume' });
+    setAttr('.cv-download', 'aria-label', { fr: 'Télécharger le CV', en: 'Download resume' });
+    setAttr('.cv-preview iframe', 'title', { fr: 'Aperçu du CV de Mathys Tournayre', en: 'Mathys Tournayre resume preview' });
+    setAttr('#assistantInput', 'placeholder', 'assistant.input.placeholder');
+    setLeadingText('.assistant-header', 'assistant.header');
+  }
 
   // =====================
   // APPLICATION DES TRADUCTIONS AU DOM
@@ -343,6 +535,7 @@
   function applyTranslations(){
     const lang = currentLang;
     document.documentElement.lang = lang;
+    removeLegacySwitcher();
 
     // 1. Éléments avec data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -383,6 +576,14 @@
       document.title = (title[lang] || title[DEFAULT_LANG] || '').replace(/&/g, '&');
     }
 
+    document.querySelector('meta[name="description"]')?.setAttribute('content', window.__i18n.t('meta.description'));
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', window.__i18n.t('meta.og.title'));
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', window.__i18n.t('meta.og.description'));
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', window.__i18n.t('meta.twitter.title'));
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', window.__i18n.t('meta.twitter.description'));
+
+    applySelectorTranslations();
+
     // 5. Mettre à jour les liens CV
     const cvIframe = document.querySelector('.cv-preview iframe');
     if (cvIframe) {
@@ -410,91 +611,6 @@
   // =====================
   function init(){
     applyTranslations();
-
-    // Injecter le language switcher dans la nav
-    // Désactivé — le bouton EN/FR n'est plus affiché
-    // injectLangSwitcher();
-  }
-
-  function injectLangSwitcher(){
-    const navInner = document.querySelector('.nav-inner');
-    if (!navInner) return;
-
-    // Éviter les doublons
-    if (document.getElementById('langSwitcher')) return;
-
-    const otherLang = currentLang === 'fr' ? 'en' : 'fr';
-    const label = currentLang === 'fr' ? 'EN' : 'FR';
-    const tooltipKey = 'lang.tooltip';
-
-    const btn = document.createElement('button');
-    btn.id = 'langSwitcher';
-    btn.className = 'lang-switcher';
-    btn.setAttribute('data-i18n-title', tooltipKey);
-    btn.setAttribute('aria-label', dict[tooltipKey] ? (dict[tooltipKey][currentLang] || '') : '');
-    btn.textContent = label;
-    btn.type = 'button';
-
-    btn.addEventListener('click', () => {
-      window.__i18n.lang = otherLang;
-    });
-
-    // Style inline (léger, ou via une classe globale)
-    btn.style.cssText = `
-      background: rgba(255,159,67,0.15);
-      border: 1px solid rgba(255,159,67,0.4);
-      color: #ff9f43;
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      cursor: pointer;
-      letter-spacing: 0.04em;
-      transition: all 0.2s ease;
-      margin: 0 0.5rem;
-      white-space: nowrap;
-      min-width: 38px;
-      text-align: center;
-    `;
-
-    btn.addEventListener('mouseenter', () => {
-      btn.style.background = 'rgba(255,159,67,0.28)';
-      btn.style.transform = 'translateY(-1px)';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.background = 'rgba(255,159,67,0.15)';
-      btn.style.transform = 'translateY(0)';
-    });
-
-    // Insérer à côté du logo dans la nav-inner (grid: 1fr auto 1fr)
-    // On le place dans le logo area pour qu'il soit centré avec le logo
-    const existingSwitchers = navInner.querySelectorAll('.lang-switcher-wrap');
-    if (existingSwitchers.length === 0) {
-      const wrap = document.createElement('div');
-      wrap.className = 'lang-switcher-wrap';
-      wrap.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:0.5rem;';
-
-      // Déplacer le logo et le bouton dans le wrapper
-      const logo = navInner.querySelector('.nav-logo');
-      if (logo) {
-        logo.parentNode.insertBefore(wrap, logo);
-        wrap.appendChild(logo);
-        wrap.appendChild(btn);
-      } else {
-        // Fallback: insérer dans nav-left
-        const navLeft = navInner.querySelector('.nav-left');
-        if (navLeft) navLeft.appendChild(btn);
-      }
-    }
-
-    // Mettre à jour le bouton au changement de langue
-    const origChange = window.__onLangChange;
-    window.__onLangChange = function(newLang){
-      const o = newLang === 'fr' ? 'en' : 'fr';
-      btn.textContent = newLang === 'fr' ? 'EN' : 'FR';
-      btn.setAttribute('aria-label', dict[tooltipKey] ? (dict[tooltipKey][newLang] || '') : '');
-      if (typeof origChange === 'function') origChange(newLang);
-    };
   }
 
   // Démarrage au DOM ready
