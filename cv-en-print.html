@@ -6,131 +6,122 @@
 <style>
 @page{ size:A4; margin:0; }
 *{ box-sizing:border-box; }
-body{ margin:0; font-family:'Inter','Segoe UI',Arial,sans-serif; color:#1a1a1a; background:#fff; }
-.page{ width:210mm; height:297mm; margin:0 auto; background:#fff; display:grid; grid-template-columns:58mm 1fr; overflow:hidden; }
-.sidebar{ background:#0d1117; color:#e6edf3; padding:7mm 5mm; display:flex; flex-direction:column; gap:3.5mm; }
-.main{ padding:7mm 7mm 7mm 6mm; display:flex; flex-direction:column; gap:3mm; }
-h1{ margin:0; font-size:18pt; font-weight:700; line-height:1; color:#fff; }
-.role{ margin:2mm 0 3mm; color:#ff8c42; font-weight:700; font-size:8pt; }
-h2{ margin:0 0 1.8mm; font-size:7.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#ff8c42; }
-h3{ margin:0 0 .5mm; font-size:8pt; font-weight:700; color:#111; }
-p,li{ font-size:6.6pt; line-height:1.3; margin:0; }
-ul{ margin:.5mm 0 0 3mm; padding:0; }
-.sidebar h2{ color:#ffb366; margin-bottom:1.5mm; }
-.sidebar p{ color:#8b949e; font-size:6.2pt; line-height:1.2; }
-.sidebar li{ color:#c9d1d9; font-size:6.2pt; line-height:1.25; }
-.muted{ color:#586069; font-size:6.2pt; }
-.taglist{ display:flex; flex-wrap:wrap; gap:.8mm; }
-.tag{ border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); color:#c9d1d9; padding:.6mm 1.3mm; border-radius:1.5mm; font-size:5.5pt; font-weight:600; }
-.item{ padding-bottom:2mm; margin-bottom:2mm; border-bottom:1px solid #e1e4e8; }
-.item:last-child{ border-bottom:0; margin-bottom:0; padding-bottom:0; }
-.summary{ font-size:6.8pt; line-height:1.35; color:#24292e; }
-.contact-line{ margin-bottom:.5mm; font-size:6.2pt; color:#c9d1d9; word-break:break-all; }
+body{ margin:0; font-family:Arial,Helvetica,sans-serif; color:#1a1a1a; background:#fff; }
+.page{ width:210mm; height:297mm; margin:0 auto; background:#fff; }
+.inner{ display:grid; grid-template-columns:55mm 1fr; height:297mm; }
+.sidebar{ background:#0d1117; color:#e6edf3; padding:6mm 4mm; display:flex; flex-direction:column; gap:3mm; }
+.main{ padding:6mm 6mm 6mm 5mm; display:flex; flex-direction:column; gap:2.5mm; }
+h1{ margin:0; font-size:16pt; font-weight:700; line-height:1; color:#fff; }
+.role{ margin:1.5mm 0 2.5mm; color:#ff8c42; font-weight:700; font-size:7.5pt; }
+h2{ margin:0 0 1.2mm; font-size:7pt; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#ff8c42; }
+h3{ margin:0 0 .3mm; font-size:7.5pt; font-weight:700; color:#111; }
+p,li{ font-size:6pt; line-height:1.25; }
+ul{ margin:.3mm 0 0 2.5mm; padding:0; }
+.sidebar h2{ color:#ffb366; }
+.sidebar p{ color:#8b949e; font-size:5.5pt; }
+.sidebar li{ color:#c9d1d9; font-size:5.5pt; line-height:1.2; }
+.muted{ color:#586069; font-size:5.5pt; }
+.taglist{ display:flex; flex-wrap:wrap; gap:.6mm; }
+.tag{ border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.03); color:#c9d1d9; padding:.4mm 1mm; border-radius:1.2mm; font-size:5pt; font-weight:600; }
+.it{ padding-bottom:1.8mm; margin-bottom:1.8mm; border-bottom:1px solid #e1e4e8; }
+.it:last-child{ border-bottom:0; margin-bottom:0; padding-bottom:0; }
+.summary{ font-size:6.2pt; line-height:1.3; color:#24292e; }
 a{ color:inherit; text-decoration:none; }
-.edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:2mm; }
-.edu-grid .item{ margin-bottom:0; padding-bottom:1.5mm; }
-.cert-list{ columns:2; column-gap:2mm; font-size:6.2pt; color:#24292e; padding-left:2.5mm; }
-.cert-list li{ margin-bottom:.4mm; }
-.project-list{ font-size:6.3pt; color:#24292e; padding-left:2.5mm; }
-.project-list li{ margin-bottom:.6mm; }
-.intro-text{ font-size:5.8pt; color:#586069; font-style:italic; margin-top:.2mm; }
-.main-ul li{ margin-bottom:.4mm; }
+.edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1.5mm; }
+.edu-grid .it{ margin-bottom:0; padding-bottom:1mm; }
+.cert-list{ columns:2; column-gap:1.5mm; font-size:5.5pt; color:#24292e; padding-left:2mm; }
+.cert-list li{ margin-bottom:.3mm; }
+.proj-list{ font-size:5.8pt; color:#24292e; padding-left:2mm; }
+.proj-list li{ margin-bottom:.4mm; }
+.intro-text{ font-size:5.2pt; color:#586069; font-style:italic; }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page"><div class="inner">
   <aside class="sidebar">
     <div>
       <h1>Mathys<br>Tournayre</h1>
-      <div class="role">DevOps, Cloud & AI</div>
-      <p>23 years — French<br>Apprentice at Oxeegen France</p>
+      <div class="role">DevOps, Cloud & AI Engineer</div>
+      <p>23 years — French / Driver's license B<br>Apprentice at Oxeegen France</p>
     </div>
     <div>
       <h2>Contact</h2>
-      <p class="contact-line">mathys@tournayre.ovh</p>
-      <p class="contact-line">+33 7 67 67 97 50</p>
-      <p class="contact-line">linkedin.com/in/mathys-tournayre</p>
-      <p class="contact-line">tournayre.ovh</p>
+      <p>mathys@tournayre.ovh<br>+33 7 67 67 97 50<br>linkedin.com/in/mathys-tournayre<br>tournayre.ovh</p>
     </div>
     <div>
-      <h2>Core Skills</h2>
+      <h2>Skills</h2>
       <div class="taglist">
-        <span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">Ansible</span>
-        <span class="tag">Python</span><span class="tag">Flask</span><span class="tag">Nutanix</span>
-        <span class="tag">VMware</span><span class="tag">Proxmox</span><span class="tag">Cisco</span>
-        <span class="tag">pfSense</span><span class="tag">Fortinet</span><span class="tag">Nginx</span>
-        <span class="tag">Graylog</span><span class="tag">Grafana</span><span class="tag">PRTG</span>
-        <span class="tag">GLPI</span><span class="tag">Git</span><span class="tag">CI/CD</span>
-        <span class="tag">Ollama</span><span class="tag">Open WebUI</span><span class="tag">ComfyUI</span>
-        <span class="tag">Vulkan</span><span class="tag">Veeam</span>
+        <span class="tag">Linux</span><span class="tag">Docker</span><span class="tag">Ansible</span><span class="tag">Python</span>
+        <span class="tag">Flask</span><span class="tag">Nutanix</span><span class="tag">VMware</span><span class="tag">Proxmox</span>
+        <span class="tag">Cisco</span><span class="tag">pfSense</span><span class="tag">Fortinet</span><span class="tag">Nginx</span>
+        <span class="tag">Graylog</span><span class="tag">Grafana</span><span class="tag">PRTG</span><span class="tag">GLPI</span>
+        <span class="tag">Git</span><span class="tag">CI/CD</span><span class="tag">Ollama</span><span class="tag">Open WebUI</span>
+        <span class="tag">ComfyUI</span><span class="tag">Vulkan</span><span class="tag">Veeam</span><span class="tag">phpIPAM</span>
       </div>
     </div>
     <div>
       <h2>Languages</h2>
-      <ul style="list-style:none;margin-left:0;">
-        <li><strong>French</strong> — Native</li>
-        <li><strong>English</strong> — TOEIC 805 (C1)</li>
-      </ul>
+      <ul style="list-style:none;margin-left:0;"><li><strong>French</strong> — Native</li><li><strong>English</strong> — TOEIC 805 (C1)</li></ul>
     </div>
     <div>
       <h2>Interests</h2>
       <ul>
-        <li><strong>Sport shooting</strong> — French speed champion 2017, vice-champion 2023, multiple team titles.</li>
-        <li><strong>3D printing / CAD</strong> — Plastic & CoCr parts, prototyping, jewelry.</li>
-        <li><strong>Bass guitar</strong> — Self-taught, 2 years.</li>
+        <li><strong>Sport shooting</strong> — French speed champion 2017, vice-champion 2023, multiple team titles since 2012.</li>
+        <li><strong>3D printing / CAD</strong> — Functional parts, CoCr & plastic prototyping, jewelry.</li>
+        <li><strong>Bass guitar</strong> — Self-taught.</li>
       </ul>
     </div>
   </aside>
 
   <section class="main">
     <div>
-      <h2>Professional Profile</h2>
-      <p class="summary">Engineering apprentice at ISEN, currently at Oxeegen France. Specialized in <strong>Cloud, DevOps, automation & local AI</strong>. I design reliable, secure, maintainable systems — documentation, monitoring, hardening, and operations automation. Dual networks/systems + digital engineering background bridging traditional infra and modern cloud-native practices.</p>
+      <h2>Profile</h2>
+      <p class="summary">Engineering apprentice at ISEN currently at Oxeegen France. Specialized in <strong>Cloud, DevOps, automation & local AI</strong>. I design reliable, secure, maintainable systems with a production approach: monitoring, hardening, automation and documentation. Dual networks/systems + digital engineering background bridging traditional infrastructure and modern cloud-native practices.</p>
     </div>
 
     <div>
       <h2>Experience</h2>
-      <div class="item">
+      <div class="it">
         <h3>Oxeegen France — Network & Systems Technician (Apprenticeship)</h3>
         <div class="muted">Vitrolles · Sep 2025 → Present</div>
         <p class="intro-text">Industrial fluid systems engineering — pharma, cosmetics & chemical industries.</p>
-        <ul class="main-ul">
-          <li>Infrastructure MCO, network & systems monitoring, incident response.</li>
-          <li>Automation (Python/Bash), deployment standardization (Ansible).</li>
-          <li>Security: network segmentation, firewall policies, access control hardening.</li>
-          <li>Monitoring dashboards (PRTG, Graylog), runbooks, technical documentation.</li>
+        <ul>
+          <li>Infrastructure MCO: network & systems monitoring, incident response, operational maintenance.</li>
+          <li>Task automation (Python/Bash), deployment standardization with Ansible playbooks.</li>
+          <li>Security projects: network segmentation, firewall policy management, access control hardening.</li>
+          <li>Dashboards (PRTG, Graylog), runbooks, technical documentation, knowledge transfer.</li>
         </ul>
       </div>
-      <div class="item">
+      <div class="it">
         <h3>Itinsell Cloud — Network & Systems Apprentice</h3>
         <div class="muted">La Ciotat · Apr 2024 → Sep 2025</div>
-        <p class="intro-text">Managed hosting & cloud provider — IaaS, private cloud, backup.</p>
-        <ul class="main-ul">
-          <li>Built internal <strong>web bastion</strong> (Flask, Nginx, OAuth) for centralized infra tool access.</li>
-          <li>Automated VM provisioning on Nutanix AHV (GLPI + Prism API + Ansible).</li>
-          <li>Administered pfSense, Fortinet, AHV/ESX virtualization; S3 storage & backup (HYCU, Veeam).</li>
-          <li>Operated Hostbill, PRTG, GLPI, Graylog, phpIPAM; conducted HDS/ISO 27001 feasibility study.</li>
+        <p class="intro-text">Managed hosting & cloud services provider — IaaS, private cloud, backup solutions.</p>
+        <ul>
+          <li>Designed & deployed internal <strong>web bastion</strong> (Flask + Nginx + OAuth2) centralizing infra tools.</li>
+          <li>Automated VM provisioning on Nutanix AHV using GLPI, Prism API, and Ansible.</li>
+          <li>Administered pfSense (FW/VPN/NAT), Fortinet, AHV/ESX virtualization, S3 storage & HYCU/Veeam backup.</li>
+          <li>Operated Hostbill, PRTG, Grafana, GLPI, Graylog, phpIPAM; conducted HDS/ISO 27001 feasibility study.</li>
         </ul>
       </div>
-      <div class="item">
-        <h3>Starbucks SSP — Barista (Temp.)</h3>
-        <div class="muted">Marseille · 2022 → 2023</div>
-        <ul class="main-ul"><li>Customer service & food safety compliance in high-volume environment.</li></ul>
+      <div class="it">
+        <h3>Starbucks SSP — Barista (Temporary)</h3>
+        <div class="muted">Marseille · Jul 2022 → Mar 2023</div>
+        <ul><li>Customer service & food safety compliance in high-volume environment, teamwork under pressure.</li></ul>
       </div>
-      <div class="item">
+      <div class="it">
         <h3>Fatec Group — IT Internship</h3>
         <div class="muted">Marseille · Jul 2019</div>
-        <ul class="main-ul"><li>Refurbished IT fleet, installed workstations, hardware diagnostics & repairs.</li></ul>
+        <ul><li>Refurbished company IT fleet: workstation installation, hardware diagnostics & repairs.</li></ul>
       </div>
     </div>
 
     <div>
       <h2>Education</h2>
       <div class="edu-grid">
-        <div class="item"><h3>ISEN Marseille</h3><div class="muted">2025 → 2028</div><p style="font-size:6.3pt;line-height:1.25;">Master-level engineering — Cloud, cybersecurity, distributed systems, software engineering.</p></div>
-        <div class="item"><h3>AMU — BUT Networks & Telecoms</h3><div class="muted">2022 → 2025</div><p style="font-size:6.3pt;line-height:1.25;">Cybersecurity track, jury commendations. VP Student Council 2023-24.</p></div>
-        <div class="item"><h3>INSA Lyon — FIMI</h3><div class="muted">2021 → 2022</div><p style="font-size:6.3pt;line-height:1.25;">Engineering foundation: math, physics, CS, team projects.</p></div>
-        <div class="item"><h3>Bac STI2D (SIN) — High Honors</h3><div class="muted">Lycée St-Louis · 2021</div><p style="font-size:6.3pt;line-height:1.25;">Information systems & digital track.</p></div>
+        <div class="it"><h3>ISEN Marseille</h3><div class="muted">2025 → 2028</div><p style="font-size:5.8pt;line-height:1.2;">Master-level engineering — Cloud, cybersecurity, distributed systems, software engineering.</p></div>
+        <div class="it"><h3>AMU — BUT Networks & Telecoms</h3><div class="muted">2022 → 2025</div><p style="font-size:5.8pt;line-height:1.2;">Cybersecurity track, jury commendations. VP Student Council 2023-2024.</p></div>
+        <div class="it"><h3>INSA Lyon — FIMI</h3><div class="muted">2021 → 2022</div><p style="font-size:5.8pt;line-height:1.2;">Engineering foundation year: mathematics, physics, CS, collaborative projects.</p></div>
+        <div class="it"><h3>Bac STI2D (SIN) — High Honors</h3><div class="muted">Lycée St-Louis · 2021</div><p style="font-size:5.8pt;line-height:1.2;">Information systems & digital technology track.</p></div>
       </div>
     </div>
 
@@ -138,26 +129,26 @@ a{ color:inherit; text-decoration:none; }
       <h2>Certifications</h2>
       <ul class="cert-list">
         <li><strong>Cisco CCNP</strong> — Advanced routing & switching</li>
-        <li><strong>Cisco CyberOps Associate</strong> — SOC, alert analysis</li>
-        <li><strong>AWS Cloud Foundations</strong> — Services, security, architecture</li>
+        <li><strong>Cisco CyberOps Associate</strong> — SOC operations</li>
+        <li><strong>AWS Cloud Foundations</strong> — AWS services & architecture</li>
         <li><strong>Stormshield CSNE</strong> — Firewall expertise</li>
-        <li><strong>Stormshield CSNA</strong> — Network security admin</li>
+        <li><strong>Stormshield CSNA</strong> — Network security administration</li>
         <li><strong>PIX</strong> — Digital skills certification</li>
         <li><strong>SecNum (ANSSI)</strong> — Cybersecurity awareness</li>
-        <li><strong>BIA</strong> — Aeronautical certificate</li>
+        <li><strong>BIA</strong> — Aeronautical initiation certificate</li>
       </ul>
     </div>
 
     <div>
       <h2>Key Projects</h2>
-      <ul class="project-list">
-        <li><strong>Nutanix VM Factory</strong> — Automated VM provisioning: GLPI ticketing, Prism API, Ansible, Flask dashboard.</li>
-        <li><strong>DevOps Web Bastion</strong> — Internal secure portal (Flask + Nginx + OAuth2), SSO, RBAC.</li>
-        <li><strong>Local AI Lab</strong> — Self-hosted: Open WebUI + Ollama, ComfyUI, LM Studio/Vulkan, OpenClaw agents.</li>
-        <li><strong>Administration Squad</strong> — RCON + Discord bot for game server management & real-time moderation.</li>
+      <ul class="proj-list">
+        <li><strong>Nutanix VM Factory</strong> — Automated VM provisioning: GLPI ticketing + Prism API + Ansible playbooks + Flask dashboard.</li>
+        <li><strong>DevOps Web Bastion</strong> — Internal secure portal (Flask + Nginx + OAuth2) with SSO, RBAC, centralized infra tooling.</li>
+        <li><strong>Local AI Lab</strong> — Self-hosted stack: Open WebUI + Ollama, ComfyUI pipelines, LM Studio/Vulkan, OpenClaw agents.</li>
+        <li><strong>Administration Squad</strong> — RCON + Discord bot: game server management, real-time moderation, smart logging.</li>
       </ul>
     </div>
   </section>
-</div>
+</div></div>
 </body>
 </html>
