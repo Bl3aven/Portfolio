@@ -872,9 +872,8 @@ setRealVH();window.addEventListener("resize",setRealVH);
   const def="#0a0a0a";
   const cols={about:"#0d1117",experience:"#12100c",education:"#0f1116",skills:"#10140f",ai:"#10121c",projects:"#0a0a0c",profiles:"#0b1513",interests:"#14110b",contact:"#0a0a0c"};
   const vs=new Map();
-  new IntersectionObserver((es)=>{es.forEach(e=>{e.isIntersecting?vs.set(e.target,e.intersectionRatio):vs.delete(e.target)});const c=Array.from(vs.entries()).sort((a,b)=>b[1]-a[1])[0]?.[0];themeMeta.setAttribute("content",cols[c?.id]||def);tileMeta?.setAttribute("content",cols[c?.id]||def)},{threshold:[.15,.35,.55,.75],rootMargin:"-18% 0px -45% 0px"}).observe
+  const colorObserver=new IntersectionObserver((es)=>{es.forEach(e=>{e.isIntersecting?vs.set(e.target,e.intersectionRatio):vs.delete(e.target)});const c=Array.from(vs.entries()).sort((a,b)=>b[1]-a[1])[0]?.[0];themeMeta.setAttribute("content",cols[c?.id]||def);tileMeta?.setAttribute("content",cols[c?.id]||def)},{threshold:[.15,.35,.55,.75],rootMargin:"-18% 0px -45% 0px"});
   document.querySelectorAll("section[id]").forEach(s=>colorObserver.observe(s));
-  function setColor(){}
 })();
 
 /* SECTION REVEAL */
