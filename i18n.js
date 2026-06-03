@@ -412,7 +412,8 @@
     applyTranslations();
 
     // Injecter le language switcher dans la nav
-    injectLangSwitcher();
+    // Désactivé — le bouton EN/FR n'est plus affiché
+    // injectLangSwitcher();
   }
 
   function injectLangSwitcher(){
