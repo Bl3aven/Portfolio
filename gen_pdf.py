@@ -12,9 +12,6 @@ with sync_playwright() as p:
     viewport_height = 1123
     scale = viewport_height / max(content_height, viewport_height)
     print(f'Content: {content_height}px, Viewport: {viewport_height}px, Scale: {scale:.3f}')
-    if scale < 1:
-        page.pdf(path=pdf_path, width='210mm', height='297mm', print_background=True, scale=scale)
-    else:
-        page.pdf(path=pdf_path, width='210mm', height='297mm', print_background=True)
+    page.pdf(path=pdf_path, width='210mm', height='297mm', print_background=True, scale=min(scale * 0.95, 0.95))
     b.close()
     print(f'PDF generated: {pdf_path} ({os.path.getsize(pdf_path)} bytes)')
