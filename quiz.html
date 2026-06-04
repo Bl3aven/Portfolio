@@ -290,6 +290,30 @@
       background: rgba(255,122,0,.08);
     }
 
+    /* ── Pack library ── */
+    .packGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:520px){.packGrid{grid-template-columns:1fr}}
+    .packCard{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);cursor:pointer;transition:transform .12s ease,border-color .12s ease,background .12s ease;position:relative;overflow:hidden}
+    .packCard:hover{transform:translateY(-2px);border-color:rgba(255,122,0,.45);background:rgba(255,122,0,.06)}
+    .packCard h4{margin:0 0 5px 0;font-size:14px;font-weight:1000}
+    .packCard .pmeta{font-size:11px;color:var(--muted);margin:0;line-height:1.4}
+    .packTag{display:inline-block;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:900;margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
+    .packCard .badge-count{position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--muted)}
+    /* ── QR code ── */
+    .qrBlock{margin-top:12px;display:none;flex-direction:column;align-items:center;gap:6px}
+    .qrBlock img{width:110px;height:110px;border-radius:12px;border:2px solid rgba(255,255,255,.14);background:#fff}
+    .qrBlock .qlabel{font-size:11px;color:var(--muted)}
+    /* ── Creator ── */
+    .creatorWrap{display:flex;flex-direction:column;gap:10px}
+    .qItem{padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03)}
+    .qItem summary{cursor:pointer;font-weight:1000;font-size:13px;list-style:none;display:flex;align-items:center;justify-content:space-between}
+    .qItem summary::-webkit-details-marker{display:none}
+    .qItem .qinner{display:grid;gap:8px;margin-top:10px}
+    .radio-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer}
+    .radio-row input[type=radio]{accent-color:var(--orange);width:16px;height:16px;flex-shrink:0}
+    .radio-row.correct-opt{border-color:rgba(45,211,111,.45);background:rgba(45,211,111,.06)}
+    .radio-row label{flex:1;font-size:13px;cursor:pointer}
+
     .toast{
       position:fixed; bottom:16px; left:50%; transform:translateX(-50%);
       background: rgba(10,12,16,.85);
@@ -454,6 +478,7 @@
                 <input type="file" id="quizFile" accept="application/json,.json" style="display:none;">
                 <button class="btn secondary small" id="btnPickFile">Choisir un fichier</button>
                 <button class="btn ghost small" id="btnLockInfo">Détails</button>
+                <button class="btn small" id="btnOpenLibrary" style="background:linear-gradient(135deg,#5260ff,#7b61ff)">📚 Bibliothèque</button>
               </div>
               <div class="subtle" style="margin-top:10px;">
                 Fichier: <b id="loadedFileName">—</b> • Titre: <b id="loadedTitle">—</b> • Questions: <b id="loadedCount">—</b>
@@ -464,18 +489,23 @@
           <div class="hr"></div>
 
           <div class="center" id="pinBox" style="display:none;">
-            <div class="subtle">Code PIN</div>
+            <div class="subtle">Code PIN · partage ce lien ou scanne le QR</div>
             <div class="bigPin" id="pinValue">000000</div>
-            <div class="row" style="justify-content:center;">
-              <button class="btn small" id="btnCopyPin">Copier</button>
-              <button class="btn small" id="btnStart" disabled>Lancer</button>
-              <button class="btn secondary small" id="btnEnd" disabled>Terminer</button>
+            <div class="qrBlock" id="qrBlock">
+              <img id="qrImg" src="" alt="QR code" />
+              <div class="qlabel">Scanner pour rejoindre</div>
+            </div>
+            <div class="row" style="justify-content:center;margin-top:10px;">
+              <button class="btn small" id="btnCopyPin">📋 PIN</button>
+              <button class="btn small" id="btnCopyLink" style="background:linear-gradient(135deg,#5260ff,#7b61ff)">🔗 Lien</button>
+              <button class="btn small" id="btnStart" disabled>▶ Lancer</button>
+              <button class="btn secondary small" id="btnEnd" disabled>■ Terminer</button>
             </div>
             <div class="subtle" style="margin-top:10px;">
               Joueurs: <b id="playerCount">0</b> • Max: <b>100</b>
             </div>
             <div class="row" style="justify-content:center; margin-top:10px;">
-              <button class="btn ghost small" id="btnDownloadXml" style="display:none;">Télécharger résultats (XML)</button>
+              <button class="btn ghost small" id="btnDownloadXml" style="display:none;">⬇ Résultats XML</button>
             </div>
           </div>
 
@@ -567,6 +597,20 @@
           <li><b>explanation</b> (string) : optionnel.</li>
         </ul>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Library modal -->
+<div class="modalWrap" id="libraryModalWrap" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="libModalTitle" style="max-width:700px">
+    <div class="modalHead">
+      <b id="libModalTitle">📚 Bibliothèque de quiz</b>
+      <button class="btn secondary small" id="btnCloseLibrary">Fermer</button>
+    </div>
+    <div class="modalBody">
+      <div class="subtle" style="margin-bottom:14px;">Sélectionne un pack — il est chargé directement, sans fichier JSON.</div>
+      <div class="packGrid" id="packGrid"></div>
     </div>
   </div>
 </div>
@@ -1561,6 +1605,7 @@ async function hostCreateSession(){
   await joinChannel(sessionPin, true);
   syncPresence();
   renderHostReady();
+  if(typeof showQR === "function") showQR(sessionPin);
   toast("Session prête");
 }
 
@@ -1665,6 +1710,176 @@ btnLockInfo.addEventListener("click", () => {
   if (!quiz) return toast("Charge un quiz d’abord");
   toast(`Quiz verrouillé ✓ (${quiz.questions.length} questions)`);
 });
+
+/* ============================
+   QUIZ PACKS — built-in question sets
+   ============================ */
+const QUIZ_PACKS = [
+  {
+    id:"devops", title:"DevOps & Infrastructure", tag:"Infra", color:"#2dd36f",
+    description:"CI/CD, Docker, Kubernetes, Ansible, GitOps — 10 questions",
+    timeLimit:20,
+    questions:[
+      {question:"Que signifie CI/CD ?",answers:["Continuous Integration / Continuous Deployment","Computer Interface / Computer Design","Content Integration / Content Distribution","Cloud Infrastructure / Cloud Deployment"],correctIndex:0,explanation:"CI = tests automatisés à chaque commit ; CD = déploiement automatisé en production."},
+      {question:"Quel outil orchestre des containers Docker à grande échelle ?",answers:["Ansible","Kubernetes","Vagrant","Terraform"],correctIndex:1},
+      {question:"Dans Docker, quel fichier définit comment construire une image ?",answers:["docker-compose.yml","Containerfile","Dockerfile","docker.json"],correctIndex:2},
+      {question:"Quel format utilise Ansible pour ses playbooks ?",answers:["JSON","YAML","XML","TOML"],correctIndex:1},
+      {question:"Qu'est-ce que l'Infrastructure as Code (IaC) ?",answers:["Coder l'infra en binaire","Gérer l'infra via des fichiers versionnés","Développer sans serveur","Compiler directement sur l'infra"],correctIndex:1},
+      {question:"Qu'est-ce qu'un reverse proxy ?",answers:["Un VPN inversé","Un DNS secondaire","Un serveur qui transfère les requêtes vers des backends","Un pare-feu applicatif"],correctIndex:2},
+      {question:"Dans Kubernetes, qu'est-ce qu'un Pod ?",answers:["Un nœud physique","La plus petite unité de déploiement (1+ containers)","Un réseau virtuel","Un service d'équilibrage"],correctIndex:1},
+      {question:"Que fait 'docker-compose up -d' ?",answers:["Arrête tous les containers","Lance les services en arrière-plan","Construit une image","Supprime les volumes"],correctIndex:1},
+      {question:"Qu'est-ce que le blue-green deployment ?",answers:["Déploiement la nuit","Deux envs pour basculer sans downtime","Colorisation de logs","Déploiement progressif par % de trafic"],correctIndex:1},
+      {question:"Quel est le rôle de Terraform ?",answers:["Orchestrer des containers","Provisionner l'infra cloud via du code","Surveiller les métriques","Gérer les certificats SSL"],correctIndex:1}
+    ]
+  },
+  {
+    id:"reseaux", title:"Réseaux & Sécurité", tag:"SecOps", color:"#5260ff",
+    description:"OSI, TCP/IP, firewalls, cryptographie, attaques — 10 questions",
+    timeLimit:20,
+    questions:[
+      {question:"Combien de couches comporte le modèle OSI ?",answers:["4","5","7","10"],correctIndex:2},
+      {question:"Qu'est-ce qu'un VLAN ?",answers:["Very Large Area Network","Virtual Local Area Network","Validated Local Access Node","Virtual Link Access Node"],correctIndex:1,explanation:"Un VLAN segmente logiquement un réseau physique."},
+      {question:"Quel port utilise HTTPS par défaut ?",answers:["80","8080","443","8443"],correctIndex:2},
+      {question:"Qu'est-ce que le chiffrement asymétrique ?",answers:["Clés de tailles différentes","Paire clé publique / clé privée","Chiffrement aléatoire","Plusieurs algorithmes combinés"],correctIndex:1},
+      {question:"Que signifie XSS en cybersécurité ?",answers:["eXtra Secure System","Cross-Site Scripting","XML Security Standard","Extended Security Service"],correctIndex:1},
+      {question:"Qu'est-ce qu'une attaque DDoS ?",answers:["Injection SQL via DNS","Vol de session","Saturer un serveur avec des requêtes massives","Chiffrement des fichiers"],correctIndex:2},
+      {question:"Que fait un firewall 'stateful' ?",answers:["Analyse uniquement les en-têtes","Suit l'état des connexions pour filtrer","Bloque tout le trafic sortant","Filtre par adresse MAC"],correctIndex:1},
+      {question:"Quel protocole sécurise les communications web (couche transport) ?",answers:["HTTP","FTP","TLS","SMTP"],correctIndex:2,explanation:"TLS = Transport Layer Security, successeur de SSL."},
+      {question:"Qu'est-ce qu'une injection SQL ?",answers:["Virus dans une base","Code SQL malveillant injecté dans une requête","Surcharge de la base","Corruption de disque"],correctIndex:1},
+      {question:"Qu'est-ce qu'un certificat SSL wildcard ?",answers:["Certificat expiré","Couvre un domaine et tous ses sous-domaines","Certificat auto-signé","Certificat temporaire 24h"],correctIndex:1}
+    ]
+  },
+  {
+    id:"cloud-ia", title:"Cloud & IA locale", tag:"IA · Cloud", color:"#ff7a00",
+    description:"AWS, LLMs, Ollama, ComfyUI, RAG, serverless — 10 questions",
+    timeLimit:25,
+    questions:[
+      {question:"Qu'est-ce qu'un LLM ?",answers:["Local Level Machine","Large Language Model","Linux Learning Module","Lightweight Load Manager"],correctIndex:1,explanation:"Modèle entraîné sur des milliards de tokens texte."},
+      {question:"Qu'est-ce qu'Ollama ?",answers:["Service cloud LLM","Outil pour exécuter des LLMs localement","Framework ML Google","Protocole de communication IA"],correctIndex:1},
+      {question:"Quel service AWS propose du stockage objet ?",answers:["EC2","RDS","S3","Lambda"],correctIndex:2},
+      {question:"Qu'est-ce que le RAG en IA ?",answers:["Rapid AI Generation","Retrieval-Augmented Generation","Recurrent AI Graph","Real-time AI Generation"],correctIndex:1,explanation:"Le RAG enrichit les réponses d'un LLM avec des documents externes."},
+      {question:"Qu'est-ce que ComfyUI ?",answers:["Gestionnaire de dépendances Python","Interface de workflow pour génération d'images IA","Framework d'automatisation cloud","Outil de monitoring"],correctIndex:1},
+      {question:"Qu'est-ce que le fine-tuning ?",answers:["Optimiser le code Python","Réentraîner un modèle sur un dataset spécifique","Compresser un modèle","Tester sur données de validation"],correctIndex:1},
+      {question:"Quelle est la différence IaaS / PaaS / SaaS ?",answers:["Niveaux de vitesse réseau","Infrastructure / Plateforme / Logiciel en tant que service","Protocoles de sécurité cloud","Types de machines virtuelles"],correctIndex:1},
+      {question:"Qu'est-ce que le serverless computing ?",answers:["Calcul sans électricité","Exécution de code sans gérer l'infra serveur","Calcul côté client uniquement","Infrastructure sans redondance"],correctIndex:1},
+      {question:"Qu'est-ce que Vulkan dans le contexte IA local ?",answers:["Un protocole réseau","API graphique utilisable comme backend d'inférence sur GPU non-CUDA","Un format de modèle IA","Un outil de visualisation"],correctIndex:1},
+      {question:"Qu'est-ce que Open WebUI ?",answers:["Interface web Apache","Interface pour interagir avec des LLMs via Ollama ou API","Editeur de code en ligne","Dashboard de monitoring"],correctIndex:1}
+    ]
+  },
+  {
+    id:"culture", title:"Culture IT générale", tag:"Culture", color:"#eb445a",
+    description:"Concepts fondamentaux, bonnes pratiques, histoire — 10 questions",
+    timeLimit:20,
+    questions:[
+      {question:"Que signifie 'SaaS' ?",answers:["Software as a Service","System as a Solution","Server as a Subsystem","Security as a Standard"],correctIndex:0},
+      {question:"Quel est le rôle principal d'un DNS ?",answers:["Chiffrer les connexions","Traduire des noms de domaine en adresses IP","Filtrer le trafic réseau","Stocker des fichiers"],correctIndex:1},
+      {question:"Qu'est-ce que Git ?",answers:["Un éditeur de code","Un système de gestion de versions décentralisé","Un serveur web","Un service cloud"],correctIndex:1},
+      {question:"Qu'est-ce qu'une API REST ?",answers:["Un protocole de routage","Une interface de programmation basée sur HTTP/JSON","Un framework frontend","Un système de cache"],correctIndex:1},
+      {question:"Qu'est-ce que le principe du moindre privilège ?",answers:["Accorder uniquement les droits nécessaires à une tâche","Donner tous les droits aux admins","Limiter la mémoire des processus","Réduire la bande passante"],correctIndex:0,explanation:"Clé de la sécurité : limiter la surface d'attaque."},
+      {question:"Qu'est-ce qu'un hash cryptographique ?",answers:["Un résumé de données de taille fixe, non réversible","Un chiffrement symétrique","Un identifiant réseau","Un format de compression"],correctIndex:0},
+      {question:"Qu'est-ce que le 'zero-trust' security model ?",answers:["Ne faire confiance à personne par défaut, vérifier systématiquement","Désactiver tous les pare-feux","Utiliser uniquement du chiffrement AES-0","Modèle sans authentification"],correctIndex:0},
+      {question:"Qu'est-ce que le 'monitoring' d'une infrastructure ?",answers:["Sauvegarder les données","Surveiller en temps réel les métriques et alerter sur anomalies","Mettre à jour les serveurs","Documenter l'architecture"],correctIndex:1},
+      {question:"Que signifie le protocole SSH ?",answers:["Secure Shell - accès sécurisé à distance via tunnel chiffré","Standard Screen Handler","System Security Hub","Software Sharing Host"],correctIndex:0},
+      {question:"Qu'est-ce que le RGPD ?",answers:["Un protocole réseau européen","Règlement Général sur la Protection des Données personnelles","Un standard de chiffrement","Un framework de développement"],correctIndex:1}
+    ]
+  }
+];
+
+/* ============================
+   LIBRARY
+   ============================ */
+const libraryModalWrap = $("libraryModalWrap");
+const packGrid = $("packGrid");
+const btnOpenLibrary = $("btnOpenLibrary");
+const btnCloseLibrary = $("btnCloseLibrary");
+
+function openLibrary(){
+  libraryModalWrap.style.display = "block";
+  libraryModalWrap.setAttribute("aria-hidden","false");
+  renderPackGrid();
+}
+function closeLibrary(){
+  libraryModalWrap.style.display = "none";
+  libraryModalWrap.setAttribute("aria-hidden","true");
+}
+function renderPackGrid(){
+  packGrid.innerHTML = QUIZ_PACKS.map((p,i) => `
+    <div class="packCard" data-i="${i}" tabindex="0" role="button" aria-label="Charger ${escapeHtml(p.title)}">
+      <div class="badge-count">${p.questions.length} Q</div>
+      <div class="packTag" style="background:${p.color}22;border:1px solid ${p.color}55;color:${p.color}">${escapeHtml(p.tag)}</div>
+      <h4>${escapeHtml(p.title)}</h4>
+      <p class="pmeta">${escapeHtml(p.description)}</p>
+    </div>
+  `).join("");
+  packGrid.querySelectorAll(".packCard").forEach(card => {
+    card.addEventListener("click", () => loadPack(Number(card.dataset.i)));
+    card.addEventListener("keydown", (e) => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); loadPack(Number(card.dataset.i)); } });
+  });
+}
+function loadPack(idx){
+  if (quizLocked) return toast("Quiz déjà chargé (1 quiz par session).");
+  const p = QUIZ_PACKS[idx];
+  if (!p) return;
+  const norm = normalizeQuiz({ title:p.title, description:p.description, timeLimit:p.timeLimit, questions:p.questions });
+  if (!norm.ok){ toast("Erreur interne pack"); return; }
+  quiz = norm.value;
+  quizLocked = true;
+  loadedFileName.textContent = "pack intégré";
+  loadedTitle.textContent = quiz.title;
+  loadedCount.textContent = String(quiz.questions.length);
+  uiState.textContent = "Quiz chargé";
+  btnStart.disabled = false;
+  btnLockInfo.disabled = false;
+  closeLibrary();
+  toast(`Pack "${p.title}" chargé ✓`);
+}
+
+btnOpenLibrary.addEventListener("click", openLibrary);
+btnCloseLibrary.addEventListener("click", closeLibrary);
+libraryModalWrap.addEventListener("click", (e) => { if(e.target===libraryModalWrap) closeLibrary(); });
+
+/* ============================
+   QR CODE & COPY LINK
+   ============================ */
+const qrBlock = $("qrBlock");
+const qrImg = $("qrImg");
+const btnCopyLink = $("btnCopyLink");
+
+function showQR(pin){
+  const baseUrl = window.location.origin + window.location.pathname;
+  const joinUrl = `${baseUrl}?pin=${encodeURIComponent(pin)}`;
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(joinUrl)}&size=220x220&margin=10&bgcolor=ffffff&color=0b0d12`;
+  qrImg.src = qrUrl;
+  qrBlock.style.display = "flex";
+}
+
+if(btnCopyLink){
+  btnCopyLink.addEventListener("click", async () => {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const link = `${baseUrl}?pin=${encodeURIComponent(sessionPin||"")}`;
+    try{ await navigator.clipboard.writeText(link); toast("Lien copié !"); }
+    catch(e){ toast("Impossible de copier"); }
+  });
+}
+
+/* ============================
+   URL PARAM — auto-fill PIN
+   ============================ */
+(function(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const pin = params.get("pin");
+    if(pin && pin.length >= 4){
+      const pnInput = $("joinPin");
+      if(pnInput) pnInput.value = pin;
+      /* switch to player mode automatically */
+      const btnP = $("btnPlayer");
+      if(btnP) setTimeout(()=>{ btnP.click(); toast(`PIN ${pin} pré-rempli`); }, 400);
+    }
+  }catch(e){}
+})();
+
+/* QR displayed via hostCreateSession (patched inline below) */
 
 /* Init */
 setMode(Mode.NONE);
