@@ -439,26 +439,52 @@ body.loaded nav{opacity:1;transform:translateY(0);transition:.7s ease}
 body.loading #assistantBubble,body.loading #assistantWindow{opacity:0;pointer-events:none;transform:scale(.5)}
 
 /* ============================================================
-   INTRO LOADER (conservé)
+   INTRO — REDESIGNED
    ============================================================ */
-#introModal{position:fixed;inset:0;display:grid;place-items:center;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);background:radial-gradient(1200px 800px at 50% 35%,rgba(255,159,67,.08),rgba(0,0,0,.9) 55%,rgba(0,0,0,.97));z-index:5000;overflow:hidden}
+#introModal{position:fixed;inset:0;z-index:5000;overflow:hidden;display:grid;place-items:center;background:#0a0a0c}
 #introNeural{position:absolute;inset:0;width:100%;height:100%;z-index:0}
-.intro-vignette{position:absolute;inset:-1px;z-index:1;pointer-events:none;background:radial-gradient(900px 520px at 50% 38%,rgba(255,159,67,.1),transparent 60%),radial-gradient(1200px 900px at 50% 50%,transparent 40%,rgba(0,0,0,.75) 78%),linear-gradient(to bottom,rgba(0,0,0,.35),rgba(0,0,0,.75))}
-.modal-box{position:relative;z-index:2;margin:0;text-align:center;padding:clamp(1.2rem,4vw,2rem);width:min(780px,100vw)}
-.intro-kicker{font-size:clamp(1rem,3vw,1.4rem);letter-spacing:.5em;text-transform:uppercase;color:rgba(255,255,255,.88);margin-bottom:.8rem;text-shadow:0 0 20px rgba(255,159,67,.2)}
-.modal-box h1{font-size:clamp(2.2rem,4.2vw,9rem);font-weight:400;letter-spacing:.24em;text-transform:uppercase;color:#fff;text-shadow:0 0 36px rgba(255,159,67,.15),0 0 22px rgba(255,255,255,.08);overflow-wrap:anywhere}
-.intro-sub{margin-top:1rem;font-size:clamp(.88rem,2.4vw,1.05rem);font-weight:300;color:rgba(255,255,255,.72);letter-spacing:.1em;line-height:1.5}
-.enter-btn{margin-top:2rem;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.95rem 2rem;border-radius:999px;border:1px solid rgba(255,159,67,.4);background:linear-gradient(135deg,rgba(255,140,66,.9),rgba(255,106,0,.9));color:#111;font-weight:700;letter-spacing:.03em;cursor:pointer;box-shadow:0 12px 40px rgba(255,140,60,.28),0 0 0 1px rgba(255,255,255,.05) inset;transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;animation:breathe 2.8s ease-in-out infinite}
-.enter-btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 20px 60px rgba(255,140,60,.42),0 0 0 1px rgba(255,255,255,.07) inset;filter:saturate(1.05)}
-.enter-btn:active{transform:translateY(0) scale(.99)}
-.enter-btn .enter-glow{position:absolute;inset:-2px;border-radius:999px;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.3),transparent 60%);opacity:0;transition:opacity .25s ease;mix-blend-mode:overlay;pointer-events:none}
-.enter-btn:hover .enter-glow{opacity:.85}
-.intro-hint{margin-top:1rem;font-size:.8rem;color:rgba(255,255,255,.48);letter-spacing:.07em}
-@keyframes breathe{0%,100%{transform:translateY(0) scale(1);box-shadow:0 12px 40px rgba(255,140,60,.26),0 0 0 1px rgba(255,255,255,.05) inset}50%{transform:translateY(-1px) scale(1.025);box-shadow:0 20px 60px rgba(255,140,60,.4),0 0 0 1px rgba(255,255,255,.07) inset}}
-#warpOverlay{position:fixed;inset:0;z-index:6000;pointer-events:none;opacity:0;transform:scale(1);filter:blur(0);background:radial-gradient(800px 520px at 50% 40%,rgba(255,159,67,.15),transparent 60%),repeating-linear-gradient(90deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 10px,rgba(255,255,255,.06) 11px,rgba(255,255,255,0) 13px),repeating-linear-gradient(0deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 18px,rgba(255,255,255,.04) 19px,rgba(255,255,255,0) 21px),radial-gradient(circle at 50% 50%,rgba(0,0,0,.3),rgba(0,0,0,.95))}
+.intro-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 90% 65% at 50% 42%,rgba(255,140,66,.065),transparent 68%),radial-gradient(ellipse 110% 110% at 50% 50%,transparent 42%,rgba(0,0,0,.82) 82%)}
+.intro-scanline{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.6;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.01) 2px,rgba(255,255,255,.01) 3px)}
+.intro-sweep{position:absolute;left:0;right:0;top:0;height:1px;z-index:2;pointer-events:none;background:linear-gradient(90deg,transparent 0%,rgba(255,140,66,.55) 38%,rgba(255,200,120,1) 50%,rgba(255,140,66,.55) 62%,transparent 100%);box-shadow:0 0 18px rgba(255,140,66,.4);opacity:0;animation:iSweep 1.6s ease-out .05s forwards}
+@keyframes iSweep{0%{top:0;opacity:1}80%{opacity:.7}100%{top:100%;opacity:0}}
+.modal-box{position:relative;z-index:3;text-align:center;width:min(940px,90vw);padding:clamp(2rem,5vw,4rem) clamp(1rem,4vw,2rem)}
+/* — Eyebrow — */
+.intro-eyebrow{display:inline-flex;align-items:center;gap:.8rem;margin-bottom:2rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);opacity:0;animation:iFadeUp .55s ease .55s forwards}
+.intro-eyebrow::before,.intro-eyebrow::after{content:"";width:36px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,140,66,.6))}
+.intro-eyebrow::after{background:linear-gradient(90deg,rgba(255,140,66,.6),transparent)}
+/* — Name — */
+.intro-name{font-size:clamp(3.4rem,11vw,9.5rem);font-weight:800;letter-spacing:-.025em;line-height:.9;margin-bottom:0;user-select:none}
+.intro-name .iline{display:block;overflow:hidden;padding-bottom:.06em}
+.intro-name .iline span{display:block;transform:translateY(108%);animation:iSlideUp .95s cubic-bezier(.16,1,.28,1) forwards}
+.intro-name .iline:nth-child(1) span{animation-delay:.72s;color:#fff}
+.intro-name .iline:nth-child(2) span{animation-delay:.88s;color:rgba(255,255,255,.78)}
+@keyframes iSlideUp{to{transform:translateY(0)}}
+/* — Role typewriter — */
+.intro-role{margin-top:1.5rem;font-family:'JetBrains Mono',monospace;font-size:clamp(.8rem,1.8vw,.95rem);color:rgba(255,255,255,.44);letter-spacing:.05em;min-height:1.5em;opacity:0;animation:iFadeIn .3s ease 1.55s forwards}
+.intro-cursor{display:inline-block;width:2px;height:.85em;background:var(--accent);margin-left:2px;vertical-align:-.06em;border-radius:1px;animation:iCursor 1s step-end infinite}
+@keyframes iCursor{50%{opacity:0}}
+/* — Tags — */
+.intro-tags{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.45rem;margin-top:1.7rem;opacity:0;animation:iFadeUp .5s ease 1.65s forwards}
+.intro-tag{padding:.3rem .72rem;border:1px solid rgba(255,255,255,.1);border-radius:999px;font-size:.68rem;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.5);background:rgba(255,255,255,.03);white-space:nowrap}
+.intro-status{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .72rem;border:1px solid rgba(54,211,153,.22);border-radius:999px;font-size:.68rem;font-weight:600;letter-spacing:.06em;color:#36d399;background:rgba(54,211,153,.05);white-space:nowrap}
+.intro-status .idot{width:5px;height:5px;flex-shrink:0;border-radius:50%;background:#36d399;box-shadow:0 0 7px #36d399;animation:iPulse 1.8s ease-in-out infinite}
+@keyframes iPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+/* — Enter button — */
+.enter-btn{margin-top:2.4rem;position:relative;display:inline-flex;align-items:center;gap:.65rem;padding:.82rem 1.9rem .82rem 2.1rem;border-radius:999px;border:1px solid rgba(255,140,66,.32);background:transparent;color:rgba(255,140,66,.88);font-size:.86rem;font-weight:600;letter-spacing:.06em;cursor:pointer;overflow:hidden;transition:color .3s ease,border-color .3s ease,box-shadow .3s ease;opacity:0;animation:iFadeUp .55s ease 1.85s forwards}
+.enter-btn::before{content:"";position:absolute;inset:0;background:rgba(255,140,66,.1);transform:translateX(-101%);transition:transform .38s cubic-bezier(.16,1,.3,1)}
+.enter-btn:hover::before{transform:translateX(0)}
+.enter-btn:hover{color:#fff;border-color:rgba(255,140,66,.65);box-shadow:0 0 36px rgba(255,140,66,.14),inset 0 1px 0 rgba(255,255,255,.06)}
+.enter-btn:active{transform:scale(.98)}
+.enter-arrow{display:inline-block;font-style:normal;line-height:1;transition:transform .32s cubic-bezier(.16,1,.3,1)}
+.enter-btn:hover .enter-arrow{transform:translateX(5px)}
+/* shared */
+@keyframes iFadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iFadeIn{from{opacity:0}to{opacity:1}}
+/* — Warp exit — */
+#warpOverlay{position:fixed;inset:0;z-index:6000;pointer-events:none;opacity:0;background:radial-gradient(800px 520px at 50% 40%,rgba(255,140,66,.1),transparent 60%),radial-gradient(circle at 50% 50%,rgba(0,0,0,.2),rgba(0,0,0,.96))}
 #warpOverlay.play{animation:warpIn 850ms cubic-bezier(.16,.8,.22,1) forwards}
 @keyframes warpIn{0%{opacity:0;transform:scale(1)}35%{opacity:1;transform:scale(1.06)}100%{opacity:0;transform:scale(1.14)}}
-@media(max-width:620px){.modal-box{width:min(100vw,380px);padding-inline:1rem}.intro-kicker{font-size:.88rem;letter-spacing:.32em}.modal-box h1{font-size:clamp(1.8rem,10vw,2.8rem);letter-spacing:.14em}.intro-sub{font-size:.9rem;letter-spacing:.04em}}
+@media(max-width:620px){.intro-name{font-size:clamp(2.8rem,16vw,5.5rem)}.intro-eyebrow{font-size:.62rem;letter-spacing:.15em}.intro-eyebrow::before,.intro-eyebrow::after{width:18px}.intro-tags{gap:.35rem}}
 
 .lang-switcher{display:none!important}
 </style>
@@ -469,18 +495,26 @@ body.loading #assistantBubble,body.loading #assistantWindow{opacity:0;pointer-ev
 <canvas id="particles"></canvas>
 
 <!-- INTRO MODAL -->
-<div id="introModal" role="dialog" aria-modal="true" aria-label="Écran de chargement">
+<div id="introModal" role="dialog" aria-modal="true" aria-label="Bienvenue — Mathys Tournayre">
   <canvas id="introNeural" aria-hidden="true"></canvas>
   <div class="intro-vignette" aria-hidden="true"></div>
+  <div class="intro-scanline" aria-hidden="true"></div>
+  <div class="intro-sweep" aria-hidden="true"></div>
   <div class="modal-box">
-    <div class="intro-kicker">PORTFOLIO</div>
-    <h1>TOURNAYRE MATHYS</h1>
-    <p class="intro-sub">Alternant &amp; Apprenti Ingénieur ISEN<br>chez Oxeegen France</p>
+    <div class="intro-eyebrow">DevOps · Cloud · IA Engineer</div>
+    <h1 class="intro-name">
+      <span class="iline"><span>MATHYS</span></span>
+      <span class="iline"><span>TOURNAYRE</span></span>
+    </h1>
+    <p class="intro-role" id="introRole"><span class="intro-cursor" id="introCursor"></span></p>
+    <div class="intro-tags">
+      <span class="intro-tag">Ingénieur ISEN</span>
+      <span class="intro-tag">Oxeegen France</span>
+      <span class="intro-status"><span class="idot"></span>Ouvert aux opportunités</span>
+    </div>
     <button id="enterBtn" class="enter-btn" type="button">
-      Accéder au Portfolio
-      <span class="enter-glow" aria-hidden="true"></span>
+      Découvrir le portfolio <span class="enter-arrow" aria-hidden="true">→</span>
     </button>
-    <div class="intro-hint">BIENVENUE • Clique pour entrer • PORTFOLIO</div>
   </div>
 </div>
 
@@ -897,11 +931,25 @@ const modal=document.getElementById("introModal"),enterBtn=document.getElementBy
 let modalActive=true;
 enterBtn?.addEventListener("click",closeModal);
 window.addEventListener("keydown",e=>{if(modalActive&&(e.key==="Enter"||e.key===" ")){e.preventDefault();closeModal()}});
+
+/* INTRO TYPEWRITER */
+(function(){
+  const role=document.getElementById("introRole"),cursor=document.getElementById("introCursor");
+  if(!role||!cursor)return;
+  const text="Alternant ingénieur — DevOps & Cloud";
+  let i=0;
+  setTimeout(()=>{
+    const iv=setInterval(()=>{
+      if(i>=text.length){clearInterval(iv);return}
+      role.insertBefore(document.createTextNode(text[i++]),cursor)
+    },38)
+  },1600)
+})();
 function closeModal(){if(!modalActive)return;modalActive=false;warpOverlay?.classList.remove("play");void warpOverlay.offsetWidth;warpOverlay?.classList.add("play");modal.style.opacity="0";modal.style.transform="scale(1.08)";modal.style.transition="opacity 600ms ease,transform 800ms cubic-bezier(.16,.8,.22,1)";document.body.classList.remove("loading");document.body.classList.add("loaded");setTimeout(()=>{modal.style.display="none";warpOverlay?.classList.remove("play");bubble.style.opacity="1";bubble.style.pointerEvents="auto"},850)}
 
 /* INTRO NEURAL */
 (function(){
-  const c=document.getElementById("introNeural");if(!c)return;const ctx=c.getContext("2d");let W,H;function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}rs();window.addEventListener("resize",rs);const mouse={x:W/2,y:H/2,lX:W/2,lY:H/2,node:null};window.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});window.addEventListener("touchmove",e=>{if(!e.touches||!e.touches[0])return;mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY},{passive:true});let nodes=[];const CNT=18;function nn(x,y){return{x,y,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28}}for(let i=0;i<CNT;i++)nodes.push(nn(Math.random()*W,Math.random()*H));function umn(){const mv=Math.hypot(mouse.x-mouse.lX,mouse.y-mouse.lY);if(mv>8)mouse.node=null;if(!mouse.node)mouse.node=nn(mouse.x,mouse.y);mouse.node.x+=(mouse.x-mouse.node.x)*.3;mouse.node.y+=(mouse.y-mouse.node.y)*.3;mouse.lX=mouse.x;mouse.lY=mouse.y}function an(){if(!modalActive){ctx.clearRect(0,0,W,H);return}ctx.clearRect(0,0,W,H);ctx.fillStyle="#05060c";ctx.fillRect(0,0,W,H);umn();nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1});if(mouse.node){let nb=[];nodes.forEach(n=>{const d=Math.hypot(n.x-mouse.node.x,n.y-mouse.node.y);if(d<170)nb.push({n,d})});nb.sort((a,b)=>a.d-b.d);nb.slice(0,3).forEach(o=>{const n=o.n,d=o.d,a=1-d/170;ctx.strokeStyle=`rgba(140,180,255,${a*.3})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(mouse.node.x,mouse.node.y);ctx.stroke()})}nodes.forEach(n=>{ctx.beginPath();ctx.fillStyle="rgba(180,210,255,.7)";ctx.arc(n.x,n.y,1.8,0,Math.PI*2);ctx.fill()});if(mouse.node){ctx.beginPath();ctx.fillStyle="rgba(255,255,255,1)";ctx.arc(mouse.node.x,mouse.node.y,2.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.fillStyle="rgba(120,180,255,.12)";ctx.arc(mouse.node.x,mouse.node.y,10,0,Math.PI*2);ctx.fill()}requestAnimationFrame(an)}an()})();
+  const c=document.getElementById("introNeural");if(!c)return;const ctx=c.getContext("2d");let W,H;function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}rs();window.addEventListener("resize",rs);const mouse={x:W/2,y:H/2,lX:W/2,lY:H/2,node:null};window.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});window.addEventListener("touchmove",e=>{if(!e.touches||!e.touches[0])return;mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY},{passive:true});let nodes=[];const CNT=18;function nn(x,y){return{x,y,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28}}for(let i=0;i<CNT;i++)nodes.push(nn(Math.random()*W,Math.random()*H));function umn(){const mv=Math.hypot(mouse.x-mouse.lX,mouse.y-mouse.lY);if(mv>8)mouse.node=null;if(!mouse.node)mouse.node=nn(mouse.x,mouse.y);mouse.node.x+=(mouse.x-mouse.node.x)*.3;mouse.node.y+=(mouse.y-mouse.node.y)*.3;mouse.lX=mouse.x;mouse.lY=mouse.y}function an(){if(!modalActive){ctx.clearRect(0,0,W,H);return}ctx.clearRect(0,0,W,H);ctx.fillStyle="#0a0a0c";ctx.fillRect(0,0,W,H);umn();nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1});if(mouse.node){let nb=[];nodes.forEach(n=>{const d=Math.hypot(n.x-mouse.node.x,n.y-mouse.node.y);if(d<180)nb.push({n,d})});nb.sort((a,b)=>a.d-b.d);nb.slice(0,4).forEach(o=>{const n=o.n,d=o.d,a=1-d/180;ctx.strokeStyle=`rgba(255,140,66,${a*.22})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(mouse.node.x,mouse.node.y);ctx.stroke()})}nodes.forEach(n=>{ctx.beginPath();ctx.fillStyle="rgba(255,160,80,.55)";ctx.arc(n.x,n.y,1.6,0,Math.PI*2);ctx.fill()});if(mouse.node){ctx.beginPath();ctx.fillStyle="rgba(255,200,120,.95)";ctx.arc(mouse.node.x,mouse.node.y,2.8,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.fillStyle="rgba(255,140,66,.08)";ctx.arc(mouse.node.x,mouse.node.y,14,0,Math.PI*2);ctx.fill()}requestAnimationFrame(an)}an()})();
 
 /* PARTICLES */
 const pCanvas=document.getElementById("particles"),pCtx=pCanvas.getContext("2d");let pw,ph;function pResize(){pw=pCanvas.width=window.innerWidth;ph=pCanvas.height=window.innerHeight}window.addEventListener("resize",pResize);pResize();
