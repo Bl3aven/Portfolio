@@ -552,6 +552,77 @@ footer{border-top:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.38);fo
 .footer-copy{color:rgba(255,255,255,.28);font-size:.72rem}
 .footer-tech{font-family:'JetBrains Mono',monospace;color:rgba(255,140,66,.32);font-size:.68rem;letter-spacing:.04em}
 
+/* ============================================================
+   MOBILE POLISH
+   ============================================================ */
+
+/* Skill marquee — chips plus petits, gap réduit */
+@media(max-width:620px){
+  .skillMarqueeTrack{gap:20px;padding:0 14px}
+  .skillChip{font-size:.76rem;padding:5px 10px;gap:7px}
+  .skillChip img{width:16px;height:16px}
+}
+/* Cert ribbon — réduit */
+@media(max-width:620px){
+  .ribbon-track{gap:24px}
+  .cert-logo{width:30px;height:30px;border-radius:8px}
+}
+/* Hero — CTAs pleine largeur sur petit écran */
+@media(max-width:480px){
+  .hero-btn-primary,.hero-btn-ghost{flex:1;justify-content:center;padding:.78rem 1rem;font-size:.82rem}
+  .hero-cta{gap:.5rem}
+  .hero-availability{font-size:.66rem;padding:.28rem .7rem}
+}
+/* Hero metrics — très petits téléphones */
+@media(max-width:400px){
+  .hero-metrics{gap:.85rem;margin-top:2rem;padding-top:1.4rem}
+  .hm-n{font-size:1.25rem}
+  .hm-l{font-size:.58rem;letter-spacing:.06em}
+  .hm-sep{height:18px}
+}
+/* About chips */
+@media(max-width:480px){
+  .about-chip{font-size:.65rem;padding:.22rem .58rem}
+  .about-chips{gap:.35rem}
+}
+/* Contact buttons — colonne sur mobile */
+@media(max-width:520px){
+  .contact-links{flex-direction:column;align-items:center}
+  .contact-btn{width:100%;max-width:280px;justify-content:center}
+}
+/* Footer — padding réduit sur petit écran */
+@media(max-width:480px){
+  .footer-grid{padding-inline:1.25rem;gap:1.4rem;padding-bottom:1.5rem}
+  .footer-bottom{padding-inline:1.25rem}
+  .footer-col h4{margin-bottom:.6rem}
+}
+/* Mobile menu — width safe sur très petits écrans */
+@media(max-width:380px){
+  .mobile-menu{width:min(200px,82vw)}
+}
+/* Titres + hero h1 — léger ajustement en dessous de 380px */
+@media(max-width:380px){
+  section h2{font-size:1.5rem}
+  .hero h1{font-size:clamp(1.9rem,9vw,2.4rem)}
+}
+/* Timeline — padding gauche réduit */
+@media(max-width:480px){
+  .timeline-item{padding-left:1.2rem}
+  .timeline-meta{font-size:.76rem}
+}
+/* Badge "En poste" — pas de retour à la ligne bizarre */
+@media(max-width:480px){
+  .badge-current{display:none}
+}
+/* Section kicker — espace après réduit */
+@media(max-width:480px){
+  .section-subtitle{margin-bottom:1.8rem}
+}
+/* Hero sub (flèche ↓) — cacher les lignes latérales sur mobile */
+@media(max-width:480px){
+  .hero-sub::before,.hero-sub::after{display:none}
+}
+
 .lang-switcher{display:none!important}
 </style>
 </head>
@@ -642,7 +713,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.38);fo
       <div class="skillChip"><img src="img/skill-aws.svg" alt="">AWS</div>
       <div class="skillChip"><img src="img/skill-security.svg" alt="">Sécurité</div>
       <div class="skillChip"><img src="https://cdn.simpleicons.org/nvidia/76B900" alt="">NVIDIA</div>
-      <div class="skillChip"><img src="https://cdn.simpleicons.org/gigabyte/E58A1A" alt="">Gigabyte</div>
+      <div class="skillChip"><img src="https://cdn.simpleicons.org/gigabyte/1428A0" alt="">Gigabyte</div>
       <div class="skillChip"><img src="img/skill-linux.svg" alt="">Linux</div>
       <div class="skillChip"><img src="img/skill-docker.svg" alt="">Docker</div>
       <div class="skillChip"><img src="img/skill-ansible.svg" alt="">Ansible</div>
@@ -835,7 +906,7 @@ footer{border-top:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.38);fo
     <div class="skill-logo" data-skill="graylog" data-icon="graylog" data-color="FF3633" data-alt="Graylog"></div>
     <div class="skill-logo" data-skill="grafana" data-icon="grafana" data-color="F46800" data-alt="Grafana"></div>
     <div class="skill-logo" data-skill="nvidia" data-icon="nvidia" data-color="76B900" data-alt="NVIDIA"></div>
-    <div class="skill-logo" data-skill="gigabyte" data-icon="gigabyte" data-color="E58A1A" data-alt="Gigabyte"></div>
+    <div class="skill-logo" data-skill="gigabyte" data-icon="gigabyte" data-color="1428A0" data-alt="Gigabyte"></div>
   </div>
 </section>
 
