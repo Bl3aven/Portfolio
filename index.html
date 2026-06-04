@@ -336,24 +336,27 @@ section h2{font-size:2.2rem;font-weight:700;letter-spacing:-.02em;margin-bottom:
 footer{padding:3rem;text-align:center;color:rgba(255,255,255,.3);font-size:.82rem}
 
 /* ============================================================
-   GENERIC INFO MODAL (conservée)
+   INFO MODAL — REDESIGNED
    ============================================================ */
-#infoModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:1rem;z-index:15000;background:rgba(0,0,0,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-#infoModal.show{display:flex}
-.info-box{width:min(640px,96vw);border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.14);background:rgba(12,12,14,.7);box-shadow:0 30px 90px rgba(0,0,0,.7)}
-.info-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.1rem;border-bottom:1px solid var(--border)}
-.info-head h3{font-size:1rem;font-weight:700;color:var(--accent);letter-spacing:.04em;text-transform:uppercase}
-.info-close{width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,150,60,.3);background:rgba(255,150,60,.1);color:var(--accent);cursor:pointer;transition:.2s ease}
-.info-close:hover{transform:scale(1.06);background:rgba(255,150,60,.2)}
-.info-body{padding:1rem;display:grid;grid-template-columns:200px 1fr;gap:1rem;align-items:start}
-@media(max-width:720px){.info-body{grid-template-columns:1fr}}
-.info-preview{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);min-height:180px;display:grid;place-items:center}
-.info-preview img{width:100%;height:100%;max-height:240px;object-fit:cover}
-.info-text p{color:rgba(255,255,255,.72);line-height:1.5;font-size:.9rem}
-.info-actions{margin-top:.8rem;display:flex;flex-wrap:wrap;gap:.6rem}
-.info-actions a{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1rem;border-radius:999px;text-decoration:none;font-weight:700;font-size:.8rem;border:1px solid rgba(255,140,66,.4);background:linear-gradient(135deg,rgba(255,140,66,.9),rgba(255,106,0,.9));color:#111;box-shadow:0 10px 30px rgba(255,140,60,.2);transition:transform .2s ease}
-.info-actions a:hover{transform:translateY(-1px)}
-.info-actions button{padding:.7rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);cursor:pointer;font-size:.8rem}
+#infoModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:1rem;z-index:15000;background:rgba(0,0,0,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+#infoModal.show{display:flex;animation:iModalIn .28s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes iModalIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.info-box{width:min(520px,96vw);border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:rgba(10,10,14,.95);box-shadow:0 40px 120px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.04) inset;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.info-visual{position:relative;height:190px;overflow:hidden;background:linear-gradient(135deg,rgba(255,140,66,.1),rgba(0,0,0,.7))}
+.info-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.26;filter:blur(3px);transform:scale(1.06)}
+.info-visual-overlay{position:absolute;inset:0;background:linear-gradient(155deg,rgba(255,140,66,.09) 0%,transparent 48%),linear-gradient(to bottom,rgba(0,0,0,.12) 0%,rgba(10,10,14,.97) 100%)}
+.info-close{position:absolute;top:12px;right:12px;z-index:5;width:34px;height:34px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:rgba(255,255,255,.6);cursor:pointer;font-size:.82rem;line-height:1;transition:all .2s ease}
+.info-close:hover{background:rgba(255,255,255,.1);color:#fff;transform:scale(1.07)}
+.info-visual-footer{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:.85rem 1.4rem 1rem}
+.info-kicker{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem}
+#infoTitle{font-size:1.28rem;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.info-content{padding:.95rem 1.4rem 1.3rem}
+#infoDesc{color:rgba(255,255,255,.6);font-size:.88rem;line-height:1.65;padding-left:.9rem;border-left:2px solid rgba(255,140,66,.28);margin:0}
+.info-actions{margin-top:1.1rem;display:flex;flex-wrap:wrap;gap:.55rem}
+.info-actions a{display:inline-flex;align-items:center;gap:.4rem;padding:.62rem 1.15rem;border-radius:999px;text-decoration:none;font-weight:600;font-size:.78rem;letter-spacing:.03em;border:1px solid rgba(255,140,66,.36);background:rgba(255,140,66,.07);color:var(--accent);transition:all .3s ease}
+.info-actions a:hover{background:rgba(255,140,66,.13);border-color:rgba(255,140,66,.6);color:#fff;box-shadow:0 0 24px rgba(255,140,66,.1)}
+.info-actions button{padding:.62rem 1.15rem;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.55);cursor:pointer;font-size:.78rem;font-family:inherit;transition:all .2s ease}
+.info-actions button:hover{background:rgba(255,255,255,.07);color:#fff}
 
 /* ============================================================
    CV MODAL (conservée)
@@ -922,18 +925,20 @@ footer{padding:2.4rem;text-align:center;color:rgba(255,255,255,.26);font-size:.7
 <!-- INFO MODAL -->
 <div id="infoModal">
   <div class="info-box" role="dialog" aria-modal="true" aria-label="Informations">
-    <div class="info-head">
-      <h3 id="infoTitle">Titre</h3>
-      <button class="info-close" id="infoCloseBtn" type="button" title="Fermer">✕</button>
+    <div class="info-visual">
+      <img id="infoImg" src="img/placeholder-wide.svg" alt="" aria-hidden="true">
+      <div class="info-visual-overlay" aria-hidden="true"></div>
+      <button class="info-close" id="infoCloseBtn" type="button" title="Fermer" aria-label="Fermer">✕</button>
+      <div class="info-visual-footer">
+        <div class="info-kicker" id="infoKicker">Compétence</div>
+        <h3 id="infoTitle">Titre</h3>
+      </div>
     </div>
-    <div class="info-body">
-      <div class="info-preview"><img id="infoImg" src="img/placeholder-wide.svg" alt="Aperçu"></div>
-      <div class="info-text">
-        <p id="infoDesc"></p>
-        <div class="info-actions" id="infoActions">
-          <a id="infoLink" href="#" target="_blank" rel="noreferrer">Vérifier (Credly)</a>
-          <button id="infoSecondaryBtn" type="button">OK</button>
-        </div>
+    <div class="info-content">
+      <p id="infoDesc"></p>
+      <div class="info-actions" id="infoActions">
+        <a id="infoLink" href="#" target="_blank" rel="noreferrer">Vérifier (Credly)</a>
+        <button id="infoSecondaryBtn" type="button">Fermer</button>
       </div>
     </div>
   </div>
@@ -1060,8 +1065,17 @@ const skillData={linux:{title:"Linux / Systèmes",desc:"Administration, durcisse
 window.__skillData=skillData;
 
 /* INFO MODAL ENGINE */
-const infoModal=document.getElementById("infoModal"),infoTitle=document.getElementById("infoTitle"),infoDesc=document.getElementById("infoDesc"),infoImg=document.getElementById("infoImg"),infoLink=document.getElementById("infoLink"),infoCloseBtn=document.getElementById("infoCloseBtn"),infoSecondaryBtn=document.getElementById("infoSecondaryBtn");
-function openInfoModal({title,desc,img,link,linkLabel="Ouvrir",showLink=true}){infoTitle.textContent=title||"Info";infoDesc.textContent=desc||"";infoImg.onerror=()=>{infoImg.onerror=null;infoImg.src="img/placeholder-wide.svg"};infoImg.src=img||"img/placeholder-wide.svg";if(showLink&&link){infoLink.style.display="inline-flex";infoLink.href=link;infoLink.textContent=linkLabel}else{infoLink.style.display="none";infoLink.removeAttribute("href")}infoModal.classList.add("show")}
+const infoModal=document.getElementById("infoModal"),infoTitle=document.getElementById("infoTitle"),infoDesc=document.getElementById("infoDesc"),infoImg=document.getElementById("infoImg"),infoLink=document.getElementById("infoLink"),infoCloseBtn=document.getElementById("infoCloseBtn"),infoSecondaryBtn=document.getElementById("infoSecondaryBtn"),infoKicker=document.getElementById("infoKicker");
+function openInfoModal({title,desc,img,link,linkLabel="Ouvrir",showLink=true,kicker=""}){
+  infoTitle.textContent=title||"Info";
+  infoDesc.textContent=desc||"";
+  if(infoKicker)infoKicker.textContent=kicker||(showLink?"Certification":"Compétence");
+  infoImg.onerror=()=>{infoImg.onerror=null;infoImg.src="img/placeholder-wide.svg"};
+  infoImg.src=img||"img/placeholder-wide.svg";
+  if(showLink&&link){infoLink.style.display="inline-flex";infoLink.href=link;infoLink.textContent=linkLabel}
+  else{infoLink.style.display="none";infoLink.removeAttribute("href")}
+  infoModal.classList.add("show")
+}
 function closeInfoModal(){infoModal.classList.remove("show")}
 infoCloseBtn?.addEventListener("click",closeInfoModal);infoSecondaryBtn?.addEventListener("click",closeInfoModal);infoModal?.addEventListener("click",e=>{if(e.target===infoModal)closeInfoModal()});
 const cvModal=document.getElementById("cvModal"),cvLogoButton=document.getElementById("cvLogoButton"),cvCloseBtn=document.getElementById("cvCloseBtn");
@@ -1071,7 +1085,7 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"){closeInfoModal();clos
 
 /* PROJECTS GRID (remplace carousel) */
 const projectsData=[{title:"Fabrique de VMs Nutanix",desc:"Déploiement automatisé de machines virtuelles via GLPI, Prism API & Ansible.",img:"https://images.unsplash.com/photo-1581092160562-40aa08e78837",stack:["GLPI","Prism API","Ansible","Nutanix","Flask"]},{title:"Bastion Web DevOps",desc:"Portail sécurisé pour l'accès centralisé aux outils cloud & infrastructure.",img:"https://images.unsplash.com/photo-1555066931-4365d14bab8c",stack:["Linux","Docker","Nginx","Flask","OAuth"]},{title:"Administration Squad",desc:"Système RCON & Discord pour modération temps réel et logs intelligents.",img:"https://images.unsplash.com/photo-1605379399642-870262d3d051",stack:["Python","Discord API","RCON","Docker"]},{title:"Cloud HDS Nextcloud",desc:"Architecture conforme HDS & ISO 27001 pour hébergement sécurisé.",img:"https://images.unsplash.com/photo-1504384308090-c894fdcc538d",stack:["Nextcloud","ISO 27001","HDS","Reverse Proxy"]},{title:"Lab IA locale",desc:"Open WebUI, Ollama, LM Studio/Vulkan, ComfyUI et agents OpenClaw en environnement maîtrisé.",img:"https://images.unsplash.com/photo-1677442136019-21780ecad995",stack:["Open WebUI","Ollama","ComfyUI","LM Studio","Vulkan"]},{title:"Impression 3D (Galerie)",desc:"Bibliothèque de modèles + paramètres d'impression, avec aperçu 3D STL/Three.js.",img:"https://images.unsplash.com/photo-1581091870621-1f9f7b2f4a9c",stack:["STL","Three.js","Slicer","PLA/PETG"],type:"print3d"}];
-(function buildProjectGrid(){const g=document.getElementById("projectGrid");if(!g)return;projectsData.forEach(p=>{const c=document.createElement("div");c.className="project-card";c.innerHTML=`<img src="${p.img}" loading="lazy" alt=""><div class="p-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-stack">${p.stack.map(s=>`<span>${s}</span>`).join("")}</div>${p.type==="print3d"?'<div class="project-print-badge">🖨️ Ouvrir la galerie 3D</div>':""}</div>`;c.onclick=()=>{if(p.type==="print3d"){window.openSTLModal?.()}else{openInfoModal({title:p.title,desc:p.desc,img:p.img,showLink:false})}};g.appendChild(c)})})();
+(function buildProjectGrid(){const g=document.getElementById("projectGrid");if(!g)return;projectsData.forEach(p=>{const c=document.createElement("div");c.className="project-card";c.innerHTML=`<img src="${p.img}" loading="lazy" alt=""><div class="p-content"><h3>${p.title}</h3><p>${p.desc}</p><div class="project-stack">${p.stack.map(s=>`<span>${s}</span>`).join("")}</div>${p.type==="print3d"?'<div class="project-print-badge">🖨️ Ouvrir la galerie 3D</div>':""}</div>`;c.onclick=()=>{if(p.type==="print3d"){window.openSTLModal?.()}else{openInfoModal({title:p.title,desc:p.desc,img:p.img,showLink:false,kicker:"Projet"})}};g.appendChild(c)})})();
 
 /* GITHUB WIDGET */
 const repoWidgetContainer=document.getElementById("repoWidgetContainer");
@@ -1134,7 +1148,7 @@ function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function onPointerDown(e){isDown=true;moved=0;lastX=e.clientX;lastY=e.clientY;stage.style.cursor="grabbing";renderer.domElement.setPointerCapture?.(e.pointerId)}
 function onPointerMove(e){if(!isDown)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;moved+=Math.abs(dx)+Math.abs(dy);const rx=dy*.004,ry=dx*.0045;group.rotation.x=clamp(group.rotation.x+rx,-1.15,1.15);group.rotation.y+=ry;velX=rx;velY=ry;lastX=e.clientX;lastY=e.clientY}
 function pointerToNDC(e){const r=renderer.domElement.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-(((e.clientY-r.top)/r.height)*2-1)}
-function openSkillModal(key,fallback){const base=(window.__skillData&&window.__skillData[key])?window.__skillData[key]:null,title=base?.title||fallback?.alt||key,desc=base?.desc||"Compétence utilisée en contexte d'exploitation, d'automatisation et de production.",img=base?.img||fallback?.src||"img/placeholder-wide.svg";if(typeof window.openInfoModal==="function")window.openInfoModal({title,desc,img,showLink:false})}
+function openSkillModal(key,fallback){const base=(window.__skillData&&window.__skillData[key])?window.__skillData[key]:null,title=base?.title||fallback?.alt||key,desc=base?.desc||"Compétence utilisée en contexte d'exploitation, d'automatisation et de production.",img=base?.img||fallback?.fallbackSrc||"img/placeholder-wide.svg";if(typeof window.openInfoModal==="function")window.openInfoModal({title,desc,img,showLink:false,kicker:"Stack technique"})}
 function onPointerUp(e){if(!isDown)return;isDown=false;stage.style.cursor="grab";if(moved<8){pointerToNDC(e);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(sprites,false);if(hits.length)openSkillModal(hits[0].object.userData.key,hits[0].object.userData)}}
 renderer.domElement.addEventListener("pointerdown",onPointerDown,{passive:true});renderer.domElement.addEventListener("pointermove",onPointerMove,{passive:true});renderer.domElement.addEventListener("pointerup",onPointerUp,{passive:true});renderer.domElement.addEventListener("pointercancel",()=>{isDown=false;stage.style.cursor="grab"});renderer.domElement.addEventListener("mousemove",e=>{if(isDown)return;pointerToNDC(e);raycaster.setFromCamera(pointer,camera);renderer.domElement.style.cursor=raycaster.intersectObjects(sprites,false).length?"pointer":"grab"});renderer.domElement.addEventListener("wheel",e=>{e.preventDefault();const dz=e.deltaY*.08;camZ=clamp(camZ+dz,R*2.1,R*3.4);camera.position.z=camZ},{passive:false});
 const tmp=new THREE.Vector3(),forward=new THREE.Vector3(0,0,1);
