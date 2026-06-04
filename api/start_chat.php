@@ -1,7 +1,28 @@
 <?php
+session_set_cookie_params([
+  "lifetime" => 0,
+  "path"     => "/",
+  "secure"   => true,
+  "httponly" => true,
+  "samesite" => "Strict",
+]);
 session_start();
 
 header("Content-Type: application/json; charset=utf-8");
+
+// Rate limit: one new chat session per IP per 5 minutes
+$ip = $_SERVER["HTTP_CF_CONNECTING_IP"]
+   ?? $_SERVER["HTTP_X_FORWARDED_FOR"]
+   ?? $_SERVER["REMOTE_ADDR"]
+   ?? "";
+$ip = trim(explode(",", $ip)[0]);
+$rateLimitFile = sys_get_temp_dir() . "/chat_rl_" . hash("sha256", $ip);
+$cooldown = 300;
+if (is_file($rateLimitFile) && (time() - filemtime($rateLimitFile)) < $cooldown) {
+  http_response_code(429);
+  echo json_encode(["error" => "Too many requests. Please wait before starting a new chat."], JSON_UNESCAPED_UNICODE);
+  exit;
+}
 
 $configPath = __DIR__ . "/config.php";
 if (!is_file($configPath)) {
@@ -99,20 +120,22 @@ curl_close($ch);
 $data = json_decode($response, true);
 
 if ($status >= 200 && $status < 300 && isset($data["id"])) {
+  session_regenerate_id(true);
   $_SESSION["channel_id"] = $data["id"];
   $_SESSION["visitor_display"] = $visitorDisplay;
   $_SESSION["visitor_last_name"] = $lastName;
   $_SESSION["visitor_first_name"] = $firstName;
   $_SESSION["visitor_phone"] = $phone;
 
+  // Mark rate limit only on success
+  touch($rateLimitFile);
+
   echo json_encode([
     "status" => "ok",
     "channel" => $name
   ], JSON_UNESCAPED_UNICODE);
 } else {
+  error_log("start_chat.php: Discord API error (status={$status}) ip={$ip}");
   http_response_code(500);
-  echo json_encode([
-    "error" => "Failed to create channel",
-    "details" => $curlError ?: ($data["message"] ?? "Discord API error")
-  ], JSON_UNESCAPED_UNICODE);
+  echo json_encode(["error" => "Service temporarily unavailable"], JSON_UNESCAPED_UNICODE);
 }

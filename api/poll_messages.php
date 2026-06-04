@@ -1,4 +1,11 @@
 <?php
+session_set_cookie_params([
+  "lifetime" => 0,
+  "path"     => "/",
+  "secure"   => true,
+  "httponly" => true,
+  "samesite" => "Strict",
+]);
 session_start();
 
 header("Content-Type: application/json; charset=utf-8");
@@ -20,10 +27,21 @@ if (!$channel_id) {
   exit;
 }
 
-// Get last messages
+// Only fetch messages newer than the last seen ID to avoid reprocessing
+$afterId = trim((string)($_GET["after"] ?? ""));
+// Validate: Discord snowflake IDs are numeric strings
+if ($afterId !== "" && !ctype_digit($afterId)) {
+  $afterId = "";
+}
+
+$url = DISCORD_API . "/channels/" . $channel_id . "/messages?limit=10";
+if ($afterId !== "") {
+  $url .= "&after=" . rawurlencode($afterId);
+}
+
 $ch = curl_init();
 curl_setopt_array($ch, [
-  CURLOPT_URL => DISCORD_API . "/channels/" . $channel_id . "/messages?limit=10",
+  CURLOPT_URL => $url,
   CURLOPT_HTTPHEADER => [
     "Authorization: Bot " . DISCORD_BOT_TOKEN
   ],
@@ -41,7 +59,7 @@ if ($status < 200 || $status >= 300 || !is_array($messages)) {
   exit;
 }
 
-// Filter only Discord replies (not visitor echoes).
+// Filter only Discord replies (not visitor echoes), oldest first
 $output = [];
 
 foreach (array_reverse($messages) as $msg) {
@@ -56,8 +74,8 @@ foreach (array_reverse($messages) as $msg) {
 
   if (!$isVisitorEcho) {
     $output[] = [
-      "id" => $msg["id"] ?? null,
-      "author" => $msg["author"]["username"],
+      "id"      => $msg["id"] ?? null,
+      "author"  => $msg["author"]["username"],
       "content" => $content
     ];
   }

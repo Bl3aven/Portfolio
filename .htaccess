@@ -20,19 +20,31 @@ Options -Indexes
 # ==========================
 # 3. BLOCK SENSITIVE FILES
 # ==========================
-<FilesMatch "^(\.env|\.git|\.htaccess|\.htpasswd|composer\.(json|lock)|package\.json|yarn\.lock|.*\.(bak|backup|old|sql|zip|tar|gz))$">
+<FilesMatch "(^|/)\.(env|git|htaccess|htpasswd)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(bak|backup|old|sql|zip|tar\.gz|tgz|log|md|lock|json)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|ACCES_ACTUELS\.md)$">
+  Require all denied
+</FilesMatch>
+# Block backup HTML and temporary files at root
+<FilesMatch "^index_backup">
   Require all denied
 </FilesMatch>
 
 # ==========================
-# 4. BASIC SECURITY HEADERS
+# 4. SECURITY HEADERS
 # ==========================
 <IfModule mod_headers.c>
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 Header always set X-Frame-Options "SAMEORIGIN"
 Header always set X-Content-Type-Options "nosniff"
-Header always set X-XSS-Protection "1; mode=block"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
-Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+# X-XSS-Protection is deprecated in modern browsers but kept for legacy
+Header always set X-XSS-Protection "1; mode=block"
 </IfModule>
 
 <IfModule mod_mime.c>

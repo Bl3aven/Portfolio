@@ -5,3 +5,7 @@ api/config.php
 node_modules/
 .DS_Store
 Thumbs.db
+ACCES_ACTUELS.md
+token_bot_discord
+index_backup*.html
+.vscode/sftp.json

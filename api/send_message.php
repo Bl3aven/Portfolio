@@ -1,4 +1,11 @@
 <?php
+session_set_cookie_params([
+  "lifetime" => 0,
+  "path"     => "/",
+  "secure"   => true,
+  "httponly" => true,
+  "samesite" => "Strict",
+]);
 session_start();
 
 header("Content-Type: application/json; charset=utf-8");
@@ -69,10 +76,7 @@ curl_close($ch);
 if ($status >= 200 && $status < 300) {
   echo json_encode(["status" => "sent"], JSON_UNESCAPED_UNICODE);
 } else {
-  $data = json_decode($response, true);
+  error_log("send_message.php: Discord send failed status={$status} error={$curlError}");
   http_response_code(502);
-  echo json_encode([
-    "error" => "Discord send failed",
-    "details" => $curlError ?: ($data["message"] ?? "Discord API error")
-  ], JSON_UNESCAPED_UNICODE);
+  echo json_encode(["error" => "Message could not be delivered"], JSON_UNESCAPED_UNICODE);
 }
