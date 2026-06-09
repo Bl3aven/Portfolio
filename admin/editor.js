@@ -120,14 +120,19 @@
 
 /* ── Editable elements ── */
 body.__edit-mode{padding-top:48px !important}
-[data-edit-key]:hover{
-  outline:2px dashed rgba(255,140,66,.55) !important;
-  outline-offset:4px !important;
+[data-edit-key]{
+  outline:1px dashed rgba(255,140,66,.3) !important;
+  outline-offset:5px !important;
   cursor:pointer !important;
+}
+[data-edit-key]:hover{
+  outline:2px dashed rgba(255,140,66,.65) !important;
+  outline-offset:5px !important;
+  background:rgba(255,140,66,.04) !important;
 }
 [data-edit-key][data-edit-dirty]{
   outline:2px solid rgba(255,140,66,.75) !important;
-  outline-offset:4px !important;
+  outline-offset:5px !important;
 }
 
 /* ── Edit modal ── */
@@ -307,16 +312,20 @@ body.__edit-mode{padding-top:48px !important}
 
   // ── Bind editable elements ──────────────────────────────────────────────────
   function bindEditables() {
+    let count = 0;
     EDIT_MAP.forEach(def => {
       const el = document.querySelector(def.sel);
       if (!el) return;
       el.setAttribute('data-edit-key', def.key);
+      // capture:true fires before any existing page handlers (links, buttons, etc.)
       el.addEventListener('click', e => {
         e.preventDefault();
         e.stopPropagation();
         openModal(def);
-      });
+      }, { capture: true });
+      count++;
     });
+    toast('✏ ' + count + ' élément' + (count > 1 ? 's' : '') + ' éditables — cliquez pour modifier');
   }
 
   // ── Edit modal ──────────────────────────────────────────────────────────────
@@ -433,8 +442,21 @@ body.__edit-mode{padding-top:48px !important}
     injectStyles();
     buildToolbar();
     buildSEODrawer();
-    // Wait for i18n to apply translations first
-    setTimeout(bindEditables, 200);
+
+    // The intro modal (z-index:5000) blocks all page interaction and body.loading
+    // keeps all content at opacity:0. Auto-dismiss so the editor is immediately usable.
+    const enterBtn = document.getElementById('enterBtn');
+    const introModal = document.getElementById('introModal');
+    if (enterBtn) {
+      enterBtn.click();
+    } else if (introModal) {
+      introModal.style.display = 'none';
+      document.body.classList.remove('loading');
+      document.body.classList.add('loaded');
+    }
+
+    // 1s delay: intro modal animation (~850ms) + content fade-in (CSS 1s transition)
+    setTimeout(bindEditables, 1000);
   }
 
   checkAuth(() => {
