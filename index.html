@@ -1309,7 +1309,7 @@ stlModal.addEventListener("click",e=>{if(e.target===stlModal)closeSTLModal()});s
 <script>
 if (/[?&]edit=1/.test(location.search)) {
   var _es = document.createElement('script');
-  _es.src = '/admin/editor.js';
+  _es.src = '/admin/editor.js?v=' + Date.now();
   document.head.appendChild(_es);
 }
 </script>

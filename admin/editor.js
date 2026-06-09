@@ -397,10 +397,10 @@ body.__edit-mode{padding-top:48px !important}
       const el = document.querySelector(def.sel);
       if (!el) return;
       el.setAttribute('data-edit-key', def.key);
-      // capture:true fires before any existing page handlers (links, buttons, etc.)
+      // capture:true + stopImmediatePropagation prevents onclick handlers on the same element
       el.addEventListener('click', e => {
         e.preventDefault();
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         openModal(def);
       }, { capture: true });
       count++;
