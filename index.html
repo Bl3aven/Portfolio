@@ -1306,5 +1306,12 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"){if(stlFullscreen.clas
 stlModal.addEventListener("click",e=>{if(e.target===stlModal)closeSTLModal()});stlFullscreen.addEventListener("click",e=>{if(e.target===stlFullscreen)closeFullscreen()});
 </script>
 
+<script>
+if (/[?&]edit=1/.test(location.search)) {
+  var _es = document.createElement('script');
+  _es.src = '/admin/editor.js';
+  document.head.appendChild(_es);
+}
+</script>
 </body>
 </html>
