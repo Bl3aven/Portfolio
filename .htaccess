@@ -76,6 +76,21 @@ ExpiresByType application/javascript "access plus 7 days"
 ExpiresDefault "access plus 2 days"
 </IfModule>
 
+# ==========================
+# 7. CUSTOM ERROR PAGES
+# ==========================
+ErrorDocument 404 /404.html
+
+# ==========================
+# 8. NO-CACHE FOR DYNAMIC CONTENT
+# ==========================
+<FilesMatch "^content\.js$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+  </IfModule>
+</FilesMatch>
+
 ########################################
 # END ROOT .HTACCESS
 ########################################

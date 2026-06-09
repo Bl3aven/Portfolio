@@ -1,4 +1,6 @@
 api/config.php
+admin/config.php
+admin/overrides.json
 .env
 .env.*
 *.log

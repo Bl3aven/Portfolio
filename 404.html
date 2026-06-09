@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>404 — Packet Lost | Mathys Tournayre</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="favicon/favicon.ico">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  height:100%;min-height:100vh;
+  font-family:'JetBrains Mono','Courier New',monospace;
+  background:#0a0a0c;color:#eaeaec;
+  overflow:hidden;
+}
+:root{
+  --accent:#ff8c42;
+  --surface:rgba(255,255,255,.03);
+  --border:rgba(255,255,255,.08);
+  --muted:rgba(255,255,255,.45);
+  --green:#36d399;--red:#ff6b6b;--blue:#7eb7ff;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);
+  pointer-events:none;z-index:200;
+}
+#bg{position:fixed;inset:0;opacity:.2;z-index:0}
+
+.wrap{
+  position:relative;z-index:10;
+  height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:1.5rem;gap:1.2rem;
+}
+
+/* — Header — */
+.err-head{text-align:center}
+.err-code{
+  font-size:clamp(4.5rem,14vw,7.5rem);font-weight:800;
+  color:var(--accent);letter-spacing:-.04em;line-height:1;
+  text-shadow:0 0 60px rgba(255,140,66,.25),0 0 20px rgba(255,140,66,.15);
+}
+.err-sub{
+  color:var(--muted);font-size:.72rem;letter-spacing:.14em;
+  margin-top:.45rem;text-transform:uppercase;
+}
+
+/* — Terminal — */
+.terminal{
+  width:100%;max-width:680px;
+  background:rgba(8,8,11,.9);
+  border:1px solid var(--border);border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 0 80px rgba(255,140,66,.04),0 24px 64px rgba(0,0,0,.6);
+  backdrop-filter:blur(16px);
+}
+.t-bar{
+  background:rgba(255,255,255,.04);border-bottom:1px solid var(--border);
+  padding:.55rem 1rem;display:flex;align-items:center;gap:.45rem;
+}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot:nth-child(1){background:#ff5f57}
+.dot:nth-child(2){background:#febc2e}
+.dot:nth-child(3){background:#28c840}
+.t-title{flex:1;text-align:center;font-size:.68rem;color:var(--muted);letter-spacing:.06em}
+.t-out{
+  padding:.8rem 1.1rem;height:248px;overflow-y:auto;
+  font-size:.77rem;line-height:1.7;
+  scrollbar-width:thin;scrollbar-color:rgba(255,140,66,.18) transparent;
+}
+.t-out::-webkit-scrollbar{width:3px}
+.t-out::-webkit-scrollbar-thumb{background:rgba(255,140,66,.2);border-radius:2px}
+.ln{white-space:pre-wrap;word-break:break-word}
+.ln.acc{color:var(--accent)}
+.ln.ok{color:var(--green)}
+.ln.err{color:var(--red)}
+.ln.dim{color:rgba(255,255,255,.28)}
+.ln.blue{color:var(--blue)}
+.ln.cmd .ps{color:var(--green)}
+.ln.cmd .tx{color:#eaeaec}
+.t-in-row{
+  display:flex;align-items:center;gap:.5rem;
+  padding:.5rem 1.1rem .75rem;border-top:1px solid var(--border);
+}
+.ps-static{color:var(--green);font-size:.77rem;white-space:nowrap}
+#ti{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#eaeaec;font-family:inherit;font-size:.77rem;caret-color:var(--accent);
+}
+
+/* — Back link — */
+.back{
+  display:inline-flex;align-items:center;gap:.5rem;
+  color:var(--muted);text-decoration:none;font-size:.72rem;
+  letter-spacing:.08em;border:1px solid var(--border);
+  padding:.38rem 1rem;border-radius:999px;
+  transition:color .25s,border-color .25s;
+}
+.back:hover{color:var(--accent);border-color:rgba(255,140,66,.35)}
+
+@media(max-width:480px){
+  .t-out{height:190px}
+  .err-code{font-size:clamp(3.5rem,18vw,5.5rem)}
+}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="wrap">
+  <div class="err-head">
+    <div class="err-code">404</div>
+    <div class="err-sub">Destination unreachable &mdash; packet lost in transit</div>
+  </div>
+
+  <div class="terminal" id="term">
+    <div class="t-bar">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="t-title">mathys@tournayre.ovh &mdash; bash &mdash; 80&times;24</div>
+    </div>
+    <div class="t-out" id="out"></div>
+    <div class="t-in-row">
+      <span class="ps-static">mathys@404:~$&nbsp;</span>
+      <input id="ti" type="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="type 'help'">
+    </div>
+  </div>
+
+  <a href="/" class="back">&#8592; Return to portfolio</a>
+</div>
+
+<script>
+/* ── Matrix rain ── */
+(function(){
+  const cv=document.getElementById('bg'),cx=cv.getContext('2d');
+  const ch='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%-+=[]{}?/\\アイウエオカキク'.split('');
+  let cols,drops;
+  function resize(){
+    cv.width=innerWidth;cv.height=innerHeight;
+    cols=Math.floor(cv.width/15);drops=Array(cols).fill(1);
+  }
+  resize();addEventListener('resize',resize);
+  setInterval(()=>{
+    cx.fillStyle='rgba(10,10,12,.06)';cx.fillRect(0,0,cv.width,cv.height);
+    cx.font='12px JetBrains Mono,monospace';
+    drops.forEach((y,i)=>{
+      cx.fillStyle=i%4===0?'rgba(255,140,66,.65)':'rgba(255,140,66,.12)';
+      cx.fillText(ch[Math.random()*ch.length|0],i*15,y*15);
+      if(y*15>cv.height&&Math.random()>.975)drops[i]=0;
+      drops[i]++;
+    });
+  },65);
+})();
+
+/* ── Terminal engine ── */
+const out=document.getElementById('out'),ti=document.getElementById('ti');
+let hist=[],hIdx=-1;
+
+function p(cls,s){
+  const d=document.createElement('div');
+  d.className='ln '+(cls||'');
+  d.textContent=s;
+  out.appendChild(d);
+  out.scrollTop=out.scrollHeight;
+}
+function pHTML(cls,html){
+  const d=document.createElement('div');
+  d.className='ln '+(cls||'');
+  d.innerHTML=html;
+  out.appendChild(d);
+  out.scrollTop=out.scrollHeight;
+}
+function pCmd(raw){
+  pHTML('cmd','<span class="ps">mathys@404:~$</span> <span class="tx">'+raw.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span>');
+}
+function blank(){p('','')}
+
+const CMDS={
+  help(){
+    p('acc','Available commands:');blank();
+    [
+      ['help          ','— Show this message'],
+      ['whoami        ','— About this lost request'],
+      ['ls            ','— List available paths'],
+      ['neofetch      ','— System info'],
+      ['ping mathys   ','— Ping the portfolio owner'],
+      ['traceroute    ','— Trace path back to home'],
+      ['cat story     ','— Read something inspiring'],
+      ['fortune       ','— Random DevOps wisdom'],
+      ['clear         ','— Clear terminal'],
+      ['home          ','— Return to portfolio'],
+    ].forEach(([c,d])=>pHTML('',`<span style="color:var(--accent)">${c}</span><span style="color:var(--muted)">${d}</span>`));
+  },
+
+  whoami(){
+    p('blue','You are: HTTP/1.1 GET /???');
+    p('','Status:  404 Not Found');
+    p('','Referer: Unknown');blank();
+    p('dim','You got lost somewhere between the cloud and reality.');
+    p('dim','The page you\'re looking for doesn\'t exist — yet.');blank();
+    p('','But getting lost is how you find things no one else has.');
+  },
+
+  ls(){
+    p('dim','total 7 paths, 2 files');blank();
+    [
+      ['drwxr-xr-x','/#about     ','Who builds this place'],
+      ['drwxr-xr-x','/#experience','The journey so far'],
+      ['drwxr-xr-x','/#skills    ','The full tech stack'],
+      ['drwxr-xr-x','/#ai        ','Local AI projects'],
+      ['drwxr-xr-x','/#projects  ','Things built in the dark'],
+      ['drwxr-xr-x','/#contact   ','Open a channel'],
+      ['-rw-r--r--','story.txt   ','For the lost & curious'],
+    ].forEach(([p1,p2,p3])=>
+      pHTML('',`<span style="color:var(--muted)">${p1} </span><span style="color:var(--accent)">${p2}</span><span style="color:rgba(255,255,255,.3)"> — ${p3}</span>`)
+    );
+  },
+
+  neofetch(){
+    const lines=[
+      ['',''],
+      ['acc','       ██████████  mathys@tournayre.ovh'],
+      ['acc','      ██░░░░░░░░██ ─────────────────────'],
+      ['acc','     ██  ████████  OS: Portfolio v3.0 (dark)'],
+      ['','      ██  ██░░░░██  Stack: DevOps / Cloud / AI'],
+      ['','     ██  ████████   Shell: bash 5.2.15'],
+      ['','    ██░░░░░░░░░░██  Certs: 8 (and counting)'],
+      ['dim', '    ██████████████  Tech: 30+ technologies'],
+      ['dim', '                   Uptime: since 2021'],
+      ['',''],
+    ];
+    lines.forEach(([cls,s])=>p(cls,s));
+  },
+
+  'ping mathys'(){
+    p('','PING mathys.tournayre (tournayre.ovh) 56 bytes of data.');blank();
+    let i=1;
+    const times=[1.2,0.8,1.1];
+    const iv=setInterval(()=>{
+      if(i<=3){p('ok',`64 bytes from tournayre.ovh: icmp_seq=${i} ttl=64 time=${times[i-1]} ms`);i++;}
+      else{
+        clearInterval(iv);blank();
+        p('dim','--- mathys.tournayre ping statistics ---');
+        p('','3 packets transmitted, 3 received, 0% packet loss');blank();
+        p('acc','Mathys is reachable. He\'s building things.');
+        out.scrollTop=out.scrollHeight;
+      }
+    },600);
+  },
+
+  traceroute(){
+    const hops=[
+      '  1  gateway.local (192.168.1.1)              1.2 ms',
+      '  2  isp.border (10.128.0.1)                  8.7 ms',
+      '  3  cloudflare.edge (104.16.0.1)             14.9 ms',
+      '  4  ovh.cluster129.hosting.ovh.net           19.3 ms',
+      '  5  tournayre.ovh                            21.1 ms',
+    ];
+    p('','traceroute to tournayre.ovh, 30 hops max, 60 byte packets');
+    let i=0;
+    const iv=setInterval(()=>{
+      if(i<hops.length){
+        p(i===hops.length-1?'ok':'',hops[i]);i++;
+      } else {
+        clearInterval(iv);
+        setTimeout(()=>{
+          blank();
+          p('acc','✓  DESTINATION REACHED — tournayre.ovh');blank();
+          p('dim','Initiating redirect sequence...');
+          let n=3;
+          const iv2=setInterval(()=>{
+            p('',`Redirecting in ${n}...`);
+            if(--n<0){clearInterval(iv2);location.href='/';}
+          },1000);
+        },300);
+      }
+    },380);
+  },
+
+  'cat story'(){
+    blank();
+    p('acc','"Every 404 is a path not yet created.');
+    p('acc',' The best engineers don\'t fear dead ends —');
+    p('acc',' they route around damage.');blank();
+    p('acc',' That\'s the first law of the internet.');
+    p('acc',' And maybe of life."');blank();
+    p('dim','— John Gilmore, slightly remixed');blank();
+    p('ok','Error 404 is not failure. It\'s exploration.');
+    p('ok','Now go build something.');blank();
+  },
+
+  fortune(){
+    const q=[
+      ['"It works on my machine."',                                              '— Every developer, at least once'],
+      ['"Move fast and fix things."',                                            '— DevOps philosophy (amended)'],
+      ['"The cloud is just someone else\'s computer."',                          '— Common wisdom, forever true'],
+      ['"Weeks of coding can save you hours of planning."',                      '— Also every developer'],
+      ['"There are 2 hard problems in CS: cache invalidation, naming things,\n   and off-by-one errors."', '— Leon Bambrick'],
+      ['"chmod 777 is the answer. Security is someone else\'s problem."',        '— No senior engineer ever'],
+      ['"Documentation is like sex: when it\'s good, it\'s very good.\n   When it\'s bad, it\'s better than nothing."', '— Dick Brandon'],
+    ];
+    const[a,b]=q[Math.random()*q.length|0];
+    blank();p('acc',a);p('dim',b);blank();
+  },
+
+  'sudo rm -rf /'(){
+    p('err','sudo: nice try.');
+    p('err','rm: Permission denied — filesystem is read-only in the void.');blank();
+    p('dim','(We see you, DevOps padawan 👀)');
+    p('','Hint: try \'home\' instead.');
+  },
+
+  clear(){out.innerHTML=''},
+
+  home(){
+    p('ok','Returning to base...');
+    setTimeout(()=>location.href='/',700);
+  },
+  exit(){CMDS.home()},
+};
+
+function run(raw){
+  const cmd=raw.trim();
+  if(!cmd)return;
+  hist.unshift(raw);hIdx=-1;
+  pCmd(raw);
+
+  // Normalize: lowercase, collapse spaces
+  const key=cmd.toLowerCase().replace(/\s+/g,' ');
+
+  if(CMDS[key]){CMDS[key]();return;}
+
+  // cd <section>
+  if(key.startsWith('cd ')){
+    const dir=key.slice(3).replace(/^\//,'');
+    const map={about:'/#about',skills:'/#skills',projects:'/#projects',experience:'/#experience',ai:'/#ai',contact:'/#contact'};
+    if(map[dir]){p('ok',`Navigating to /${dir}...`);setTimeout(()=>location.href=map[dir],600);return;}
+  }
+
+  p('err',`bash: ${cmd}: command not found`);
+  p('dim','Type \'help\' for available commands.');
+}
+
+ti.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){const v=ti.value;ti.value='';run(v);}
+  else if(e.key==='ArrowUp'){e.preventDefault();hIdx=Math.min(hIdx+1,hist.length-1);ti.value=hist[hIdx]||'';}
+  else if(e.key==='ArrowDown'){e.preventDefault();hIdx=Math.max(hIdx-1,-1);ti.value=hIdx>=0?hist[hIdx]:'';}
+  else if(e.key==='Tab'){
+    e.preventDefault();
+    const partial=ti.value.toLowerCase();
+    const match=Object.keys(CMDS).find(k=>k.startsWith(partial)&&k!==partial);
+    if(match)ti.value=match;
+  }
+});
+
+// Re-focus if clicked anywhere
+document.getElementById('term').addEventListener('click',()=>ti.focus());
+ti.addEventListener('blur',()=>setTimeout(()=>ti.focus(),80));
+ti.focus();
+
+// Boot sequence
+[
+  ['acc','System breach — Error 404'],
+  ['','The page you requested does not exist in this dimension.'],
+  ['dim','You\'ve reached the void between routes.'],
+  ['',''],
+  ['','Type <span style="color:var(--accent)">help</span> to navigate back.'],
+].forEach(([cls,s])=>{
+  if(cls==='')pHTML('',s); else p(cls,s);
+});
+</script>
+</body>
+</html>

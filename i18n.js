@@ -536,6 +536,18 @@
   // APPLICATION DES TRADUCTIONS AU DOM
   // =====================
   function applyTranslations(){
+    // Merge overrides from /admin/ (content.js sets window.__contentOverrides)
+    const ov = window.__contentOverrides;
+    if (ov && typeof ov === 'object') {
+      Object.keys(ov).forEach(function(key) {
+        if (!dict[key]) return;
+        const v = ov[key];
+        if (typeof v === 'object') {
+          if (v.fr !== undefined) dict[key].fr = v.fr;
+          if (v.en !== undefined) dict[key].en = v.en;
+        }
+      });
+    }
     const lang = currentLang;
     document.documentElement.lang = lang;
     removeLegacySwitcher();
