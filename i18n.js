@@ -15,7 +15,7 @@
     // --- META ---
     'meta.description': {
       fr: 'Mathys Tournayre — Alternant ingénieur ISEN chez Oxeegen France. DevOps, Cloud, IA locale, infrastructure & automatisation.',
-      en: 'Mathys Tournayre — ISEN engineering apprentice at Oxeegen France. DevOps, Cloud, Local AI, infrastructure & automation.'
+      en: 'DevOps, Cloud & AI Engineer. I design modern, automated and secure platforms for cloud and enterprise environments. Explore my projects and CV.'
     },
     'meta.og.title': {
       fr: 'Mathys Tournayre — DevOps, Cloud & IA Engineer',
@@ -56,6 +56,7 @@
     'hero.title': { fr: 'DevOps, Cloud & <span>IA Engineer</span>', en: 'DevOps, Cloud & <span>AI Engineer</span>' },
     'hero.desc': { fr: 'Je conçois des plateformes modernes, automatisées et sécurisées pour les environnements cloud et professionnels.', en: 'I design modern, automated and secure platforms for cloud and enterprise environments.' },
     'hero.cta': { fr: 'Explorer mes projets', en: 'Explore my projects' },
+    'hero.cv': { fr: 'Voir le CV →', en: 'View CV →' },
 
     // --- SKILLS MARQUEE ---
     'skillchip.security': { fr: 'Sécurité', en: 'Security' },
@@ -519,6 +520,8 @@
     htmlMap.forEach(([selector, entry]) => setContent(selector, entry, 'html'));
 
     setContent('header .hero p', 'hero.desc');
+    setContent('.hero-btn-primary', 'hero.cta');
+    setContent('.hero-btn-ghost', 'hero.cv');
     setContent('.skillChip:nth-child(8), .skillChip:nth-child(16)', 'skillchip.security');
     setAttr('#introModal', 'aria-label', { fr: 'Écran de chargement', en: 'Loading screen' });
     setAttr('#menuToggle', 'aria-label', { fr: 'Ouvrir le menu', en: 'Open menu' });
