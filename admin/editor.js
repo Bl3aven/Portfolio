@@ -7,12 +7,89 @@
 
   // ── Editable elements & SEO fields ─────────────────────────────────────────
   const EDIT_MAP = [
-    { key: 'hero.title',   sel: 'header .hero h1',    label: 'Hero — titre principal', html: true },
-    { key: 'hero.desc',    sel: 'header .hero p',      label: 'Hero — sous-titre / tagline' },
-    { key: 'hero.cta',     sel: '.hero-btn-primary',   label: 'Hero — bouton principal' },
-    { key: 'hero.cv',      sel: '.hero-btn-ghost',     label: 'Hero — bouton CV' },
-    { key: 'about.text',   sel: '#about .about-text',  label: 'Section About — paragraphe' },
-    { key: 'contact.text', sel: '#contact .contact p', label: 'Section Contact — texte' },
+    // Hero
+    { key: 'hero.title',  sel: 'header .hero h1',    label: 'Hero — titre principal',   html: true },
+    { key: 'hero.desc',   sel: 'header .hero p',     label: 'Hero — sous-titre' },
+    { key: 'hero.cta',    sel: '.hero-btn-primary',  label: 'Hero — bouton Projets' },
+    { key: 'hero.cv',     sel: '.hero-btn-ghost',    label: 'Hero — bouton CV' },
+
+    // About
+    { key: 'about.text',  sel: '#about .about-text', label: 'À propos — paragraphe' },
+
+    // Experience — Oxeegen
+    { key: 'exp.oxeegen.title', sel: '#experience .timeline-item:nth-child(1) h3',               label: 'Oxeegen — titre' },
+    { key: 'exp.oxeegen.meta',  sel: '#experience .timeline-item:nth-child(1) .timeline-meta',   label: 'Oxeegen — dates / lieu' },
+    { key: 'exp.oxeegen.1',     sel: '#experience .timeline-item:nth-child(1) li:nth-child(1)',   label: 'Oxeegen — bullet 1' },
+    { key: 'exp.oxeegen.2',     sel: '#experience .timeline-item:nth-child(1) li:nth-child(2)',   label: 'Oxeegen — bullet 2' },
+    { key: 'exp.oxeegen.3',     sel: '#experience .timeline-item:nth-child(1) li:nth-child(3)',   label: 'Oxeegen — bullet 3' },
+    { key: 'exp.oxeegen.4',     sel: '#experience .timeline-item:nth-child(1) li:nth-child(4)',   label: 'Oxeegen — bullet 4' },
+
+    // Experience — Itinsell
+    { key: 'exp.itinsell.title', sel: '#experience .timeline-item:nth-child(2) h3',              label: 'Itinsell — titre' },
+    { key: 'exp.itinsell.meta',  sel: '#experience .timeline-item:nth-child(2) .timeline-meta',  label: 'Itinsell — dates / lieu' },
+    { key: 'exp.itinsell.1',     sel: '#experience .timeline-item:nth-child(2) li:nth-child(1)', label: 'Itinsell — bullet 1', html: true },
+    { key: 'exp.itinsell.2',     sel: '#experience .timeline-item:nth-child(2) li:nth-child(2)', label: 'Itinsell — bullet 2' },
+    { key: 'exp.itinsell.3',     sel: '#experience .timeline-item:nth-child(2) li:nth-child(3)', label: 'Itinsell — bullet 3' },
+    { key: 'exp.itinsell.4',     sel: '#experience .timeline-item:nth-child(2) li:nth-child(4)', label: 'Itinsell — bullet 4' },
+
+    // Experience — L'HELICOIDAL
+    { key: 'exp.helicoidal.title', sel: '#experience .timeline-item:nth-child(3) h3',              label: "L'HELICOIDAL — titre" },
+    { key: 'exp.helicoidal.meta',  sel: '#experience .timeline-item:nth-child(3) .timeline-meta',  label: "L'HELICOIDAL — dates" },
+    { key: 'exp.helicoidal.1',     sel: '#experience .timeline-item:nth-child(3) li:nth-child(1)', label: "L'HELICOIDAL — description" },
+
+    // Experience — Starbucks
+    { key: 'exp.starbucks.title', sel: '#experience .timeline-item:nth-child(4) h3',              label: 'Starbucks — titre' },
+    { key: 'exp.starbucks.meta',  sel: '#experience .timeline-item:nth-child(4) .timeline-meta',  label: 'Starbucks — dates' },
+    { key: 'exp.starbucks.1',     sel: '#experience .timeline-item:nth-child(4) li:nth-child(1)', label: 'Starbucks — description' },
+
+    // Education — ISEN
+    { key: 'edu.isen.title', sel: '#education .timeline-item:nth-child(1) h3',              label: 'ISEN — titre' },
+    { key: 'edu.isen.meta',  sel: '#education .timeline-item:nth-child(1) .timeline-meta',  label: 'ISEN — dates' },
+    { key: 'edu.isen.1',     sel: '#education .timeline-item:nth-child(1) li:nth-child(1)', label: 'ISEN — bullet 1' },
+    { key: 'edu.isen.2',     sel: '#education .timeline-item:nth-child(1) li:nth-child(2)', label: 'ISEN — bullet 2' },
+
+    // Education — AMU BUT
+    { key: 'edu.amu.title', sel: '#education .timeline-item:nth-child(2) h3',              label: 'AMU BUT — titre' },
+    { key: 'edu.amu.meta',  sel: '#education .timeline-item:nth-child(2) .timeline-meta',  label: 'AMU BUT — dates' },
+    { key: 'edu.amu.1',     sel: '#education .timeline-item:nth-child(2) li:nth-child(1)', label: 'AMU BUT — bullet 1' },
+    { key: 'edu.amu.2',     sel: '#education .timeline-item:nth-child(2) li:nth-child(2)', label: 'AMU BUT — bullet 2' },
+
+    // Education — Bac
+    { key: 'edu.bac.title', sel: '#education .timeline-item:nth-child(3) h3',              label: 'Bac STI2D — titre' },
+    { key: 'edu.bac.meta',  sel: '#education .timeline-item:nth-child(3) .timeline-meta',  label: 'Bac STI2D — dates' },
+    { key: 'edu.bac.1',     sel: '#education .timeline-item:nth-child(3) li:nth-child(1)', label: 'Bac STI2D — description' },
+
+    // Education — INSA
+    { key: 'edu.insa.title', sel: '#education .timeline-item:nth-child(4) h3',              label: 'INSA Lyon — titre' },
+    { key: 'edu.insa.meta',  sel: '#education .timeline-item:nth-child(4) .timeline-meta',  label: 'INSA Lyon — dates' },
+    { key: 'edu.insa.1',     sel: '#education .timeline-item:nth-child(4) li:nth-child(1)', label: 'INSA Lyon — description' },
+
+    // IA section
+    { key: 'ai.project.owu.title',       sel: '#ai .ai-card:nth-child(1) h3', label: 'IA — Open WebUI titre' },
+    { key: 'ai.project.owu.desc',        sel: '#ai .ai-card:nth-child(1) p',  label: 'IA — Open WebUI description' },
+    { key: 'ai.project.comfy.title',     sel: '#ai .ai-card:nth-child(2) h3', label: 'IA — ComfyUI titre' },
+    { key: 'ai.project.comfy.desc',      sel: '#ai .ai-card:nth-child(2) p',  label: 'IA — ComfyUI description' },
+    { key: 'ai.project.lmstudio.title',  sel: '#ai .ai-card:nth-child(3) h3', label: 'IA — LM Studio titre' },
+    { key: 'ai.project.lmstudio.desc',   sel: '#ai .ai-card:nth-child(3) p',  label: 'IA — LM Studio description' },
+    { key: 'ai.project.agents.title',    sel: '#ai .ai-card:nth-child(4) h3', label: 'IA — Agents titre' },
+    { key: 'ai.project.agents.desc',     sel: '#ai .ai-card:nth-child(4) p',  label: 'IA — Agents description' },
+
+    // Projets
+    { key: 'project.nutanix.title', sel: '#projects .project-card:nth-child(1) h3', label: 'Projet Nutanix — titre' },
+    { key: 'project.nutanix.desc',  sel: '#projects .project-card:nth-child(1) p',  label: 'Projet Nutanix — description' },
+    { key: 'project.bastion.title', sel: '#projects .project-card:nth-child(2) h3', label: 'Projet Bastion — titre' },
+    { key: 'project.bastion.desc',  sel: '#projects .project-card:nth-child(2) p',  label: 'Projet Bastion — description' },
+    { key: 'project.squad.title',   sel: '#projects .project-card:nth-child(3) h3', label: 'Projet Squad — titre' },
+    { key: 'project.squad.desc',    sel: '#projects .project-card:nth-child(3) p',  label: 'Projet Squad — description' },
+    { key: 'project.nextcloud.title', sel: '#projects .project-card:nth-child(4) h3', label: 'Projet Nextcloud — titre' },
+    { key: 'project.nextcloud.desc',  sel: '#projects .project-card:nth-child(4) p',  label: 'Projet Nextcloud — description' },
+    { key: 'project.ailab.title',   sel: '#projects .project-card:nth-child(5) h3', label: 'Projet AI Lab — titre' },
+    { key: 'project.ailab.desc',    sel: '#projects .project-card:nth-child(5) p',  label: 'Projet AI Lab — description' },
+    { key: 'project.stl.title',     sel: '#projects .project-card:nth-child(6) h3', label: 'Projet 3D Print — titre' },
+    { key: 'project.stl.desc',      sel: '#projects .project-card:nth-child(6) p',  label: 'Projet 3D Print — description' },
+
+    // Contact
+    { key: 'contact.text', sel: '#contact .contact p', label: 'Contact — texte' },
   ];
 
   const SEO_MAP = [
@@ -38,7 +115,10 @@
   function getVal(key, lang) {
     const ov = window.__contentOverrides || {};
     if (ov[key] && ov[key][lang] !== undefined) return ov[key][lang];
-    return (DEFAULTS[key] && DEFAULTS[key][lang]) || '';
+    if (DEFAULTS[key] && DEFAULTS[key][lang] !== undefined) return DEFAULTS[key][lang];
+    // Fallback: read from i18n dict (covers exp.*, edu.*, ai.*, project.* etc.)
+    const d = window.__i18n && window.__i18n.getDict && window.__i18n.getDict();
+    return (d && d[key] && d[key][lang]) || '';
   }
 
   function setChange(key, lang, val) {
