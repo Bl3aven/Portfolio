@@ -40,6 +40,7 @@
     'intro.sub': { fr: 'Alternant & Apprenti Ingénieur ISEN<br>chez Oxeegen France', en: 'ISEN Engineering Apprentice<br>at Oxeegen France' },
     'intro.enter': { fr: 'Accéder au Portfolio', en: 'Enter Portfolio' },
     'intro.hint': { fr: 'BIENVENUE • Clique pour entrer • PORTFOLIO', en: 'WELCOME • Click to enter • PORTFOLIO' },
+    'intro.typewriter': { fr: 'Alternant ingénieur — DevOps & Cloud', en: 'Engineering Apprentice — DevOps & Cloud' },
 
     // --- NAV ---
     'nav.profile': { fr: 'Profil', en: 'Profile' },

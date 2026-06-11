@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-default-lang="fr">
+<html lang="fr" data-default-lang="fr">
 <head>
 <meta charset="UTF-8">
 <title>Mathys Tournayre — DevOps, Cloud &amp; AI Engineer</title>
@@ -32,15 +32,17 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <meta http-equiv="Content-Security-Policy"
 content="default-src 'self' https: data:;
 img-src 'self' https: data: blob:;
 font-src 'self' https://fonts.gstatic.com data:;
-script-src 'self' https: 'unsafe-inline';
-style-src 'self' https: 'unsafe-inline';
+script-src 'self' 'https://cdn.jsdelivr.net' 'https://cdn.simpleicons.org' 'https://unpkg.com' 'https://platform.linkedin.com' 'unsafe-inline';
+style-src 'self' 'https://fonts.googleapis.com' 'unsafe-inline';
 connect-src 'self' https: wss:;
 frame-src 'self' https://www.linkedin.com https://platform.linkedin.com;
 object-src 'none';
@@ -74,7 +76,7 @@ base-uri 'self';">
 </script>
 
 <script src="i18n.js?v=20260603-auto-lang"></script>
-<script src="/content.js"></script>
+<script src="/content.php"></script>
 <script type="importmap">
 {
   "imports": {
@@ -710,11 +712,11 @@ footer{border-top:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.38);fo
     <div class="hero-availability">
       <span class="ha-dot"></span>Disponible · Oxeegen France
     </div>
-    <h1>DevOps, Cloud &amp; <span>AI Engineer</span></h1>
-    <p>I design modern, automated and secure platforms for cloud and enterprise environments.</p>
+    <h1 data-i18n="hero.title">DevOps, Cloud &amp; <span>AI Engineer</span></h1>
+    <p data-i18n="hero.desc">Je conçois des plateformes modernes, automatisées et sécurisées pour les environnements cloud et professionnels.</p>
     <div class="hero-cta">
-      <a href="#projects" class="hero-btn-primary">Explore my projects</a>
-      <button type="button" class="hero-btn-ghost" onclick="openCvModal()">View CV →</button>
+      <a href="#projects" class="hero-btn-primary" data-i18n="hero.cta">Explorer mes projets</a>
+      <button type="button" class="hero-btn-ghost" onclick="openCvModal()" data-i18n="hero.cv">Voir le CV →</button>
     </div>
     <div class="hero-metrics">
       <div class="hm"><span class="hm-n">2+</span><span class="hm-l">ans d'alternance</span></div>
@@ -1166,7 +1168,8 @@ window.addEventListener("keydown",e=>{if(modalActive&&(e.key==="Enter"||e.key===
 (function(){
   const role=document.getElementById("introRole"),cursor=document.getElementById("introCursor");
   if(!role||!cursor)return;
-  const text="Alternant ingénieur — DevOps & Cloud";
+  const t=window.__t||((_,f)=>f);
+  const text=t("intro.typewriter","Alternant ingénieur — DevOps & Cloud");
   let i=0;
   setTimeout(()=>{
     const iv=setInterval(()=>{
@@ -1175,22 +1178,53 @@ window.addEventListener("keydown",e=>{if(modalActive&&(e.key==="Enter"||e.key===
     },38)
   },1600)
 })();
-function closeModal(){if(!modalActive)return;modalActive=false;warpOverlay?.classList.remove("play");void warpOverlay.offsetWidth;warpOverlay?.classList.add("play");modal.style.opacity="0";modal.style.transform="scale(1.08)";modal.style.transition="opacity 600ms ease,transform 800ms cubic-bezier(.16,.8,.22,1)";document.body.classList.remove("loading");document.body.classList.add("loaded");setTimeout(()=>{modal.style.display="none";warpOverlay?.classList.remove("play");bubble.style.opacity="1";bubble.style.pointerEvents="auto"},850)}
+function closeModal(){if(!modalActive)return;modalActive=false;warpOverlay?.classList.remove("play");void warpOverlay.offsetWidth;warpOverlay?.classList.add("play");modal.style.opacity="0";modal.style.transform="scale(1.08)";modal.style.transition="opacity 600ms ease,transform 800ms cubic-bezier(.16,.8,.22,1)";document.body.classList.remove("loading");document.body.classList.add("loaded");try{localStorage.setItem("portfolio-intro-seen","1")}catch(e){}setTimeout(()=>{modal.style.display="none";warpOverlay?.classList.remove("play");bubble.style.opacity="1";bubble.style.pointerEvents="auto"},850)}
+
+/* SKIP INTRO IF RETURNING VISITOR */
+(function(){
+  try{
+    if(localStorage.getItem("portfolio-intro-seen")){
+      modalActive=false;
+      modal.style.display="none";
+      document.body.classList.remove("loading");
+      document.body.classList.add("loaded");
+      bubble.style.opacity="1";
+      bubble.style.pointerEvents="auto";
+    }
+  }catch(e){}
+})();
 
 /* INTRO NEURAL */
 (function(){
   const c=document.getElementById("introNeural");if(!c)return;const ctx=c.getContext("2d");let W,H;function rs(){W=c.width=window.innerWidth;H=c.height=window.innerHeight}rs();window.addEventListener("resize",rs);const mouse={x:W/2,y:H/2,lX:W/2,lY:H/2,node:null};window.addEventListener("mousemove",e=>{mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});window.addEventListener("touchmove",e=>{if(!e.touches||!e.touches[0])return;mouse.x=e.touches[0].clientX;mouse.y=e.touches[0].clientY},{passive:true});let nodes=[];const CNT=18;function nn(x,y){return{x,y,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28}}for(let i=0;i<CNT;i++)nodes.push(nn(Math.random()*W,Math.random()*H));function umn(){const mv=Math.hypot(mouse.x-mouse.lX,mouse.y-mouse.lY);if(mv>8)mouse.node=null;if(!mouse.node)mouse.node=nn(mouse.x,mouse.y);mouse.node.x+=(mouse.x-mouse.node.x)*.3;mouse.node.y+=(mouse.y-mouse.node.y)*.3;mouse.lX=mouse.x;mouse.lY=mouse.y}function an(){if(!modalActive){ctx.clearRect(0,0,W,H);return}ctx.clearRect(0,0,W,H);ctx.fillStyle="#0a0a0c";ctx.fillRect(0,0,W,H);umn();nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1});if(mouse.node){let nb=[];nodes.forEach(n=>{const d=Math.hypot(n.x-mouse.node.x,n.y-mouse.node.y);if(d<180)nb.push({n,d})});nb.sort((a,b)=>a.d-b.d);nb.slice(0,4).forEach(o=>{const n=o.n,d=o.d,a=1-d/180;ctx.strokeStyle=`rgba(255,140,66,${a*.22})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(mouse.node.x,mouse.node.y);ctx.stroke()})}nodes.forEach(n=>{ctx.beginPath();ctx.fillStyle="rgba(255,160,80,.55)";ctx.arc(n.x,n.y,1.6,0,Math.PI*2);ctx.fill()});if(mouse.node){ctx.beginPath();ctx.fillStyle="rgba(255,200,120,.95)";ctx.arc(mouse.node.x,mouse.node.y,2.8,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.fillStyle="rgba(255,140,66,.08)";ctx.arc(mouse.node.x,mouse.node.y,14,0,Math.PI*2);ctx.fill()}requestAnimationFrame(an)}an()})();
 
-/* PARTICLES */
-const pCanvas=document.getElementById("particles"),pCtx=pCanvas.getContext("2d");let pw,ph;function pResize(){pw=pCanvas.width=window.innerWidth;ph=pCanvas.height=window.innerHeight}window.addEventListener("resize",pResize);pResize();
+/* PARTICLES — pauses when hero not visible */
+const pCanvas=document.getElementById("particles"),pCtx=pCanvas.getContext("2d");let pw,ph,pActive=true;function pResize(){pw=pCanvas.width=window.innerWidth;ph=pCanvas.height=window.innerHeight}window.addEventListener("resize",pResize);pResize();
 const particles=[],PCOUNT=70,PMAX=130;
 for(let i=0;i<PCOUNT;i++)particles.push({x:Math.random()*pw,y:Math.random()*ph,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*1.8+.8});
-(function dp(){pCtx.clearRect(0,0,pw,ph);for(let i=0;i<particles.length;i++){const p=particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>pw)p.vx*=-1;if(p.y<0||p.y>ph)p.vy*=-1;pCtx.beginPath();pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);pCtx.fillStyle="#ff8c42";pCtx.fill();for(let j=i+1;j<particles.length;j++){const p2=particles[j],dx=p.x-p2.x,dy=p.y-p2.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<PMAX){pCtx.strokeStyle=`rgba(255,140,66,${1-dist/PMAX})`;pCtx.beginPath();pCtx.moveTo(p.x,p.y);pCtx.lineTo(p2.x,p2.y);pCtx.stroke()}}}requestAnimationFrame(dp)})();
+// Pause particles when hero is out of view
+(function pVis(){const hero=document.querySelector("header");if(!hero)return;const io=new IntersectionObserver(es=>{es.forEach(e=>{pActive=e.isIntersecting})},{threshold:[0,1]});io.observe(hero)})();
+(function dp(){if(!pActive){requestAnimationFrame(dp);return}pCtx.clearRect(0,0,pw,ph);for(let i=0;i<particles.length;i++){const p=particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>pw)p.vx*=-1;if(p.y<0||p.y>ph)p.vy*=-1;pCtx.beginPath();pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);pCtx.fillStyle="#ff8c42";pCtx.fill();for(let j=i+1;j<particles.length;j++){const p2=particles[j],dx=p.x-p2.x,dy=p.y-p2.y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<PMAX){pCtx.strokeStyle=`rgba(255,140,66,${1-dist/PMAX})`;pCtx.beginPath();pCtx.moveTo(p.x,p.y);pCtx.lineTo(p2.x,p2.y);pCtx.stroke()}}}requestAnimationFrame(dp)})();
 
 /* CERT RIBBON */
 (function(){const t=document.getElementById("ribbonTrack");if(t)t.innerHTML=t.innerHTML+t.innerHTML})();
 const certData={ccnp:{title:"CCNP Core Networking",desc:"Certification Cisco orientée routage & switching avancés (niveau pro).",img:"img/cert-preview-ccnp.jpg",link:"https://www.credly.com/"},cyberops:{title:"Cisco CyberOps Associate",desc:"Compétences SOC, analyse d'alertes, sécurité opérationnelle.",img:"img/cert-preview-cyberops.jpg",link:"https://www.credly.com/"},aws:{title:"AWS Academy Cloud Foundations",desc:"Fondamentaux cloud AWS : services, sécurité, architecture, bonnes pratiques.",img:"img/cert-preview-aws.jpg",link:"https://www.credly.com/"},csne:{title:"Stormshield CSNE",desc:"Expertise pare-feu Stormshield : design, sécurité, exploitation.",img:"img/cert-preview-csne.jpg",link:"https://www.credly.com/"},csna:{title:"Stormshield CSNA",desc:"Administration réseau & sécurité Stormshield (niveau administrateur).",img:"img/cert-preview-csna.jpg",link:"https://www.credly.com/"},pix:{title:"PIX",desc:"Certification de compétences numériques (PIX).",img:"img/cert-preview-pix.jpg",link:"https://pix.fr/"},secnum:{title:"SecNum (MOOC) — ANSSI",desc:"Sensibilisation cybersécurité : menaces, hygiène, risques, bonnes pratiques.",img:"img/cert-preview-secnum.jpg",link:"https://secnumacademie.gouv.fr/"},bai:{title:"Brevet d'initiation aéronautique",desc:"Culture aéronautique : bases techniques, réglementation, facteurs humains.",img:"img/cert-preview-bia.jpg",link:"https://www.education.gouv.fr/"}};
 document.querySelectorAll(".cert-logo").forEach(el=>{el.addEventListener("click",()=>{const k=el.getAttribute("data-cert"),d=certData[k];if(!d)return;openInfoModal({title:d.title,desc:d.desc,img:d.img,link:d.link,linkLabel:"Vérifier (Credly)",showLink:true})})});
+
+/* CERT IMAGE FALLBACK — replace broken external images with local or graceful fallback */
+document.querySelectorAll(".cert-logo img").forEach(img=>{
+  img.addEventListener("error",function(){
+    // Replace broken external image with a styled fallback badge
+    const certKey=this.closest(".cert-logo")?.getAttribute("data-cert");
+    const label=certKey?certKey.toUpperCase().replace("_"," "):"Cert";
+    this.style.display="none";
+    const badge=document.createElement("span");
+    badge.className="cert-fallback-badge";
+    badge.textContent=label;
+    badge.style.cssText="display:grid;place-items:center;width:100%;height:100%;font-size:9px;font-weight:700;color:var(--accent);text-align:center;line-height:1.1;padding:2px;";
+    this.parentElement.appendChild(badge);
+  });
+});
 
 /* SKILLS DATA */
 const skillData={linux:{title:"Linux / Systèmes",desc:"Administration, durcissement, services, exploitation et troubleshooting.",img:"img/skill-preview-linux.jpg"},network:{title:"Réseaux (Cisco)",desc:"VLAN, routage, switching, design, segmentation et diagnostic L2/L3.",img:"img/skill-preview-network.jpg"},python:{title:"Python",desc:"Automatisation, scripts, intégrations API, tooling et maintenance.",img:"img/skill-preview-python.jpg"},flask:{title:"Flask / Web",desc:"Apps internes (bastion), API, templates, logique backend et intégrations.",img:"img/skill-preview-flask.jpg"},docker:{title:"Docker / Conteneurs",desc:"Build, images, compose, isolation, bonnes pratiques de déploiement.",img:"img/skill-preview-docker.jpg"},ansible:{title:"Ansible",desc:"Provisioning, post-install, standardisation, idempotence et automatisation d'infra.",img:"img/skill-preview-ansible.jpg"},nutanix:{title:"Nutanix",desc:"Opérations VM, templates, automatisation via Prism API et exploitation.",img:"img/skill-preview-nutanix.jpg"},security:{title:"Sécurité",desc:"Hardening, contrôle d'accès, segmentation, hygiène et défense en profondeur.",img:"img/skill-preview-security.jpg"},reverseproxy:{title:"Reverse Proxy",desc:"Nginx/Apache, TLS, vhosts, routage applicatif et sécurisation d'exposition.",img:"img/skill-preview-nginx.jpg"},nmap:{title:"Nmap",desc:"Découverte réseau, audit de surface d'attaque, inventaire et troubleshooting.",img:"img/skill-preview-nmap.jpg"},wireshark:{title:"Wireshark",desc:"Analyse de trames, diagnostic applicatif/réseau, compréhension des échanges.",img:"img/skill-preview-wireshark.jpg"},glpi:{title:"GLPI",desc:"Inventaire, suivi, base de connaissance et automatisation via API.",img:"img/skill-preview-glpi.jpg"},pfsense:{title:"pfSense",desc:"Firewall, NAT, VPN, règles, segmentation et services réseau.",img:"img/skill-preview-pfsense.jpg"},opnsense:{title:"OPNsense",desc:"Firewall, IDS/IPS, politiques réseau, durcissement et segmentation.",img:"img/skill-preview-opnsense.jpg"},nextcloud:{title:"Nextcloud",desc:"Collaboration, stockage, durcissement, intégration et exploitation.",img:"img/skill-preview-nextcloud.jpg"},yealink:{title:"Yealink",desc:"Déploiement/administration VoIP, postes, provisioning et supervision.",img:"img/skill-preview-yealink.jpg"},prtg:{title:"PRTG",desc:"Supervision, capteurs, alerting, dashboards et suivi de performance.",img:"img/skill-preview-prtg.jpg"},stormshield:{title:"Stormshield",desc:"Administration et règles de sécurité (FW), politiques, VPN et exploitation.",img:"img/skill-preview-stormshield.jpg"},portainer:{title:"Portainer",desc:"Gestion de stacks, déploiements Docker, environnements et RBAC.",img:"img/skill-preview-portainer.jpg"},proxmox:{title:"Proxmox",desc:"Virtualisation, clusters, stockage, snapshots et exploitation.",img:"img/skill-preview-proxmox.jpg"},phpipam:{title:"phpIPAM",desc:"Gestion d'adressage IP, inventaire réseau et intégration outillée.",img:"img/skill-preview-phpipam.jpg"},vmware:{title:"VMware",desc:"Virtualisation, templates, exploitation et intégration.",img:"img/skill-preview-vmware.jpg"},ubiquiti:{title:"Ubiquiti",desc:"Wi‑Fi/réseau (UniFi), adoption, configuration, supervision et maintenance.",img:"img/skill-preview-ubiquiti.jpg"},graylog:{title:"Graylog",desc:"Centralisation de logs, parsing, alerting et investigation.",img:"img/skill-preview-graylog.jpg"},grafana:{title:"Grafana",desc:"Dashboards, visualisation, métriques et observabilité.",img:"img/skill-preview-grafana.jpg"},comfyui:{title:"ComfyUI",desc:"Workflows IA visuels par nœuds, automatisation de pipelines.",img:"img/placeholder-wide.svg"},openwebui:{title:"Open WebUI",desc:"Interface auto-hébergée pour LLMs, connexion à Ollama et APIs compatibles.",img:"img/placeholder-wide.svg"},openclaw:{title:"OpenClaw",desc:"Exploration d'agents IA capables d'orchestrer des tâches.",img:"img/placeholder-wide.svg"},lmstudio:{title:"LM Studio",desc:"Exécution et comparaison de modèles locaux avec backend Vulkan.",img:"img/placeholder-wide.svg"},vulkan:{title:"Vulkan",desc:"Backend d'accélération graphique pour inférence locale sur GPU.",img:"img/placeholder-wide.svg"},ollama:{title:"Ollama",desc:"Service local pour télécharger, servir et intégrer des modèles LLM.",img:"img/placeholder-wide.svg"},nvidia:{title:"NVIDIA",desc:"GPU computing, CUDA, drivers et inférence locale — accélération matérielle pour IA et calcul intensif.",img:"img/placeholder-wide.svg"},gigabyte:{title:"Gigabyte",desc:"Matériel (cartes mères, GPU), configuration BIOS/UEFI et intégration dans des environnements de build et homelab.",img:"img/placeholder-wide.svg"}};
@@ -1259,6 +1293,8 @@ setInterval(pollMessages,2000);
 
 <script type="module">
 import * as THREE from "three";
+import {STLLoader} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/STLLoader.js";
+import {OrbitControls} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
 const stage=document.getElementById("skillSphereStage"),cloudData=document.getElementById("skillCloudData");
 if(stage&&cloudData){const skills=Array.from(cloudData.querySelectorAll(".skill-logo")).map(el=>{const key=(el.getAttribute("data-skill")||"").trim(),imgEl=el.querySelector("img"),icon=(el.getAttribute("data-icon")||"").trim(),color=(el.getAttribute("data-color")||"FFFFFF").trim().replace(/^#/,""),dynamicSrc=icon?`https://cdn.simpleicons.org/${encodeURIComponent(icon)}/${encodeURIComponent(color)}`:"",src=el.getAttribute("data-logo")||dynamicSrc||el.getAttribute("data-src")||imgEl?.getAttribute("src")||"",fallbackSrc=el.getAttribute("data-src")||imgEl?.getAttribute("src")||"img/placeholder-wide.svg",alt=(el.getAttribute("data-alt")||imgEl?.getAttribute("alt")||key||"Skill").trim();return{key,src,fallbackSrc,alt,color}}).filter(s=>s.key);
 const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(52,1,.1,5000),renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.setClearColor(0,0);stage.appendChild(renderer.domElement);
@@ -1288,10 +1324,13 @@ const tmp=new THREE.Vector3(),forward=new THREE.Vector3(0,0,1);
 </script>
 
 <script type="module">
+// THREE, STLLoader, OrbitControls already imported above — re-export from same module scope
+// Note: imports are module-scoped, so we need them here too but they'll be cached by the browser
 import * as THREE from "three";
 import {STLLoader} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/STLLoader.js";
 import {OrbitControls} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-const stlLibrary=[{name:"Support caméra (prototype)",subtitle:"Pièce rigide + légère (usage intérieur).",model:"stl/Plaquettes_target_Wolf.stl?view=1",material:"PLA",layer:"0.20mm",infill:"20%",nozzle:"0.4mm",walls:"3",time:"~2h10"},{name:"Clip câble (pack x6)",subtitle:"Accessoire bureau — impression rapide.",model:"stl/Plaquettes_target_Wolf.stl?view=1",material:"PETG",layer:"0.24mm",infill:"30%",nozzle:"0.4mm",walls:"2",time:"~45min"},{name:"Bouton moleté (M6)",subtitle:"Bonne résistance mécanique (atelier).",model:"stl/Plaquettes_target_Wolf.stl?view=1",material:"ABS",layer:"0.20mm",infill:"35%",nozzle:"0.4mm",walls:"4",time:"~1h25"}];
+// STL viewer — shares THREE import cache with skill sphere (browser deduplicates)
+const stlLibrary=[{name:"Support caméra (prototype)",subtitle:"Pièce rigide + légère (usage intérieur).",model:"stl/Plaquettes_target_Wolf.stl?view=1",material:"PLA",layer:"0.20mm",infill:"20%",nozzle:"0.4mm",walls:"3",time:"~2h10"},{name:"Clip câble (pack x6)",subtitle:"Accessoire bureau — impression rapide.",model:"stl/Clip_cable_pack.stl?view=1",material:"PETG",layer:"0.24mm",infill:"30%",nozzle:"0.4mm",walls:"2",time:"~45min"},{name:"Bouton moleté (M6)",subtitle:"Bonne résistance mécanique (atelier).",model:"stl/Bouton_molette_M6.stl?view=1",material:"ABS",layer:"0.20mm",infill:"35%",nozzle:"0.4mm",walls:"4",time:"~1h25"}];
 const stlModal=document.getElementById("stlModal"),stlGrid=document.getElementById("stlGrid"),stlCloseBtn=document.getElementById("stlCloseBtn"),stlFullscreen=document.getElementById("stlFullscreen"),fsClose=document.getElementById("fsClose"),viewer=document.getElementById("viewer");
 let activeFsCleanup=null;
 function secureSTL(path){return path.includes("?")?path:`${path}?view=1`}
@@ -1308,6 +1347,29 @@ stlModal.addEventListener("click",e=>{if(e.target===stlModal)closeSTLModal()});s
 
 <script>
 if (/[?&]edit=1/.test(location.search)) {
+  // Basic authentication check for admin editor
+  const editToken = new URLSearchParams(location.search).get('edit_token');
+  const storedToken = localStorage.getItem('portfolio-edit-token');
+  
+  if (editToken && editToken !== storedToken) {
+    // First time access - prompt for token
+    const prompt = prompt('Entrez le token d\'édition :');
+    if (!prompt || prompt !== storedToken) {
+      alert('Token incorrect. Accès refusé.');
+      throw new Error('Unauthorized access to editor');
+    }
+    localStorage.setItem('portfolio-edit-token', prompt);
+  } else if (!editToken && !storedToken) {
+    // No token provided and none stored - prompt
+    const prompt = prompt('Entrez le token d\'édition :');
+    if (!prompt) {
+      alert('Token requis. Accès refusé.');
+      throw new Error('Unauthorized access to editor');
+    }
+    localStorage.setItem('portfolio-edit-token', prompt);
+  }
+  
+  // Token validated, load editor
   var _es = document.createElement('script');
   _es.src = '/admin/editor.js?v=' + Date.now();
   document.head.appendChild(_es);
