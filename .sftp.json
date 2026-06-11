@@ -1,0 +1,16 @@
+{
+    "name": "OVH Hosting - tournayre.ovh",
+    "host": "ftp.cluster129.hosting.ovh.net",
+    "port": 22,
+    "protocol": "sftp",
+    "username": "bl34v3n",
+    "password": "Ce67192Mat&MatX!",
+    "remotePath": "/www/",
+    "uploadOnSave": false,
+    "ignore": [
+        ".git/*",
+        ".vscode/*",
+        ".sftp.json",
+        "deploy-ovh.sh"
+    ]
+}
